@@ -283,10 +283,12 @@ class SpectraDB {
   }
 
   findJob(jobId) {
+    this.load();
     return this.data.jobs.find(j => j.id === jobId);
   }
 
   getUserJobs(userId) {
+    this.load();
     return this.data.jobs.filter(j => j.userId === userId);
   }
 

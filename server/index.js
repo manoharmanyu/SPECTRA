@@ -55,17 +55,19 @@ app.get('/api/status', (req, res) => {
   });
 });
 
-// Start Server
-server.listen(config.port, config.host, () => {
-  const lanIp = getLocalIpAddress();
-  console.log(`\n======================================================`);
-  console.log(`🔒 SPECTRA SECURE LOCAL BACKEND ONLINE`);
-  console.log(`======================================================`);
-  console.log(`📡 Local Host:       http://localhost:${config.port}`);
-  console.log(`📶 LAN Access:       http://${lanIp}:${config.port}`);
-  console.log(`⚡ WebSocket URL:    ws://${lanIp}:${config.port}/ws`);
-  console.log(`📱 Mobile Portal:    http://${lanIp}:${config.vitePort}/mobile.html`);
-  console.log(`======================================================\n`);
-});
+// Start Server if not imported as module in test
+if (process.env.NODE_ENV !== 'test') {
+  server.listen(config.port, config.host, () => {
+    const lanIp = getLocalIpAddress();
+    console.log(`\n======================================================`);
+    console.log(`🔒 SPECTRA SECURE LOCAL BACKEND ONLINE`);
+    console.log(`======================================================`);
+    console.log(`📡 Local Host:       http://localhost:${config.port}`);
+    console.log(`📶 LAN Access:       http://${lanIp}:${config.port}`);
+    console.log(`⚡ WebSocket URL:    ws://${lanIp}:${config.port}/ws`);
+    console.log(`📱 Mobile Portal:    http://${lanIp}:${config.vitePort}/mobile.html`);
+    console.log(`======================================================\n`);
+  });
+}
 
 export { app, server };

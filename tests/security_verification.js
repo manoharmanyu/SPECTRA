@@ -2,8 +2,6 @@ import http from 'http';
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
-import { db } from '../server/db.js';
-import { app, server } from '../server/index.js';
 import {
   hashPassword,
   verifyPassword,
@@ -231,45 +229,39 @@ async function runAllSecurityTests() {
   // TEST GROUP 7: USER ISOLATION & DEVICE REVOCATION
   // -------------------------------------------------------------------------
   console.log('\n--- TEST GROUP 7: USER ISOLATION & DEVICE REVOCATION ---');
-  // Create job under admin
-  const testJob = db.createJob({
-    userId: 'usr_manohar_manyu',
-    deviceId: deviceId,
-    deviceName: "Manohar's iPhone 15 Pro",
-    originalFilename: 'sensitive_investigation.jpg',
-    storedFilename: 'sensitive_investigation.jpg',
-    mimeType: 'image/jpeg',
-    sizeBytes: 1024,
-    status: 'completed',
-    forensicReport: report
+  // Upload photo from active paired phone to create forensic job
+  const boundary = '---------------------------WebKitFormBoundaryXYZ';
+  const postBody = Buffer.concat([
+    Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="image"; filename="sensitive_investigation.jpg"\r\nContent-Type: image/jpeg\r\n\r\n`),
+    fullJpeg,
+    Buffer.from(`\r\n--${boundary}--\r\n`)
+  ]);
+
+  const activeUploadRes = await request({ path: '/api/upload', method: 'POST' }, postBody, {
+    'Content-Type': `multipart/form-data; boundary=${boundary}`,
+    'x-device-token': deviceToken
   });
+  const createdJobId = activeUploadRes.json?.jobId;
 
   // User B tries to read User A's job -> MUST BE 403
-  const crossUserRes = await request({ path: `/api/analysis/${testJob.id}`, method: 'GET' }, null, {
+  const crossUserRes = await request({ path: `/api/analysis/${createdJobId}`, method: 'GET' }, null, {
     'x-session-id': testUserSession
   });
-  assert(crossUserRes.status === 403, 'Cross-user job/report access strictly denied (User Isolation enforced)');
+  assert(crossUserRes.status === 403, 'Cross-user job/report access strictly denied (User Isolation enforced)', `status: ${crossUserRes.status}`);
 
   // User A reads own job -> MUST BE 200
-  const ownJobRes = await request({ path: `/api/analysis/${testJob.id}`, method: 'GET' }, null, {
+  const ownJobRes = await request({ path: `/api/analysis/${createdJobId}`, method: 'GET' }, null, {
     'x-session-id': adminSessionId
   });
-  assert(ownJobRes.status === 200 && ownJobRes.json?.job?.id === testJob.id, 'User can view own forensic job dossier');
+  assert(ownJobRes.status === 200 && ownJobRes.json?.job?.id === createdJobId, 'User can view own forensic job dossier', `status: ${ownJobRes.status}, body: ${JSON.stringify(ownJobRes.json)}`);
 
   // Revoke device trust
   const revokeRes = await request({ path: `/api/pairing/devices/${deviceId}/revoke`, method: 'POST' }, {}, {
     'x-session-id': adminSessionId
   });
-  assert(revokeRes.status === 200 && revokeRes.json?.device?.trustStatus === 'revoked', 'Device trust successfully revoked by administrator');
+  assert(revokeRes.status === 200 && revokeRes.json?.device?.trustStatus === 'revoked', 'Device trust successfully revoked by administrator', `status: ${revokeRes.status}, body: ${JSON.stringify(revokeRes.json)}`);
 
   // Verify revoked device cannot upload
-  const boundary = '---------------------------WebKitFormBoundaryXYZ';
-  const postBody = Buffer.concat([
-    Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="image"; filename="blocked.jpg"\r\nContent-Type: image/jpeg\r\n\r\n`),
-    fullJpeg,
-    Buffer.from(`\r\n--${boundary}--\r\n`)
-  ]);
-
   const blockedUploadRes = await request({ path: '/api/upload', method: 'POST' }, postBody, {
     'Content-Type': `multipart/form-data; boundary=${boundary}`,
     'x-device-token': deviceToken
