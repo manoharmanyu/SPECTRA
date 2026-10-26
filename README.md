@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://spectra-omega-sooty.vercel.app" target="_blank">
+  <a href="https://thespectra.vercel.app" target="_blank">
     <img src="https://img.shields.io/badge/Vercel-Live%20Deployment-000000?style=for-the-badge&logo=vercel&logoColor=white" />
   </a>
   <img src="https://img.shields.io/badge/Platform-Web%20Application-7C3AED?style=for-the-badge" />
@@ -21,7 +21,7 @@
 </p>
 
 <p align="center">
-  🚀 <strong>Live Production URL:</strong> <a href="https://spectra-omega-sooty.vercel.app">https://spectra-omega-sooty.vercel.app</a>
+  🚀 <strong>Live Production URL:</strong> <a href="https://thespectra.vercel.app">https://thespectra.vercel.app</a>
 </p>
 
 ---
