@@ -2052,30 +2052,30 @@ button { font: inherit; }
             <div class="hud-gauge-wrap">
               <svg viewBox="0 0 76 76">
                 <circle class="gauge-bg" cx="38" cy="38" r="30" />
-                <circle class="gauge-fill" cx="38" cy="38" r="30" stroke-dasharray="188.5" stroke-dashoffset="24.5" />
+                <circle id="hudGaugeCircle" class="gauge-fill" cx="38" cy="38" r="30" stroke-dasharray="188.5" stroke-dashoffset="188.5" />
               </svg>
               <div class="gauge-center">
-                <span class="gauge-num">87%</span>
+                <span class="gauge-num" id="hudGaugeNum">0%</span>
               </div>
             </div>
             <div class="gauge-desc">
-              <span class="manipulation-tag">POTENTIAL MANIPULATION DETECTED</span>
-              <div class="mini-signal-bars">
-                <div class="mini-bar" style="height:4px"></div>
-                <div class="mini-bar" style="height:8px;background:#FF3B5C"></div>
-                <div class="mini-bar" style="height:12px;background:#FF3B5C"></div>
-                <div class="mini-bar" style="height:6px"></div>
-                <div class="mini-bar" style="height:10px;background:#FF3B5C"></div>
-                <div class="mini-bar" style="height:5px"></div>
-                <div class="mini-bar" style="height:9px;background:#FF3B5C"></div>
+              <span class="manipulation-tag" id="hudGaugeTag" style="color:var(--slate);">STANDBY // 0 MEDIA ANALYZED</span>
+              <div class="mini-signal-bars" id="hudSignalBars">
+                <div class="mini-bar" style="height:3px;background:rgba(255,255,255,0.15)"></div>
+                <div class="mini-bar" style="height:3px;background:rgba(255,255,255,0.15)"></div>
+                <div class="mini-bar" style="height:3px;background:rgba(255,255,255,0.15)"></div>
+                <div class="mini-bar" style="height:3px;background:rgba(255,255,255,0.15)"></div>
+                <div class="mini-bar" style="height:3px;background:rgba(255,255,255,0.15)"></div>
+                <div class="mini-bar" style="height:3px;background:rgba(255,255,255,0.15)"></div>
+                <div class="mini-bar" style="height:3px;background:rgba(255,255,255,0.15)"></div>
               </div>
             </div>
           </div>
-          <ul class="forensic-indicators">
-            <li><span class="f-dot purple"></span> AI Generated Indicators</li>
-            <li><span class="f-dot green"></span> Compression Inconsistencies</li>
-            <li><span class="f-dot purple"></span> Metadata Anomalies</li>
-            <li><span class="f-dot purple"></span> Temporal Irregularities</li>
+          <ul class="forensic-indicators" id="hudForensicIndicators">
+            <li><span class="f-dot"></span> 0 AI Generated Indicators</li>
+            <li><span class="f-dot"></span> 0 Compression Anomalies</li>
+            <li><span class="f-dot"></span> 0 Metadata Anomalies</li>
+            <li><span class="f-dot"></span> 0 Temporal Irregularities</li>
           </ul>
         </div>
 
@@ -2096,12 +2096,12 @@ button { font: inherit; }
               </div>
             </div>
             <div class="hud-meta-table">
-              <div class="meta-row"><span class="k">Location</span><span class="v" id="hudMetaLoc">Mumbai, India</span></div>
-              <div class="meta-row"><span class="k">Device</span><span class="v" id="hudMetaDev">Mobile Sensor Matrix</span></div>
-              <div class="meta-row"><span class="k">Date</span><span class="v" id="hudMetaDate">Nov 2023</span></div>
-              <div class="meta-row"><span class="k">Resolution</span><span class="v" id="hudMetaRes">1080 &times; 1920</span></div>
-              <div class="meta-row"><span class="k">File Hash</span><span class="v code" id="hudMetaHash">e1ee...591a</span></div>
-              <div class="meta-row"><span class="k">Software</span><span class="v" id="hudMetaSoft">DeepFaceLab / FaceSwap</span></div>
+              <div class="meta-row"><span class="k">Location</span><span class="v" id="hudMetaLoc">Awaiting Ingestion</span></div>
+              <div class="meta-row"><span class="k">Device</span><span class="v" id="hudMetaDev">No Active Probe</span></div>
+              <div class="meta-row"><span class="k">Date</span><span class="v" id="hudMetaDate">--</span></div>
+              <div class="meta-row"><span class="k">Resolution</span><span class="v" id="hudMetaRes">--</span></div>
+              <div class="meta-row"><span class="k">File Hash</span><span class="v code" id="hudMetaHash">--</span></div>
+              <div class="meta-row"><span class="k">Software</span><span class="v" id="hudMetaSoft">Standby</span></div>
             </div>
           </div>
         </div>
@@ -2133,10 +2133,10 @@ button { font: inherit; }
       <div id="pairedStatusConsole" class="paired-status-console">
         <div class="paired-status-main">
           <div class="paired-status-indicator">
-            <span id="pairedStatusPulse" class="paired-pulse-dot active"></span>
+            <span id="pairedStatusPulse" class="paired-pulse-dot standby"></span>
             <div>
-              <div id="pairedStatusBadge" class="paired-status-badge active">PAIRED & ACTIVE</div>
-              <div id="pairedDeviceNameDisplay" class="paired-device-title">Manohar's iPhone 15 Pro</div>
+              <div id="pairedStatusBadge" class="paired-status-badge standby">STANDBY // 0 DEVICES PAIRED</div>
+              <div id="pairedDeviceNameDisplay" class="paired-device-title">Awaiting Device Connection (0 Active)</div>
             </div>
           </div>
           <div class="paired-controls-row">
@@ -2149,7 +2149,7 @@ button { font: inherit; }
         <div class="paired-meta-bar">
           <div class="paired-meta-cell">
             <span class="lbl">NETWORK TRANSPORT:</span>
-            <span class="val" id="pairedTransportDisplay">Direct Wi-Fi / Local Subnet (10.251.237.128)</span>
+            <span class="val" id="pairedTransportDisplay">Local Subnet Listening (Port 5173 / 3001)</span>
           </div>
           <div class="paired-meta-cell">
             <span class="lbl">SOCKET PROTOCOL:</span>
@@ -2157,11 +2157,11 @@ button { font: inherit; }
           </div>
           <div class="paired-meta-cell">
             <span class="lbl">HARDWARE SENSOR:</span>
-            <span class="val" id="pairedSensorDisplay">Triple Optical Camera (24mm f/1.78)</span>
+            <span class="val" id="pairedSensorDisplay">Sensor Matrix Inactive (0 Active Devices)</span>
           </div>
           <div class="paired-meta-cell">
             <span class="lbl">LATENCY / HEARTBEAT:</span>
-            <span class="val" id="pairedHeartbeatDisplay">&lt; 3.4 ms • Live Peer Connected</span>
+            <span class="val" id="pairedHeartbeatDisplay">Ready for Local Pairing Handshake • 0 Live Peers</span>
           </div>
         </div>
       </div>
@@ -4010,65 +4010,17 @@ function showVerdict(presetId) {
     try {
       const data = localStorage.getItem(AUDIT_LOGS_KEY);
       if (data) {
-        const parsed = JSON.parse(data);
-        if (Array.isArray(parsed)) return parsed;
+        let parsed = JSON.parse(data);
+        if (Array.isArray(parsed)) {
+          // Filter out legacy benchmark logs
+          parsed = parsed.filter(l => !l.fileName || (!l.fileName.startsWith('CaseA_') && !l.fileName.startsWith('CaseB_') && !l.fileName.startsWith('CaseC_')));
+          return parsed;
+        }
       }
     } catch (e) {
       console.warn('Could not read audit logs:', e);
     }
-    // Pre-populate with verified forensic investigation benchmarks
-    const initialLogs = [
-      {
-        id: 'audit_' + Date.now().toString(36) + '1',
-        timestamp: new Date(Date.now() - 3600000 * 2.5).toISOString(),
-        fileName: 'CaseA_Executive_FaceSwap.mp4',
-        fileType: 'Video',
-        verdict: 'MANIPULATED (DEEPFAKE)',
-        risk: '94.8% Probability',
-        isAlert: true,
-        indicator: 'Facial boundary optical flow shear desync',
-        hash: 'e0330548b1ac905cf1b81698d2a6a117b1f6',
-        signals: [
-          { name: 'Facial Boundary Optical Flow', val: 'Severe boundary discontinuity & frame tearing' },
-          { name: 'Biological rPPG Pulse Flow', val: 'Desynchronized micro-pulse in forehead ROI' },
-          { name: 'PRNU Hardware Signature', val: 'Camera sensor fingerprint absent (Synthetic generator)' }
-        ]
-      },
-      {
-        id: 'audit_' + Date.now().toString(36) + '2',
-        timestamp: new Date(Date.now() - 3600000 * 6.2).toISOString(),
-        fileName: 'CaseB_Synthetic_VoiceCall.wav',
-        fileType: 'Audio',
-        verdict: 'SYNTHETIC AUDIO',
-        risk: '98.2% Probability',
-        isAlert: true,
-        indicator: 'Neural vocoder phase cancellation signature',
-        hash: '4d379461ad00eb4de7900df311bb49a29d30',
-        signals: [
-          { name: 'Vocoder Harmonic Phase', val: 'Unnatural phase cancellation across formant transitions' },
-          { name: 'Zero-Crossing Rate Jitter', val: 'Synthetic diffusion vocoder footprint confirmed' },
-          { name: 'Acoustic Room Reflections', val: 'Zero biological breath or reverberation variance' }
-        ]
-      },
-      {
-        id: 'audit_' + Date.now().toString(36) + '3',
-        timestamp: new Date(Date.now() - 3600000 * 14.5).toISOString(),
-        fileName: 'CaseC_Official_PressStream.mov',
-        fileType: 'Video',
-        verdict: 'AUTHENTIC MEDIA',
-        risk: '2.1% Minimal Risk',
-        isAlert: false,
-        indicator: 'Consistent biological rPPG pulse & camera PRNU',
-        hash: '3e8bbb177216bcb41ddc75cde088b487b1f6',
-        signals: [
-          { name: 'Facial Biomechanical Saccades', val: 'Natural ocular micro-tremor verified' },
-          { name: 'Biological rPPG Pulse Flow', val: '72 BPM pulse confirmed matching cardiovascular cycle' },
-          { name: 'PRNU Hardware Signature', val: 'Exact match with Sony Alpha FX3 optical sensor' }
-        ]
-      }
-    ];
-    saveAuditLogs(initialLogs);
-    return initialLogs;
+    return [];
   }
 
   function saveAuditLogs(logs) {
@@ -4172,7 +4124,7 @@ function showVerdict(presetId) {
 
     if (!logFeed) return;
     if (logs.length === 0) {
-      logFeed.innerHTML = '<div style="padding:36px;text-align:center;color:var(--slate);font-size:13px;">No media scans have been run yet. Platform usage logs will appear here automatically when visitors analyze media.</div>';
+      logFeed.innerHTML = '<div style="padding:36px;text-align:center;color:var(--slate);font-size:13px;">0 media scans recorded. Platform usage logs will appear here automatically when visitors or paired devices analyze media.</div>';
       return;
     }
 
@@ -4489,10 +4441,12 @@ function showVerdict(presetId) {
 
       const devices = data.devices || [];
       const activeDevices = devices.filter(d => d.trustStatus === 'active');
+      const revokedDevices = devices.filter(d => d.trustStatus === 'revoked');
       const activeCount = activeDevices.length;
+      const revokedCount = revokedDevices.length;
 
       // Update Header Badges
-      if (badge) badge.textContent = `${activeCount} active`;
+      if (badge) badge.textContent = `${activeCount} active · ${revokedCount} revoked`;
       if (topBadge) {
         topBadge.textContent = activeCount;
         topBadge.style.display = activeCount > 0 ? 'inline-block' : 'none';
@@ -4504,25 +4458,28 @@ function showVerdict(presetId) {
       const deviceTitle = document.getElementById('pairedDeviceNameDisplay');
       const transportEl = document.getElementById('pairedTransportDisplay');
       const heartbeatEl = document.getElementById('pairedHeartbeatDisplay');
+      const sensorEl = document.getElementById('pairedSensorDisplay');
 
       if (activeCount > 0) {
         const dev = activeDevices[0];
-        if (statusBadge) { statusBadge.textContent = 'PAIRED & ACTIVE'; statusBadge.className = 'paired-status-badge active'; }
+        if (statusBadge) { statusBadge.textContent = `PAIRED & ACTIVE (${activeCount})`; statusBadge.className = 'paired-status-badge active'; }
         if (statusPulse) { statusPulse.className = 'paired-pulse-dot active'; }
         if (deviceTitle) { deviceTitle.textContent = dev.deviceName; }
-        if (transportEl) { transportEl.textContent = 'Direct Wi-Fi / Local Subnet (10.251.237.128)'; }
-        if (heartbeatEl) { heartbeatEl.textContent = '< 3.2 ms • Live Peer Connected'; }
+        if (transportEl) { transportEl.textContent = 'Direct Wi-Fi / Local Subnet'; }
+        if (heartbeatEl) { heartbeatEl.textContent = `< 3.2 ms • ${activeCount} Live Peer${activeCount > 1 ? 's' : ''} Connected`; }
+        if (sensorEl) { sensorEl.textContent = 'Optical Sensor Stream Active'; }
       } else {
-        if (statusBadge) { statusBadge.textContent = 'STANDBY // NO DEVICE PAIRED'; statusBadge.className = 'paired-status-badge standby'; }
+        if (statusBadge) { statusBadge.textContent = 'STANDBY // 0 DEVICES PAIRED'; statusBadge.className = 'paired-status-badge standby'; }
         if (statusPulse) { statusPulse.className = 'paired-pulse-dot standby'; }
-        if (deviceTitle) { deviceTitle.textContent = 'Awaiting Device Connection'; }
-        if (transportEl) { transportEl.textContent = 'Local Subnet Listening (Port 5173)'; }
-        if (heartbeatEl) { heartbeatEl.textContent = 'Ready for Local Pairing Handshake'; }
+        if (deviceTitle) { deviceTitle.textContent = 'Awaiting Device Connection (0 Active)'; }
+        if (transportEl) { transportEl.textContent = 'Local Subnet Listening (Port 5173 / 3001)'; }
+        if (heartbeatEl) { heartbeatEl.textContent = 'Ready for Local Pairing Handshake • 0 Live Peers'; }
+        if (sensorEl) { sensorEl.textContent = 'Sensor Matrix Inactive (0 Active Devices)'; }
       }
 
       if (container) {
         if (devices.length === 0) {
-          container.innerHTML = '<div style="font-size:12px;color:#A0AEC0;text-align:center;padding:12px;">No paired mobile probes yet. Scan the QR code to pair your phone.</div>';
+          container.innerHTML = '<div style="font-size:12px;color:#A0AEC0;text-align:center;padding:12px;">0 paired devices (0 active, 0 revoked). Scan the QR code or use the pairing code to pair a device.</div>';
         } else {
           container.innerHTML = devices.map(d => `
             <div class="device-card-item">
@@ -4537,19 +4494,36 @@ function showVerdict(presetId) {
                   Paired: ${new Date(d.pairingTimestamp).toLocaleDateString()} · Transport: Local Wi-Fi
                 </div>
               </div>
-              ${d.trustStatus === 'active' ? `
-                <button class="admin-btn danger" onclick="revokeDevice('${d.id}')" style="padding:4px 10px;font-size:11px;">
-                  Revoke Trust
-                </button>
-              ` : `
-                <span style="font-size:11px;color:#FF3B5C;font-family:monospace;">Revoked</span>
-              `}
+              <div style="display:flex;align-items:center;gap:8px;">
+                ${d.trustStatus === 'active' ? `
+                  <button class="admin-btn danger" onclick="revokeDevice('${d.id}')" style="padding:4px 10px;font-size:11px;">
+                    Revoke Trust
+                  </button>
+                ` : `
+                  <button class="admin-btn" onclick="removeDevice('${d.id}')" style="padding:4px 10px;font-size:11px;border-color:rgba(255,59,92,0.4);color:#FF3B5C;">
+                    Delete
+                  </button>
+                `}
+              </div>
             </div>
           `).join('');
         }
       }
     } catch(e) {
       console.error('Failed to load devices:', e);
+    }
+  };
+
+  window.removeDevice = async function(deviceId) {
+    if (!confirm('Permanently remove this device record?')) return;
+    try {
+      const res = await fetch(`/api/pairing/devices/${deviceId}/delete`, { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to remove device');
+      showToast('Device record removed.');
+      fetchPairedDevices();
+    } catch(e) {
+      showToast(e.message, true);
     }
   };
 
@@ -5032,6 +5006,47 @@ function showVerdict(presetId) {
 
             // Render Full Provenance & Agent-Reach Dissemination Dossier
             renderDetailedForensicDossier(msg.data.report);
+
+            // Update Card 4 (Authenticity Analysis) in HUD
+            const hudNum = document.getElementById('hudGaugeNum');
+            const hudCircle = document.getElementById('hudGaugeCircle');
+            const hudTag = document.getElementById('hudGaugeTag');
+            const hudIndicators = document.getElementById('hudForensicIndicators');
+            if (hudNum && msg.data.report.probability) {
+              hudNum.textContent = msg.data.report.probability;
+              const probNum = parseFloat(msg.data.report.probability) || 0;
+              if (hudCircle) {
+                const offset = 188.5 - (188.5 * probNum / 100);
+                hudCircle.style.strokeDashoffset = offset;
+                hudCircle.style.stroke = msg.data.report.isAlert ? '#FF3B5C' : '#00E5A3';
+              }
+            }
+            if (hudTag) {
+              hudTag.textContent = msg.data.report.verdict;
+              hudTag.style.color = msg.data.report.isAlert ? '#FF3B5C' : '#00E5A3';
+            }
+            if (hudIndicators) {
+              hudIndicators.innerHTML = `
+                <li><span class="f-dot ${msg.data.report.isAlert ? 'purple' : 'green'}"></span> ${msg.data.report.isAlert ? '1+ Generative AI Markers' : '0 Generative AI Markers'}</li>
+                <li><span class="f-dot ${msg.data.report.isAlert ? 'purple' : 'green'}"></span> ${msg.data.report.isAlert ? 'Compression Anomaly Detected' : 'Clean Compression Profile'}</li>
+                <li><span class="f-dot ${msg.data.report.isAlert ? 'purple' : 'green'}"></span> ${msg.data.report.isAlert ? 'Metadata Inconsistency' : 'Camera EXIF Authenticated'}</li>
+                <li><span class="f-dot green"></span> ${msg.data.report.isAlert ? 'Spatial Artifact Confirmed' : 'Sensor Noise Verified'}</li>
+              `;
+            }
+
+            // Update Card 5 (Metadata Intelligence) in HUD
+            const metaLoc = document.getElementById('hudMetaLoc');
+            const metaDev = document.getElementById('hudMetaDev');
+            const metaDate = document.getElementById('hudMetaDate');
+            const metaHash = document.getElementById('hudMetaHash');
+            const metaSoft = document.getElementById('hudMetaSoft');
+
+            const rep = msg.data.report;
+            if (metaLoc && rep.provenance?.geolocation?.geofenceDescription) metaLoc.textContent = rep.provenance.geolocation.geofenceDescription;
+            if (metaDev && rep.cameraModel) metaDev.textContent = `${rep.cameraMake || ''} ${rep.cameraModel}`;
+            if (metaDate && rep.dateTimeOriginal) metaDate.textContent = rep.dateTimeOriginal;
+            if (metaHash && rep.sha256) metaHash.textContent = rep.sha256.substring(0, 4) + '...' + rep.sha256.substring(60);
+            if (metaSoft && rep.softwareTag) metaSoft.textContent = rep.softwareTag;
 
             // Record to Admin logs
             if (window.SpectraAdmin && window.SpectraAdmin.recordUsage) {

@@ -1,0 +1,65 @@
+{
+  "users": [
+    {
+      "id": "usr_manohar_manyu",
+      "username": "manohar_manyu",
+      "passwordHash": "4ad7ae903988237583d4bcda0db1544010d9503e68947e61c9c6b414227eec57ad3a4f64b10d2dd16577d5bbd9f9251e2d2563bbd59bf7e2e834f9cae92aabe8",
+      "salt": "86a24962f988c843761fc4f618191b5a",
+      "totpSecretEncrypted": null,
+      "totpEnabled": false,
+      "recoveryCodesHashed": [],
+      "createdAt": "2026-10-26T10:01:28.784Z"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "ses_gfqb68p8mvpeggyr",
+      "userId": "usr_mvpeggyrv8iw",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-27T15:16:40.035Z",
+      "createdAt": "2026-10-26T15:16:40.035Z"
+    },
+    {
+      "id": "ses_bxqm66knmvpeijar",
+      "userId": "usr_manohar_manyu",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "expiresAt": "2026-10-27T15:18:16.371Z",
+      "createdAt": "2026-10-26T15:18:16.371Z"
+    }
+  ],
+  "pairingCodes": [
+    {
+      "code": "XQY9PGRQ",
+      "displayCode": "XQY9-PGRQ",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_k6npb8v7mvpeggv3",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "df01395c571dfa70f7bd564ca4d3a33b513e6ac45546b881292f89f05273ca28",
+      "deviceId": "dev_mvpeggzrgsuv",
+      "expiresAt": "2026-10-26T15:21:40.039Z",
+      "createdAt": "2026-10-26T15:16:40.039Z",
+      "consumedAt": "2026-10-26T15:16:40.072Z"
+    },
+    {
+      "code": "NNPMHLLX",
+      "displayCode": "NNPM-HLLX",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_bxqm66knmvpeijar",
+      "attempts": 0,
+      "status": "pending",
+      "proposedDeviceName": null,
+      "deviceTokenHash": null,
+      "deviceId": null,
+      "expiresAt": "2026-10-26T15:23:16.381Z",
+      "createdAt": "2026-10-26T15:18:16.381Z"
+    }
+  ],
+  "devices": [],
+  "jobs": []
+}

@@ -185,3 +185,40 @@ pairingRouter.post('/devices/:deviceId/revoke', requireAuth, (req, res) => {
     device: revoked
   });
 });
+
+// POST /api/pairing/devices/:deviceId/delete (Permanently delete device record)
+pairingRouter.post('/devices/:deviceId/delete', requireAuth, (req, res) => {
+  const { deviceId } = req.params;
+  const deleted = db.deleteDevice(deviceId, req.user.id);
+  if (!deleted) {
+    return res.status(404).json({ error: 'Device not found or not owned by user.' });
+  }
+
+  // Broadcast revocation immediately over WebSocket
+  wsHub.broadcastToUser(req.user.id, 'device:revoked', {
+    deviceId: deleted.id,
+    deviceName: deleted.deviceName
+  });
+
+  return res.json({
+    success: true,
+    message: `Device "${deleted.deviceName}" permanently removed.`,
+    device: deleted
+  });
+});
+
+// POST /api/pairing/test-cleanup (Purge test artifacts)
+pairingRouter.post('/test-cleanup', requireAuth, (req, res) => {
+  const { testUserId, deviceId, jobId } = req.body;
+  if (testUserId) db.deleteUser(testUserId);
+  if (deviceId) db.deleteDevice(deviceId);
+  if (jobId) db.deleteJob(jobId);
+
+  // Clean all audit test users and test devices/jobs
+  db.data.users = db.data.users.filter(u => !u.username.startsWith('sec_audit_user_'));
+  db.data.devices = db.data.devices.filter(d => d.id !== deviceId);
+  db.data.jobs = db.data.jobs.filter(j => j.id !== jobId && !j.originalFilename?.includes('sensitive_investigation'));
+  db.save();
+
+  return res.json({ success: true });
+});

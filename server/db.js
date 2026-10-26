@@ -3,7 +3,9 @@ import path from 'path';
 import { config } from './config.js';
 import { hashPassword } from './crypto.js';
 
-const DB_FILE = path.join(config.dataDir, 'spectra.json');
+const DB_FILE = process.env.SPECTRA_DB_FILE || (process.env.NODE_ENV === 'test' 
+  ? path.join(config.dataDir, 'spectra_test.json') 
+  : path.join(config.dataDir, 'spectra.json'));
 
 function ensureDirectories() {
   if (!fs.existsSync(config.dataDir)) {
@@ -257,6 +259,44 @@ class SpectraDB {
       return dev;
     }
     return null;
+  }
+
+  deleteDevice(deviceId, userId) {
+    const idx = this.data.devices.findIndex(d => d.id === deviceId && (!userId || d.userId === userId));
+    if (idx !== -1) {
+      const removed = this.data.devices.splice(idx, 1)[0];
+      this.save();
+      return removed;
+    }
+    return null;
+  }
+
+  deleteJob(jobId) {
+    const idx = this.data.jobs.findIndex(j => j.id === jobId);
+    if (idx !== -1) {
+      const removed = this.data.jobs.splice(idx, 1)[0];
+      this.save();
+      return removed;
+    }
+    return null;
+  }
+
+  deleteUser(userId) {
+    const idx = this.data.users.findIndex(u => u.id === userId);
+    if (idx !== -1) {
+      const removed = this.data.users.splice(idx, 1)[0];
+      this.save();
+      return removed;
+    }
+    return null;
+  }
+
+  deleteSession(sessionId) {
+    const idx = this.data.sessions.findIndex(s => s.id === sessionId);
+    if (idx !== -1) {
+      this.data.sessions.splice(idx, 1);
+      this.save();
+    }
   }
 
   updateDeviceActivity(deviceId) {

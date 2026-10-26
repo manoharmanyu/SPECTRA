@@ -284,10 +284,25 @@ async function runAllSecurityTests() {
   console.log(`TEST SUMMARY: ${passed} PASSED, ${failed} FAILED (TOTAL: ${passed + failed})`);
   console.log('======================================================\n');
 
-  // Cleanup test files
+  // Cleanup test files and test database artifacts
   try {
     fs.unlinkSync(testJpegPath);
     fs.unlinkSync(aiJpegPath);
+  } catch(e) {}
+
+  try {
+    if (adminSessionId) {
+      await request({ path: '/api/pairing/test-cleanup', method: 'POST' }, {
+        testUserId: regRes?.json?.user?.id,
+        deviceId: deviceId,
+        jobId: createdJobId
+      }, {
+        'x-session-id': adminSessionId
+      });
+      await request({ path: '/api/auth/logout', method: 'POST' }, {}, {
+        'x-session-id': adminSessionId
+      });
+    }
   } catch(e) {}
 
   if (failed > 0) {
