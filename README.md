@@ -21,7 +21,8 @@
 </p>
 
 <p align="center">
-  🚀 <strong>Live Production URL:</strong> <a href="https://thespectra.vercel.app">https://thespectra.vercel.app</a>
+  🚀 <strong>Live Production Desktop:</strong> <a href="https://thespectra.vercel.app">https://thespectra.vercel.app</a><br />
+  📱 <strong>Live Mobile Portal:</strong> <a href="https://spectra-mobile.vercel.app/mobile.html">https://spectra-mobile.vercel.app/mobile.html</a>
 </p>
 
 ---
