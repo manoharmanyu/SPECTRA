@@ -186,7 +186,7 @@ button { font: inherit; }
 
 /* ---------------- FORENSIC WORKSPACE (Center Book + HUDs) ---------------- */
 .forensic-workspace {
-  position: relative; width: 100%; max-width: 1620px;
+  position: relative; width: 100%; max-width: 1760px;
   display: flex; align-items: center; justify-content: center;
   margin-top: 10px; z-index: 3;
 }
@@ -195,27 +195,28 @@ button { font: inherit; }
 .hud-panel {
   background: rgba(23, 29, 43, 0.78);
   border: 1px solid rgba(137, 148, 167, 0.24);
-  border-radius: 14px; padding: 14px 16px;
+  border-radius: 14px; padding: 12px 14px;
   -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
   box-shadow: 0 16px 36px rgba(0,0,0,0.5), inset 0 0 20px rgba(23,29,43,0.5);
   color: #FFFFFF;
 }
 .hud-panel-title {
   font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
-  color: var(--slate); text-transform: uppercase; margin-bottom: 10px;
+  color: var(--slate); text-transform: uppercase; margin-bottom: 9px;
   display: flex; align-items: center; justify-content: space-between;
 }
 
 /* Left & Right HUD Columns */
 .hud-col {
   position: absolute; top: 46%; transform: translateY(-50%);
-  display: flex; flex-direction: column; gap: 16px; z-index: 10; pointer-events: auto;
+  display: flex; flex-direction: column; gap: 12px; z-index: 10; pointer-events: auto;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .hud-col.left {
-  left: clamp(12px, 2.5vw, 48px); width: clamp(260px, 20vw, 310px);
+  left: clamp(-14px, 0.5vw, 16px); width: clamp(245px, 17.5vw, 290px);
 }
 .hud-col.right {
-  right: clamp(12px, 2.5vw, 48px); width: clamp(270px, 21vw, 320px);
+  right: clamp(-14px, 0.5vw, 16px); width: clamp(255px, 18vw, 300px);
 }
 
 /* HUD 1: Face Landmark Analysis */
