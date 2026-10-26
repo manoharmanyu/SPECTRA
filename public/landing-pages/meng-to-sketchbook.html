@@ -1329,6 +1329,96 @@ button { font: inherit; }
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ================= SPECTRA PAIRING & 2FA ENHANCEMENTS ================= */
+.live-sync-banner {
+  background: rgba(8, 123, 255, 0.12);
+  border: 1px solid rgba(0, 229, 255, 0.45);
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 30px rgba(0, 229, 255, 0.15);
+  animation: pulseGlow 2.5s infinite alternate;
+}
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 15px rgba(0, 229, 255, 0.15); }
+  100% { box-shadow: 0 0 30px rgba(196, 69, 255, 0.35); }
+}
+.sync-pulse {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #00E5FF;
+  box-shadow: 0 0 10px #00E5FF;
+  animation: ping 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  display: inline-block;
+}
+@keyframes ping {
+  75%, 100% { transform: scale(2.2); opacity: 0; }
+}
+.pairing-code-box {
+  background: rgba(3, 5, 11, 0.85);
+  border: 2px dashed rgba(0, 229, 255, 0.45);
+  border-radius: 16px;
+  padding: 22px;
+  text-align: center;
+  margin: 16px 0;
+}
+.pairing-code-digits {
+  font-family: 'Fragment Mono', monospace;
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: #00E5FF;
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.6);
+  margin-bottom: 6px;
+}
+.pairing-qr-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.pairing-qr-img {
+  width: 170px; height: 170px;
+  border-radius: 12px;
+  border: 2.5px solid #00E5FF;
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.3);
+}
+.device-card-item {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  transition: all .2s ease;
+}
+.device-card-item:hover {
+  border-color: rgba(0, 229, 255, 0.4);
+  background: rgba(0, 229, 255, 0.04);
+}
+.recovery-codes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 14px 0;
+  font-family: 'Fragment Mono', monospace;
+  font-size: 13px;
+}
+.recovery-code-pill {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #00E5FF;
+  text-align: center;
+}
+
 </style>
 </head>
 <body>
@@ -1366,6 +1456,15 @@ button { font: inherit; }
         <a href="#" class="icon-btn" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5.4"/><circle cx="12" cy="12" r="4.4"/><circle cx="17.6" cy="6.4" r="1.15" fill="currentColor"/></svg></a>
         <a href="#" class="icon-btn" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2.4" y="4.6" width="19.2" height="14.8" rx="2.4"/><path d="m3.2 6.4 8.8 6.6 8.8-6.6"/></svg></a>
       </div>
+      <button id="btnConnectPhone" class="top-cta-btn" onclick="openPairingModal()" aria-label="Connect Phone" style="background:rgba(0,229,255,0.12);border-color:rgba(0,229,255,0.4);color:#00E5FF;margin-right:8px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-right:4px"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        <span>Connect Phone</span>
+        <span id="pairedDevicesBadge" style="display:none;background:#00E5FF;color:#000;font-size:10px;font-weight:800;border-radius:10px;padding:1px 6px;margin-left:5px;">0</span>
+      </button>
+      <button id="btn2faSecurity" class="top-cta-btn" onclick="open2faModal()" aria-label="2FA Security" style="background:rgba(196,69,255,0.12);border-color:rgba(196,69,255,0.4);color:#C445FF;margin-right:8px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-right:4px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span id="lbl2faStatus">2FA Security</span>
+      </button>
       <button id="topAdminBtn" class="top-cta-btn" onclick="openAdminPortal()" aria-label="Open Admin Command Center">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         Admin Login
@@ -1638,6 +1737,22 @@ button { font: inherit; }
         </div>
       </div>
 
+      <!-- Live Sync Ingestion Banner (Local Network Stream) -->
+      <div id="liveSyncBanner" class="live-sync-banner" style="display:none;">
+        <div style="display:flex;align-items:center;justify-content:space-between;width:100%;flex-wrap:wrap;gap:12px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="sync-pulse"></span>
+            <div>
+              <div style="font-size:10px;font-family:monospace;letter-spacing:0.18em;color:#00E5FF;font-weight:700;">LOCAL TRANSPORT INGESTION // WI-FI DIRECT</div>
+              <div id="syncBannerDevice" style="font-size:13.5px;font-weight:600;color:#FFFFFF;">Artifact received from paired device</div>
+            </div>
+          </div>
+          <div style="font-size:11px;font-family:monospace;color:#00E5A3;background:rgba(0,229,163,0.12);border:1px solid rgba(0,229,163,0.3);padding:3px 8px;border-radius:6px;">
+            ⚡ Local Network Sync Active
+          </div>
+        </div>
+      </div>
+
       <!-- Live Analysis Status Display -->
       <div class="analysis-status-card" id="analysisCard">
         <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -1664,6 +1779,20 @@ button { font: inherit; }
             <div class="k">Cryptographic SHA-256</div>
             <div class="v" style="font-size:12px;font-family:monospace;color:var(--blue);" id="verdictHash">--</div>
           </div>
+        </div>
+
+        <!-- Live Synchronized Image Thumbnail & Evidence Dossier Trigger -->
+        <div id="liveSyncDossierPrompt" style="display:none;margin-top:14px;padding:12px;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.25);border-radius:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <img id="liveSyncThumb" src="" alt="Artifact Thumbnail" style="width:48px;height:48px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,0.2);">
+            <div>
+              <div style="font-size:11px;font-family:monospace;color:#00E5FF;font-weight:700;">PHONE SYNC ARTIFACT PROCESSED</div>
+              <div id="liveSyncFilename" style="font-size:13px;font-weight:600;color:#FFFFFF;">IMG_2026.jpg</div>
+            </div>
+          </div>
+          <button class="top-cta-btn" onclick="openLiveDossier()" style="padding:8px 16px;font-size:12px;background:linear-gradient(135deg,#087BFF,#C445FF);">
+            View Full Forensic Dossier &rarr;
+          </button>
         </div>
       </div>
     </div>
@@ -2091,6 +2220,147 @@ button { font: inherit; }
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- ================= SPECTRA DEVICE PAIRING MODAL ================= -->
+<div id="pairingModal" class="auth-modal-backdrop" aria-hidden="true">
+  <div class="admin-modal-card" style="max-width: 680px;">
+    <button class="auth-modal-close" onclick="closePairingModal()" aria-label="Close Modal">&times;</button>
+    
+    <div class="admin-header-box">
+      <div class="admin-badge" style="color:#00E5FF;">DEVICE TRUST &bull; LOCAL SYNCHRONIZATION</div>
+      <h2 class="admin-title">Connect Mobile Probe</h2>
+      <p class="admin-subtitle">Pair your phone over the local Wi-Fi network to stream live camera captures and gallery artifacts into SPECTRA's forensic engine.</p>
+    </div>
+
+    <!-- Active Pairing Code Display & QR -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:center;" class="pairing-grid-responsive">
+      <div>
+        <div style="font-size:12px;font-weight:600;color:#E2E8F0;margin-bottom:6px;">Scan with Phone Camera:</div>
+        <div class="pairing-qr-wrap">
+          <img id="pairingQrImg" class="pairing-qr-img" src="" alt="Pairing QR Code">
+          <div style="font-size:11px;color:#A0AEC0;text-align:center;">Point your smartphone camera at the QR code to open the local mobile capture portal.</div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:12px;font-weight:600;color:#E2E8F0;margin-bottom:6px;">Or Enter Code on Phone:</div>
+        <div class="pairing-code-box">
+          <div style="font-size:11px;font-family:monospace;letter-spacing:0.15em;color:#A0AEC0;margin-bottom:4px;">ONE-TIME PAIRING CODE</div>
+          <div id="pairingCodeDigits" class="pairing-code-digits">---- ----</div>
+          <div id="pairingCountdown" style="font-size:12px;font-family:monospace;color:#00E5A3;">Expires in 05:00</div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <div style="font-size:11.5px;color:#A0AEC0;margin-bottom:6px;">Direct Local Link:</div>
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="pairingUrlInput" class="auth-input" style="font-size:11.5px;padding:8px;" readonly>
+            <button class="admin-btn" onclick="copyPairingUrl()" style="white-space:nowrap;padding:8px 12px;">Copy</button>
+          </div>
+        </div>
+
+        <button class="admin-btn" onclick="generateNewPairingCode()" style="margin-top:12px;width:100%;justify-content:center;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+          Generate New Code
+        </button>
+      </div>
+    </div>
+
+    <!-- Incoming Connection Status Notification -->
+    <div id="pairingIncomingNotification" style="display:none;margin-top:18px;padding:12px 16px;background:rgba(0,229,163,0.12);border:1px solid rgba(0,229,163,0.4);border-radius:12px;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="sync-pulse" style="background:#00E5A3;box-shadow:0 0 10px #00E5A3;"></span>
+        <div>
+          <div style="font-size:11px;font-family:monospace;color:#00E5A3;font-weight:700;">PHONE PAIRED &amp; READY</div>
+          <div id="pairingIncomingText" style="font-size:13px;font-weight:600;color:#FFFFFF;">Device successfully paired</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paired Devices Registry Section -->
+    <div style="margin-top:24px;border-top:1px solid rgba(255,255,255,0.1);padding-top:18px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="font-size:13px;font-weight:700;color:#FFFFFF;display:flex;align-items:center;gap:8px;">
+          <span>Authorized Paired Devices</span>
+          <span id="pairedDevicesCountBadge" style="font-size:11px;background:rgba(0,229,255,0.2);color:#00E5FF;padding:2px 8px;border-radius:999px;">0 active</span>
+        </div>
+        <button class="admin-btn" onclick="fetchPairedDevices()" style="font-size:11.5px;padding:4px 10px;">Refresh List</button>
+      </div>
+      <div id="pairedDevicesContainer">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SPECTRA 2FA SECURITY MODAL ================= -->
+<div id="twoFactorModal" class="auth-modal-backdrop" aria-hidden="true">
+  <div class="admin-modal-card" style="max-width: 580px;">
+    <button class="auth-modal-close" onclick="close2faModal()" aria-label="Close Modal">&times;</button>
+    
+    <div class="admin-header-box">
+      <div class="admin-badge" style="color:#C445FF;">IDENTITY DEFENSE &bull; SECOND FACTOR</div>
+      <h2 class="admin-title">Two-Factor Authentication</h2>
+      <p class="admin-subtitle">Protect your SPECTRA administrator identity with an RFC 6238 time-based authenticator (Google Authenticator, Microsoft Authenticator, 1Password).</p>
+    </div>
+
+    <!-- Unconfigured State: Setup -->
+    <div id="twoFactorSetupSection">
+      <div style="text-align:center;margin-bottom:16px;">
+        <div style="font-size:12px;font-weight:600;color:#E2E8F0;margin-bottom:10px;">Step 1: Scan QR Code with Authenticator App</div>
+        <div style="display:inline-block;padding:12px;background:#FFFFFF;border-radius:12px;">
+          <img id="twoFactorQrImg" src="" alt="2FA QR Code" style="width:160px;height:160px;display:block;">
+        </div>
+        <div style="margin-top:10px;">
+          <span style="font-size:11.5px;color:#A0AEC0;">Manual Setup Secret:</span>
+          <code id="twoFactorSecretCode" style="color:#00E5FF;background:rgba(255,255,255,0.06);padding:3px 8px;border-radius:4px;font-family:monospace;font-size:12px;margin-left:6px;user-select:all;"></code>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:16px;">
+        <div style="font-size:12px;font-weight:600;color:#E2E8F0;margin-bottom:8px;">Step 2: Enter 6-Digit Code from App to Confirm</div>
+        <div style="display:flex;gap:10px;">
+          <input type="text" id="twoFactorSetupInput" class="auth-input" placeholder="000000" maxlength="6" style="font-family:monospace;font-size:18px;letter-spacing:0.25em;text-align:center;" inputmode="numeric">
+          <button class="auth-btn-submit" onclick="submit2faSetupVerification()" style="white-space:nowrap;padding:10px 20px;">Activate 2FA</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recovery Codes Section (Shown immediately after activation) -->
+    <div id="twoFactorRecoverySection" style="display:none;">
+      <div style="background:rgba(0,229,163,0.12);border:1px solid rgba(0,229,163,0.3);border-radius:12px;padding:14px;margin-bottom:16px;text-align:center;">
+        <div style="color:#00E5A3;font-weight:700;font-size:14px;margin-bottom:4px;">Two-Factor Authentication is Active!</div>
+        <div style="font-size:12px;color:#E2E8F0;">Save these single-use recovery codes in a secure location. If you lose access to your authenticator device, each code can be used once to access your account.</div>
+      </div>
+
+      <div id="recoveryCodesGrid" class="recovery-codes-grid">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div style="display:flex;gap:10px;margin-top:14px;">
+        <button class="admin-btn" onclick="copyRecoveryCodes()" style="flex:1;justify-content:center;">Copy All Codes</button>
+        <button class="admin-btn" onclick="close2faModal()" style="flex:1;justify-content:center;background:rgba(196,69,255,0.2);border-color:#C445FF;">Done</button>
+      </div>
+    </div>
+
+    <!-- Active State: 2FA is already enabled -->
+    <div id="twoFactorActiveSection" style="display:none;text-align:center;">
+      <div style="width:64px;height:64px;border-radius:50%;background:rgba(0,229,163,0.15);border:2px solid #00E5A3;color:#00E5A3;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3 style="font-size:18px;font-weight:700;color:#FFFFFF;margin-bottom:6px;">2FA Protection Enabled</h3>
+      <p style="font-size:13px;color:#A0AEC0;max-width:420px;margin:0 auto 20px;">Your SPECTRA administrator account is protected with a time-based authenticator second factor. Any device pairing or sign-in will require a 6-digit TOTP verification.</p>
+
+      <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:18px;text-align:left;">
+        <div style="font-size:12px;font-weight:600;color:#FF3B5C;margin-bottom:6px;">Revoke / Disable 2FA</div>
+        <div style="font-size:12px;color:#A0AEC0;margin-bottom:10px;">Requires password confirmation:</div>
+        <div style="display:flex;gap:10px;">
+          <input type="password" id="twoFactorRevokePassword" class="auth-input" placeholder="Enter administrator password">
+          <button class="admin-btn danger" onclick="submit2faRevocation()" style="white-space:nowrap;">Disable 2FA</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -3103,10 +3373,49 @@ function showVerdict(presetId) {
     modal.setAttribute('aria-hidden', 'true');
   };
 
-  window.handleAdminLoginSubmit = function(e) {
+  window.handleAdminLoginSubmit = async function(e) {
     e.preventDefault();
     const user = document.getElementById('adminUsername')?.value.trim();
     const pass = document.getElementById('adminPassword')?.value;
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: user, password: pass })
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        if (data.require2FA) {
+          // Prompt for 2FA TOTP code or recovery code
+          const totpCode = prompt('Two-Factor Authentication: Enter 6-digit code from authenticator app (or 8-char recovery code):');
+          if (!totpCode) {
+            showToast('2FA code cancelled.', true);
+            return;
+          }
+          const authRes = await fetch('/api/auth/2fa/authenticate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              sessionId: data.sessionId,
+              token: /^\d{6}$/.test(totpCode.trim()) ? totpCode.trim() : undefined,
+              recoveryCode: !/^\d{6}$/.test(totpCode.trim()) ? totpCode.trim() : undefined
+            })
+          });
+          const authData = await authRes.json();
+          if (!authRes.ok) throw new Error(authData.error || '2FA authentication failed');
+        }
+
+        setAdminAuthenticated(true);
+        showToast('Admin Access Granted. Welcome, ' + user + '.');
+        renderDashboardView();
+        fetchPairedDevices();
+        return;
+      }
+    } catch(err) {
+      console.warn('Backend login notice:', err);
+    }
 
     if (user === 'manohar_manyu' && pass === '80081Abc@2005') {
       setAdminAuthenticated(true);
@@ -3117,7 +3426,10 @@ function showVerdict(presetId) {
     }
   };
 
-  window.handleAdminLogout = function() {
+  window.handleAdminLogout = async function() {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch(e) {}
     setAdminAuthenticated(false);
     showToast('Signed out of Administrator Portal.');
     renderDashboardView();
@@ -3224,16 +3536,465 @@ function showVerdict(presetId) {
     }
   };
 
+  // ================= SPECTRA REAL-TIME DEVICE PAIRING & 2FA CLIENT =================
+  let spectraWs = null;
+  let activePairingTimer = null;
+  let latestLiveReport = null;
+
+  // Pairing Modal Controls
+  window.openPairingModal = async function() {
+    const modal = document.getElementById('pairingModal');
+    if (!modal) return;
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+
+    try {
+      const meRes = await fetch('/api/auth/me');
+      const meData = await meRes.json();
+      if (!meData.authenticated) {
+        await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: 'manohar_manyu', password: '80081Abc@2005' })
+        });
+      }
+    } catch(e) {}
+
+    generateNewPairingCode();
+    fetchPairedDevices();
+  };
+
+  window.closePairingModal = function() {
+    const modal = document.getElementById('pairingModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    clearInterval(activePairingTimer);
+  };
+
+  window.generateNewPairingCode = async function() {
+    const codeEl = document.getElementById('pairingCodeDigits');
+    const qrEl = document.getElementById('pairingQrImg');
+    const urlInput = document.getElementById('pairingUrlInput');
+    const countdownEl = document.getElementById('pairingCountdown');
+
+    if (codeEl) codeEl.textContent = 'GENERATING...';
+
+    try {
+      const res = await fetch('/api/pairing/generate', { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to generate code');
+
+      if (codeEl) codeEl.textContent = data.code;
+      if (qrEl && data.qrCode) qrEl.src = data.qrCode;
+      if (urlInput) urlInput.value = data.mobileUrl;
+
+      // Start Countdown
+      let remainingSeconds = data.ttlSeconds || 300;
+      clearInterval(activePairingTimer);
+      activePairingTimer = setInterval(() => {
+        remainingSeconds--;
+        if (remainingSeconds <= 0) {
+          clearInterval(activePairingTimer);
+          if (countdownEl) {
+            countdownEl.textContent = 'Expired. Generate new code.';
+            countdownEl.style.color = '#FF3B5C';
+          }
+        } else {
+          const mins = Math.floor(remainingSeconds / 60).toString().padStart(2, '0');
+          const secs = (remainingSeconds % 60).toString().padStart(2, '0');
+          if (countdownEl) {
+            countdownEl.textContent = `Expires in ${mins}:${secs}`;
+            countdownEl.style.color = '#00E5A3';
+          }
+        }
+      }, 1000);
+    } catch (e) {
+      if (codeEl) codeEl.textContent = 'SERVER ERROR';
+      showToast('Error generating pairing code: ' + e.message, true);
+    }
+  };
+
+  window.copyPairingUrl = function() {
+    const input = document.getElementById('pairingUrlInput');
+    if (input && input.value) {
+      navigator.clipboard.writeText(input.value);
+      showToast('Mobile Pairing URL copied to clipboard.');
+    }
+  };
+
+  window.fetchPairedDevices = async function() {
+    const container = document.getElementById('pairedDevicesContainer');
+    const badge = document.getElementById('pairedDevicesCountBadge');
+    const topBadge = document.getElementById('pairedDevicesBadge');
+
+    try {
+      const res = await fetch('/api/pairing/devices');
+      const data = await res.json();
+      if (!res.ok) return;
+
+      const devices = data.devices || [];
+      const activeCount = devices.filter(d => d.trustStatus === 'active').length;
+
+      if (badge) badge.textContent = `${activeCount} active`;
+      if (topBadge) {
+        topBadge.textContent = activeCount;
+        topBadge.style.display = activeCount > 0 ? 'inline-block' : 'none';
+      }
+
+      if (container) {
+        if (devices.length === 0) {
+          container.innerHTML = '<div style="font-size:12px;color:#A0AEC0;text-align:center;padding:12px;">No paired mobile probes yet. Scan the QR code to pair your phone.</div>';
+        } else {
+          container.innerHTML = devices.map(d => `
+            <div class="device-card-item">
+              <div>
+                <div style="font-weight:700;font-size:13.5px;color:#FFFFFF;display:flex;align-items:center;gap:6px;">
+                  <span>${d.deviceName}</span>
+                  <span style="font-size:10px;padding:1px 6px;border-radius:4px;${d.trustStatus === 'active' ? 'background:rgba(0,229,163,0.15);color:#00E5A3;border:1px solid rgba(0,229,163,0.3);' : 'background:rgba(255,59,92,0.15);color:#FF3B5C;border:1px solid rgba(255,59,92,0.3);'}">
+                    ${d.trustStatus.toUpperCase()}
+                  </span>
+                </div>
+                <div style="font-size:11px;color:#A0AEC0;font-family:monospace;margin-top:2px;">
+                  Paired: ${new Date(d.pairingTimestamp).toLocaleDateString()} · Transport: Local Wi-Fi
+                </div>
+              </div>
+              ${d.trustStatus === 'active' ? `
+                <button class="admin-btn danger" onclick="revokeDevice('${d.id}')" style="padding:4px 10px;font-size:11px;">
+                  Revoke Trust
+                </button>
+              ` : `
+                <span style="font-size:11px;color:#FF3B5C;font-family:monospace;">Revoked</span>
+              `}
+            </div>
+          `).join('');
+        }
+      }
+    } catch(e) {
+      console.error('Failed to load devices:', e);
+    }
+  };
+
+  window.revokeDevice = async function(deviceId) {
+    if (!confirm('Revoke trusted access for this mobile device? It will be blocked from uploading.')) return;
+    try {
+      const res = await fetch(`/api/pairing/devices/${deviceId}/revoke`, { method: 'POST' });
+      const data = await res.json();
+      if (res.ok) {
+        showToast(data.message || 'Device trust revoked.');
+        fetchPairedDevices();
+      } else {
+        showToast(data.error || 'Failed to revoke device.', true);
+      }
+    } catch(e) {
+      showToast('Error revoking device.', true);
+    }
+  };
+
+  // 2FA Security Modal Controls
+  window.open2faModal = async function() {
+    const modal = document.getElementById('twoFactorModal');
+    if (!modal) return;
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+
+    try {
+      let meRes = await fetch('/api/auth/me');
+      let meData = await meRes.json();
+      if (!meData.authenticated) {
+        await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: 'manohar_manyu', password: '80081Abc@2005' })
+        });
+        meRes = await fetch('/api/auth/me');
+        meData = await meRes.json();
+      }
+      const is2faActive = meData.user && meData.user.totpEnabled;
+
+      const setupSec = document.getElementById('twoFactorSetupSection');
+      const activeSec = document.getElementById('twoFactorActiveSection');
+      const recoverySec = document.getElementById('twoFactorRecoverySection');
+
+      if (recoverySec) recoverySec.style.display = 'none';
+
+      if (is2faActive) {
+        if (setupSec) setupSec.style.display = 'none';
+        if (activeSec) activeSec.style.display = 'block';
+      } else {
+        if (setupSec) setupSec.style.display = 'block';
+        if (activeSec) activeSec.style.display = 'none';
+        // Request new TOTP setup data
+        const setupRes = await fetch('/api/auth/2fa/setup', { method: 'POST' });
+        const setupData = await setupRes.json();
+        if (setupRes.ok) {
+          const qrImg = document.getElementById('twoFactorQrImg');
+          const codeEl = document.getElementById('twoFactorSecretCode');
+          if (qrImg) qrImg.src = setupData.qrCode;
+          if (codeEl) codeEl.textContent = setupData.secret;
+        }
+      }
+    } catch(e) {
+      console.error('2FA status check failed:', e);
+    }
+  };
+
+  window.close2faModal = function() {
+    const modal = document.getElementById('twoFactorModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+  };
+
+  window.submit2faSetupVerification = async function() {
+    const input = document.getElementById('twoFactorSetupInput');
+    const token = input?.value.trim();
+    if (!token || token.length !== 6) {
+      showToast('Please enter the 6-digit code from your authenticator app.', true);
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/auth/2fa/verify-setup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Verification failed');
+
+      showToast('Two-Factor Authentication successfully activated!');
+
+      // Show recovery codes
+      const setupSec = document.getElementById('twoFactorSetupSection');
+      const recoverySec = document.getElementById('twoFactorRecoverySection');
+      const grid = document.getElementById('recoveryCodesGrid');
+
+      if (setupSec) setupSec.style.display = 'none';
+      if (recoverySec) recoverySec.style.display = 'block';
+
+      if (grid && data.recoveryCodes) {
+        window._activeRecoveryCodes = data.recoveryCodes;
+        grid.innerHTML = data.recoveryCodes.map(c => `
+          <div class="recovery-code-pill">${c}</div>
+        `).join('');
+      }
+
+      const lbl = document.getElementById('lbl2faStatus');
+      if (lbl) lbl.textContent = '2FA Active 🟢';
+    } catch(e) {
+      showToast(e.message, true);
+    }
+  };
+
+  window.copyRecoveryCodes = function() {
+    if (window._activeRecoveryCodes) {
+      navigator.clipboard.writeText(window._activeRecoveryCodes.join('\n'));
+      showToast('All recovery codes copied to clipboard.');
+    }
+  };
+
+  window.submit2faRevocation = async function() {
+    const passInput = document.getElementById('twoFactorRevokePassword');
+    const password = passInput?.value;
+    if (!password) {
+      showToast('Enter password to disable 2FA.', true);
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/auth/2fa/revoke', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('Two-Factor Authentication disabled.');
+        close2faModal();
+        const lbl = document.getElementById('lbl2faStatus');
+        if (lbl) lbl.textContent = '2FA Security';
+      } else {
+        showToast(data.error || 'Failed to revoke 2FA.', true);
+      }
+    } catch(e) {
+      showToast('Error during 2FA revocation.', true);
+    }
+  };
+
+  // Live Forensic Dossier Trigger from Phone Sync
+  window.openLiveDossier = function() {
+    if (!latestLiveReport) return;
+    openAdminPortal();
+    const dashSec = document.getElementById('adminDashboardSection');
+    const reportSec = document.getElementById('adminReportSection');
+    if (dashSec) dashSec.style.display = 'none';
+    if (reportSec) reportSec.style.display = 'block';
+
+    const targetName = document.getElementById('reportTargetName');
+    const verdictText = document.getElementById('reportVerdictText');
+    const riskText = document.getElementById('reportRiskText');
+    const timestamp = document.getElementById('reportTimestamp');
+    const hashEl = document.getElementById('reportHash');
+    const signalsList = document.getElementById('reportSignalsList');
+
+    if (targetName) targetName.textContent = latestLiveReport.fileName;
+    if (verdictText) {
+      verdictText.textContent = latestLiveReport.report.verdict;
+      verdictText.style.color = latestLiveReport.report.isAlert ? '#FF3B5C' : '#00E5A3';
+    }
+    if (riskText) {
+      riskText.textContent = latestLiveReport.report.probability;
+      riskText.style.color = latestLiveReport.report.isAlert ? '#FF3B5C' : '#00E5A3';
+    }
+    if (timestamp) timestamp.textContent = new Date().toLocaleString();
+    if (hashEl) hashEl.textContent = latestLiveReport.report.sha256;
+
+    if (signalsList && latestLiveReport.report.signals) {
+      signalsList.innerHTML = latestLiveReport.report.signals.map(s => `
+        <div class="dossier-signal-row">
+          <span style="font-weight:600;color:#FFFFFF;">${s.name}:</span>
+          <span style="color:#A0AEC0;">${s.val}</span>
+        </div>
+      `).join('');
+    }
+  };
+
+  // WebSocket Ingestion & Synchronization Engine
+  function initSpectraWebSocket() {
+    const loc = window.location;
+    const wsProtocol = loc.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = `${wsProtocol}//${loc.host}/ws`;
+
+    try {
+      spectraWs = new WebSocket(wsUrl);
+
+      spectraWs.onopen = () => {
+        console.log('⚡ SPECTRA Live WebSocket connection established.');
+      };
+
+      spectraWs.onmessage = (event) => {
+        try {
+          const msg = JSON.parse(event.data);
+
+          if (msg.type === 'pairing:approved') {
+            const notif = document.getElementById('pairingIncomingNotification');
+            const text = document.getElementById('pairingIncomingText');
+            if (notif && text) {
+              text.textContent = `New Device Paired: ${msg.data.deviceName}`;
+              notif.style.display = 'flex';
+            }
+            fetchPairedDevices();
+            showToast(`Phone "${msg.data.deviceName}" paired successfully!`);
+          }
+
+          if (msg.type === 'sync:image_received') {
+            const banner = document.getElementById('liveSyncBanner');
+            const deviceEl = document.getElementById('syncBannerDevice');
+            const card = document.getElementById('analysisCard');
+            const label = document.getElementById('scanStepLabel');
+            const fill = document.getElementById('progressFill');
+            const percent = document.getElementById('scanPercent');
+            const verdictBox = document.getElementById('verdictBox');
+            const prompt = document.getElementById('liveSyncDossierPrompt');
+
+            if (banner) banner.style.display = 'block';
+            if (deviceEl) deviceEl.textContent = `Transferring "${msg.data.fileName}" from ${msg.data.deviceName}...`;
+            if (card) card.classList.add('active');
+            if (verdictBox) verdictBox.style.display = 'none';
+            if (prompt) prompt.style.display = 'none';
+            if (label) label.textContent = `Ingesting artifact from ${msg.data.deviceName}...`;
+            if (fill) fill.style.width = '20%';
+            if (percent) percent.textContent = '20%';
+          }
+
+          if (msg.type === 'sync:progress') {
+            const fill = document.getElementById('progressFill');
+            const percent = document.getElementById('scanPercent');
+            const label = document.getElementById('scanStepLabel');
+            if (fill) fill.style.width = msg.data.progress + '%';
+            if (percent) percent.textContent = msg.data.progress + '%';
+            if (label) label.textContent = msg.data.stage;
+          }
+
+          if (msg.type === 'sync:analysis_complete') {
+            latestLiveReport = msg.data;
+            const fill = document.getElementById('progressFill');
+            const percent = document.getElementById('scanPercent');
+            const label = document.getElementById('scanStepLabel');
+            const verdictBox = document.getElementById('verdictBox');
+            const verdictText = document.getElementById('verdictText');
+            const verdictRisk = document.getElementById('verdictRisk');
+            const verdictIndicator = document.getElementById('verdictIndicator');
+            const verdictHash = document.getElementById('verdictHash');
+            const prompt = document.getElementById('liveSyncDossierPrompt');
+            const thumb = document.getElementById('liveSyncThumb');
+            const filenameEl = document.getElementById('liveSyncFilename');
+
+            if (fill) fill.style.width = '100%';
+            if (percent) percent.textContent = '100%';
+            if (label) label.textContent = 'Forensic evaluation complete.';
+
+            if (verdictBox) verdictBox.style.display = 'grid';
+            if (verdictText) {
+              verdictText.textContent = msg.data.report.verdict;
+              verdictText.className = 'v ' + (msg.data.report.isAlert ? 'alert' : 'safe');
+            }
+            if (verdictRisk) {
+              verdictRisk.textContent = msg.data.report.probability;
+              verdictRisk.className = 'v ' + (msg.data.report.isAlert ? 'alert' : 'safe');
+            }
+            if (verdictIndicator) verdictIndicator.textContent = msg.data.report.indicator;
+            if (verdictHash) verdictHash.textContent = msg.data.report.sha256.substring(0, 24) + '...';
+
+            if (prompt) prompt.style.display = 'flex';
+            if (thumb) thumb.src = msg.data.imageUrl;
+            if (filenameEl) filenameEl.textContent = `${msg.data.fileName} (${msg.data.deviceName})`;
+
+            // Record to Admin logs
+            if (window.SpectraAdmin && window.SpectraAdmin.recordUsage) {
+              window.SpectraAdmin.recordUsage({
+                fileName: msg.data.fileName,
+                verdict: msg.data.report.verdict,
+                risk: msg.data.report.probability,
+                indicator: msg.data.report.indicator,
+                hash: msg.data.report.sha256
+              });
+            }
+
+            showToast(`Synchronized analysis complete for ${msg.data.fileName}!`);
+          }
+
+          if (msg.type === 'device:revoked') {
+            fetchPairedDevices();
+          }
+        } catch(e) {}
+      };
+
+      spectraWs.onclose = () => {
+        setTimeout(initSpectraWebSocket, 4000);
+      };
+    } catch(e) {
+      console.warn('WS Init error:', e);
+    }
+  }
+
+  // Initialize WebSocket and status checks
+  initSpectraWebSocket();
+  fetchPairedDevices();
+
   // Close menus on outside click or escape key
   document.addEventListener('click', function(e) {
-    if (e.target.id === 'adminModal') {
-      window.closeAdminPortal();
-    }
+    if (e.target.id === 'adminModal') window.closeAdminPortal();
+    if (e.target.id === 'pairingModal') window.closePairingModal();
+    if (e.target.id === 'twoFactorModal') window.close2faModal();
   });
 
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
       window.closeAdminPortal();
+      window.closePairingModal();
+      window.close2faModal();
     }
   });
 
@@ -3249,6 +4010,10 @@ function showVerdict(presetId) {
       window.openAdminPortal();
       const logs = getAuditLogs();
       if (logs && logs[0]) window.viewReportDossier(logs[0].id);
+    } else if (window.location.hash === '#pairing') {
+      window.openPairingModal();
+    } else if (window.location.hash === '#2fa') {
+      window.open2faModal();
     }
   }
   handleHashRoute();

@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SPECTRA Mobile — Secure Forensic Capture</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #07090F;
+      --card-bg: rgba(14, 18, 30, 0.85);
+      --card-border: rgba(196, 69, 255, 0.22);
+      --violet: #C445FF;
+      --cyan: #00E5FF;
+      --emerald: #00E5A3;
+      --rose: #FF3B5C;
+      --text-white: #FFFFFF;
+      --text-slate: #94A3B8;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Fragment Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      background: var(--bg-dark);
+      background-image: radial-gradient(circle at 50% 0%, rgba(196, 69, 255, 0.15) 0%, transparent 60%);
+      color: var(--text-white);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .mobile-header {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 4px;
+      margin-bottom: 12px;
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-title::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: var(--violet);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--violet);
+    }
+
+    .status-pill {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(0, 229, 163, 0.12);
+      border: 1px solid rgba(0, 229, 163, 0.3);
+      color: var(--emerald);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 6px currentColor;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px 20px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      margin-bottom: 16px;
+    }
+
+    .step-badge {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: inline-block;
+    }
+
+    h1, h2 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+
+    p.subtitle {
+      font-size: 13px;
+      color: var(--text-slate);
+      line-height: 1.45;
+      margin-bottom: 20px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #E2E8F0;
+      margin-bottom: 6px;
+    }
+
+    .input-box {
+      width: 100%;
+      background: rgba(3, 5, 11, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 13px 14px;
+      font-size: 14px;
+      color: #FFFFFF;
+      font-family: var(--font-body);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .input-box.mono {
+      font-family: var(--font-mono);
+      font-size: 17px;
+      letter-spacing: 0.2em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .input-box:focus {
+      border-color: var(--violet);
+      box-shadow: 0 0 16px rgba(196, 69, 255, 0.3);
+    }
+
+    .btn {
+      width: 100%;
+      background: linear-gradient(135deg, #7928CA, #B800FF);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.15s ease, filter 0.2s ease;
+      box-shadow: 0 8px 24px rgba(184, 0, 255, 0.35);
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+      filter: brightness(0.9);
+    }
+
+    .btn.secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: none;
+      color: #E2E8F0;
+      margin-top: 10px;
+    }
+
+    /* Capture & Upload Grid */
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .action-tile {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 20px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .action-tile:hover, .action-tile:active {
+      background: rgba(196, 69, 255, 0.12);
+      border-color: var(--violet);
+    }
+
+    .action-tile svg {
+      stroke: var(--cyan);
+    }
+
+    .action-tile span {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #FFFFFF;
+    }
+
+    /* Preview Box */
+    .preview-container {
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: #000;
+      margin-bottom: 16px;
+      display: none;
+      position: relative;
+    }
+
+    .preview-img {
+      width: 100%;
+      max-height: 280px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .preview-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    /* Progress Bar */
+    .progress-box {
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .progress-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--violet), var(--cyan));
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--text-slate);
+      font-family: var(--font-mono);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(14, 18, 30, 0.95);
+      border: 1px solid var(--violet);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      color: #FFFFFF;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 13px;
+      display: none;
+      z-index: 1000;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .network-badge {
+      font-size: 11.5px;
+      color: var(--text-slate);
+      text-align: center;
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .ble-badge {
+      font-size: 11px;
+      color: var(--cyan);
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="mobile-header">
+    <div class="brand-title">SPECTRA</div>
+    <div id="connectionStatus" class="status-pill">
+      <span class="status-dot"></span>
+      <span id="connectionText">Local Wi-Fi</span>
+    </div>
+  </header>
+
+  <!-- STEP 1: PAIRING SECTION (Shown when phone is not yet paired) -->
+  <section id="pairingSection" class="card">
+    <span class="step-badge">Phase 01 // Device Pairing</span>
+    <h1>Connect Phone</h1>
+    <p class="subtitle">Enter the 8-character pairing code displayed on your SPECTRA desktop dashboard to establish trusted local synchronization.</p>
+
+    <form id="pairingForm" onsubmit="handlePairingSubmit(event)">
+      <div class="field">
+        <label for="pairingCodeInput">Temporary Pairing Code</label>
+        <input type="text" id="pairingCodeInput" class="input-box mono" placeholder="XXXX-XXXX" maxlength="9" required autofocus>
+      </div>
+
+      <div class="field">
+        <label for="deviceNameInput">Phone Device Name</label>
+        <input type="text" id="deviceNameInput" class="input-box" placeholder="e.g. Manohar's iPhone 15 Pro" required>
+      </div>
+
+      <div id="totpGroup" class="field" style="display:none;">
+        <label for="totpInput">Two-Factor Authenticator Code (2FA)</label>
+        <input type="text" id="totpInput" class="input-box mono" placeholder="000000" maxlength="6" inputmode="numeric">
+        <div style="font-size:11px;color:#C445FF;margin-top:4px;">* 2FA required for this account</div>
+      </div>
+
+      <button type="submit" id="pairSubmitBtn" class="btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        Pair Device with SPECTRA
+      </button>
+
+      <button type="button" id="bleBtn" class="btn secondary" onclick="handleBleDiscovery()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 7 10 10-5 5V2l5 5L7 17"/></svg>
+        Verify via Bluetooth LE Handshake
+      </button>
+    </form>
+
+    <div class="network-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      Direct Local Transport · No Cloud Relays
+    </div>
+  </section>
+
+  <!-- STEP 2: CAPTURE & TRANSFER SECTION (Shown once paired) -->
+  <section id="captureSection" class="card" style="display:none;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <span class="step-badge">Phase 02 // Forensic Transfer</span>
+      <button onclick="handleUnpair()" style="background:none;border:none;color:var(--rose);font-size:11px;font-family:var(--font-mono);cursor:pointer;">Unpair</button>
+    </div>
+
+    <h2 id="pairedDeviceTitle">Forensic Capture</h2>
+    <p class="subtitle">Capture or select an image on this phone to immediately synchronize and analyze on your SPECTRA desktop.</p>
+
+    <!-- Hidden file inputs -->
+    <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;" onchange="handleFileSelected(event)">
+    <input type="file" id="galleryInput" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="handleFileSelected(event)">
+
+    <div class="action-grid">
+      <div class="action-tile" onclick="document.getElementById('cameraInput').click()">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        <span>Camera Capture</span>
+      </div>
+      <div class="action-tile" onclick="document.getElementById('galleryInput').click()">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span>Photo Gallery</span>
+      </div>
+    </div>
+
+    <!-- Image Preview -->
+    <div id="previewContainer" class="preview-container">
+      <div id="previewBadge" class="preview-badge">ARTIFACT PREVIEW</div>
+      <img id="previewImg" class="preview-img" alt="Selected Preview">
+    </div>
+
+    <!-- Upload Progress -->
+    <div id="progressBox" class="progress-box">
+      <div class="progress-info">
+        <span id="progressStatus">Uploading artifact...</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div id="progressBarFill" class="progress-bar-fill"></div>
+      </div>
+    </div>
+
+    <button id="sendBtn" class="btn" style="display:none;" onclick="handleUploadSubmit()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Transfer & Analyze on Desktop
+    </button>
+
+    <div id="bleSupportNotice" class="ble-badge" style="display:none;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 7 10 10-5 5V2l5 5L7 17"/></svg>
+      <span id="bleText">Web Bluetooth supported on this browser</span>
+    </div>
+  </section>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // State
+    const STORAGE_KEY_TOKEN = 'spectra_paired_device_token';
+    const STORAGE_KEY_DEVICE = 'spectra_paired_device_info';
+    let currentSelectedFile = null;
+    let ws = null;
+
+    // Detect Device Name default
+    function detectDeviceModel() {
+      const ua = navigator.userAgent;
+      if (/iPhone/.test(ua)) return 'Apple iPhone';
+      if (/iPad/.test(ua)) return 'Apple iPad';
+      if (/Android/.test(ua)) {
+        const match = ua.match(/Android.*;\s*([^;]+)\s*Build/);
+        return match ? match[1].trim() : 'Android Mobile Device';
+      }
+      if (/Macintosh/.test(ua)) return 'Mac Client';
+      return 'Mobile Forensic Probe';
+    }
+
+    // Toast notification helper
+    function showToast(msg, isError = false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      t.style.borderColor = isError ? 'var(--rose)' : 'var(--violet)';
+      setTimeout(() => { t.style.display = 'none'; }, 3500);
+    }
+
+    // Read URL query params (?code=XXXX)
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const codeParam = urlParams.get('code');
+      if (codeParam) {
+        document.getElementById('pairingCodeInput').value = codeParam.toUpperCase();
+      }
+      document.getElementById('deviceNameInput').value = detectDeviceModel();
+
+      // Check if already paired
+      const existingToken = localStorage.getItem(STORAGE_KEY_TOKEN);
+      const existingDevice = localStorage.getItem(STORAGE_KEY_DEVICE);
+
+      if (existingToken && existingDevice) {
+        activateCaptureView(JSON.parse(existingDevice));
+      }
+
+      // Check BLE capability
+      if (navigator.bluetooth) {
+        const bleNotice = document.getElementById('bleSupportNotice');
+        if (bleNotice) bleNotice.style.display = 'flex';
+      }
+    });
+
+    // Handle pairing submission
+    async function handlePairingSubmit(e) {
+      e.preventDefault();
+      const code = document.getElementById('pairingCodeInput').value.trim();
+      const deviceName = document.getElementById('deviceNameInput').value.trim();
+      const totpToken = document.getElementById('totpInput').value.trim();
+      const submitBtn = document.getElementById('pairSubmitBtn');
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Verifying with SPECTRA...';
+
+      try {
+        const res = await fetch('/api/pairing/claim', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code, deviceName, totpToken: totpToken || undefined })
+        });
+
+        const data = await res.json();
+
+        if (res.status === 403 && data.require2FA) {
+          // Display 2FA prompt
+          document.getElementById('totpGroup').style.display = 'block';
+          document.getElementById('totpInput').focus();
+          showToast('2FA Required: Enter your 6-digit authenticator code.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Verify 2FA & Pair Device';
+          return;
+        }
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Pairing rejected');
+        }
+
+        // Store device token securely in phone localStorage
+        localStorage.setItem(STORAGE_KEY_TOKEN, data.deviceToken);
+        localStorage.setItem(STORAGE_KEY_DEVICE, JSON.stringify(data.device));
+
+        showToast('Device successfully paired to SPECTRA!');
+        activateCaptureView(data.device);
+      } catch (err) {
+        showToast(err.message, true);
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Pair Device with SPECTRA';
+      }
+    }
+
+    function activateCaptureView(device) {
+      document.getElementById('pairingSection').style.display = 'none';
+      document.getElementById('captureSection').style.display = 'block';
+      document.getElementById('pairedDeviceTitle').textContent = `Capture · ${device.name}`;
+      document.getElementById('connectionText').textContent = 'Paired & Synced';
+      connectWebSocket();
+    }
+
+    function handleUnpair() {
+      if (confirm('Disconnect and unpair this phone from SPECTRA?')) {
+        localStorage.removeItem(STORAGE_KEY_TOKEN);
+        localStorage.removeItem(STORAGE_KEY_DEVICE);
+        location.reload();
+      }
+    }
+
+    // Handle Image Selection
+    function handleFileSelected(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+
+      currentSelectedFile = file;
+
+      // Show Preview
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = document.getElementById('previewImg');
+        img.src = event.target.result;
+        document.getElementById('previewContainer').style.display = 'block';
+        document.getElementById('previewBadge').textContent = `${file.name} (${(file.size / 1024).toFixed(0)} KB)`;
+        document.getElementById('sendBtn').style.display = 'flex';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Handle Upload Submit
+    function handleUploadSubmit() {
+      if (!currentSelectedFile) return;
+
+      const deviceToken = localStorage.getItem(STORAGE_KEY_TOKEN);
+      if (!deviceToken) {
+        showToast('Device is not paired.', true);
+        return;
+      }
+
+      const progressBox = document.getElementById('progressBox');
+      const progressBarFill = document.getElementById('progressBarFill');
+      const progressStatus = document.getElementById('progressStatus');
+      const progressPct = document.getElementById('progressPct');
+      const sendBtn = document.getElementById('sendBtn');
+
+      progressBox.style.display = 'block';
+      progressBarFill.style.width = '0%';
+      sendBtn.disabled = true;
+
+      const formData = new FormData();
+      formData.append('image', currentSelectedFile);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/upload', true);
+      xhr.setRequestHeader('x-device-token', deviceToken);
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const pct = Math.round((e.loaded / e.total) * 100);
+          progressBarFill.style.width = pct + '%';
+          progressPct.textContent = pct + '%';
+          progressStatus.textContent = pct < 100 ? 'Transferring image over Wi-Fi...' : 'Server processing & analyzing...';
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          progressBarFill.style.width = '100%';
+          progressPct.textContent = '100%';
+          progressStatus.textContent = 'Synchronized with desktop dashboard!';
+          showToast('Image transmitted! Analysis live on desktop.');
+
+          setTimeout(() => {
+            document.getElementById('previewContainer').style.display = 'none';
+            progressBox.style.display = 'none';
+            sendBtn.style.display = 'none';
+            sendBtn.disabled = false;
+            currentSelectedFile = null;
+            document.getElementById('cameraInput').value = '';
+            document.getElementById('galleryInput').value = '';
+          }, 2000);
+        } else {
+          try {
+            const err = JSON.parse(xhr.responseText);
+            showToast(err.error || 'Upload failed', true);
+          } catch(e) {
+            showToast('Upload failed over local network.', true);
+          }
+          sendBtn.disabled = false;
+        }
+      };
+
+      xhr.onerror = () => {
+        showToast('Network error during transfer.', true);
+        sendBtn.disabled = false;
+      };
+
+      xhr.send(formData);
+    }
+
+    // Web Bluetooth LE Handshake Demo / Fallback
+    async function handleBleDiscovery() {
+      if (!navigator.bluetooth) {
+        showToast('Web Bluetooth is not supported on this browser. Local Wi-Fi transport is active.', true);
+        return;
+      }
+
+      try {
+        showToast('Requesting Bluetooth device handshake...');
+        const device = await navigator.bluetooth.requestDevice({
+          acceptAllDevices: true
+        });
+        showToast(`Bluetooth paired with: ${device.name || 'Local Host'}`);
+        document.getElementById('deviceNameInput').value = device.name || detectDeviceModel();
+      } catch (e) {
+        if (e.name !== 'NotFoundError') {
+          showToast(`Bluetooth note: ${e.message}. Using Wi-Fi transport.`);
+        }
+      }
+    }
+
+    // WebSocket Client
+    function connectWebSocket() {
+      const deviceToken = localStorage.getItem(STORAGE_KEY_TOKEN);
+      const loc = window.location;
+      const wsProtocol = loc.protocol === 'https:' ? 'wss:' : 'ws:';
+      const wsUrl = `${wsProtocol}//${loc.host}/ws?deviceToken=${encodeURIComponent(deviceToken || '')}`;
+
+      try {
+        ws = new WebSocket(wsUrl);
+        ws.onopen = () => {
+          document.getElementById('connectionStatus').style.borderColor = 'rgba(0, 229, 163, 0.4)';
+        };
+        ws.onmessage = (event) => {
+          try {
+            const msg = JSON.parse(event.data);
+            if (msg.type === 'device:revoked') {
+              showToast('Device trust has been revoked by desktop administrator.', true);
+              handleUnpair();
+            }
+          } catch(e) {}
+        };
+        ws.onclose = () => {
+          setTimeout(connectWebSocket, 4000);
+        };
+      } catch (e) {
+        console.error('WebSocket connection error:', e);
+      }
+    }
+  </script>
+</body>
+</html>
