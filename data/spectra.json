@@ -28,7 +28,17 @@
       "ip": "127.0.0.1",
       "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
       "expiresAt": "2026-10-27T15:18:16.371Z",
-      "createdAt": "2026-10-26T15:18:16.371Z"
+      "createdAt": "2026-10-26T15:18:16.371Z",
+      "pendingTotpSecret": "DS57G6BUL5QN6SAE42E3ZRL36NJWRCT7"
+    },
+    {
+      "id": "ses_1wv4xd0jmvpetwx5",
+      "userId": "usr_mvpetwx4ktiw",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-27T15:27:07.241Z",
+      "createdAt": "2026-10-26T15:27:07.241Z"
     }
   ],
   "pairingCodes": [
@@ -58,8 +68,359 @@
       "deviceId": null,
       "expiresAt": "2026-10-26T15:23:16.381Z",
       "createdAt": "2026-10-26T15:18:16.381Z"
+    },
+    {
+      "code": "AM2ETH2D",
+      "displayCode": "AM2E-TH2D",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_bxqm66knmvpeijar",
+      "attempts": 0,
+      "status": "pending",
+      "proposedDeviceName": null,
+      "deviceTokenHash": null,
+      "deviceId": null,
+      "expiresAt": "2026-10-26T15:24:01.160Z",
+      "createdAt": "2026-10-26T15:19:01.160Z"
+    },
+    {
+      "code": "EHBRWWX7",
+      "displayCode": "EHBR-WWX7",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_cvf2m81cmvpetwu7",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "01e2d72b32acfc5bd9f6100a25e943d7d6e10cd433a60397937dbc4921346cce",
+      "deviceId": "dev_mvpetwxqazm1",
+      "expiresAt": "2026-10-26T15:32:07.243Z",
+      "createdAt": "2026-10-26T15:27:07.243Z",
+      "consumedAt": "2026-10-26T15:27:07.262Z"
     }
   ],
   "devices": [],
-  "jobs": []
+  "jobs": [
+    {
+      "id": "job_mvpejr169rgzr5",
+      "uploadId": "upl_mvpejr1695x1",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-26T15:19:13.050Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_iphone_active",
+      "deviceName": "Manohar's iPhone 15 Pro",
+      "originalFilename": "synthetic_concept_render.jpg",
+      "storedFilename": "1793027953049-synthetic_concept_render.jpg",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/1793027953049-synthetic_concept_render.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 4296,
+      "sha256": "c5d1dae94f75e6c3bbc7dd846e86c64fe552634b804c644a573066cbefe75119",
+      "forensicReport": {
+        "sha256": "c5d1dae94f75e6c3bbc7dd846e86c64fe552634b804c644a573066cbefe75119",
+        "md5": "0d640f22f35e4bc3ea32a27cb6a10355",
+        "fileSize": 4296,
+        "detectedType": "image/jpeg",
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "verdict": "MANIPULATED (AI GENERATED)",
+        "probability": "98.6% Probability",
+        "isAlert": true,
+        "indicator": "Neural synthesis footprint: ComfyUI Generative Workflow Node Tree",
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "val": "SHA-256 confirmed (c5d1dae94f75e6c3...efe75119)",
+            "status": "VERIFIED"
+          },
+          {
+            "name": "Container & File Signature",
+            "val": "Magic bytes verified: IMAGE/JPEG (4.2 KB)",
+            "status": "VERIFIED"
+          },
+          {
+            "name": "Hardware Sensor Fingerprint (PRNU)",
+            "val": "EXIF sensor profile not preserved in container",
+            "status": "ANOMALY"
+          },
+          {
+            "name": "Generative AI & Model Watermark Scan",
+            "val": "DETECTED: ComfyUI Generative Workflow Node Tree",
+            "status": "ALERT"
+          },
+          {
+            "name": "Quantization & Spatial Noise Distribution",
+            "val": "Entropy Index: 5.8% · DQT tables parsed: 1",
+            "status": "EVALUATED"
+          },
+          {
+            "name": "Agent-Reach Dissemination Intelligence",
+            "val": "Spread Identified: Public discussion threads indexed across social web",
+            "status": "ALERT"
+          }
+        ],
+        "analyzedAt": "2026-10-26T15:19:15.493Z",
+        "provenance": {
+          "originClassification": "SYNTHETIC_GENERATIVE",
+          "device": {
+            "make": "Latent Diffusion Cluster",
+            "model": "Transformer Neural Generator",
+            "lens": "Primary 24mm f/1.78 Optical Lens Element",
+            "serialNumber": "HW-UID-C5D1DAE94F",
+            "software": "ComfyUI / PyTorch TorchVision"
+          },
+          "captureSettings": {
+            "aperture": "f/1.78",
+            "shutterSpeed": "1/120s",
+            "iso": "ISO 80",
+            "focalLength": "24mm (Full-Frame Eq.)",
+            "colorProfile": "Display P3 Wide Gamut",
+            "whiteBalance": "Auto (Daylight Calibrated)",
+            "flashMode": "Off (Natural Illumination)"
+          },
+          "temporal": {
+            "capturedAt": "2026-10-26T15:19:15.493Z",
+            "digitizedAt": "2026-10-26T15:19:15.493Z",
+            "timezone": "UTC+05:30 (Indian Standard Time)",
+            "clockSkewSeconds": 0.14
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "17.3850° N, 78.4867° E",
+            "altitude": "542 m MSL",
+            "geofenceDescription": "Hyderabad Metropolitan Area, Telangana, India",
+            "source": "Local Network Node Geofence"
+          },
+          "generativeDetails": {
+            "synthesisEngine": "ComfyUI Generative Workflow Node Tree",
+            "modelFamily": "Latent Diffusion (SDXL / Flux / Midjourney)",
+            "extractedPrompt": "ultra realistic portrait of executive, stable diffusion v2.1 checkpoint comfyui node latent diffusion|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||",
+            "samplingSteps": 30,
+            "cfgScale": 7,
+            "neuralSeed": "492817294812"
+          }
+        },
+        "dissemination": {
+          "spreadClassification": "PUBLIC_DISSEMINATION_CONFIRMED",
+          "viralityIndex": "High (Distributed across Social Clusters)",
+          "recompressionGeneration": 3,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Referenced in generative AI discussions",
+              "evidence": "Public discourse tracked by Agent-Reach"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Matches AI community benchmarks",
+              "evidence": "Indexed in forensic subreddits"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachMatches": [
+            {
+              "title": "friedrichor/stable-diffusion-2-1-realistic · Hugging Face",
+              "url": "https://huggingface.co/friedrichor/stable-diffusion-2-1-realistic",
+              "author": "Public Origin",
+              "snippet": "This `friedrichor/stable-diffusion-2-1-realistic` model fine-tuned from stable-diffusion-2-1 with friedrichor/PhotoChat_120_square_HQ   This model is not traine...",
+              "publishedAt": "Recent"
+            },
+            {
+              "title": "djz Ascendents Portrait - v21 | Stable Diffusion 2.x Checkpoint | Civitai",
+              "url": "https://civitai.com/models/23339/djz-ascendents-portrait",
+              "author": "Public Origin",
+              "snippet": "djz Ascendents Portrait - v21 | Stable Diffusion 2.x Checkpoint | Civitai  # djz Ascendents Portrait  Updated: Oct 5, 2024  v21   1 variant available  fp16 Safe...",
+              "publishedAt": "2023-03-23T14:00:39.000Z"
+            },
+            {
+              "title": "Liselotte Cretia (Seirei Gensouki) - v2.1",
+              "url": "https://stablediffusionapi.com/models/liselotte-cretia-seirei-gensouki-v2-1",
+              "author": "Public Origin",
+              "snippet": "Liselotte Cretia (Seirei Gensouki) - v2.1  # Liselotte Cretia (Seirei Gensouki) - v2.1  Author   model_id: liselotte-cretia-seirei-gensouki-v2-1 Model Type: Sta...",
+              "publishedAt": "Recent"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 3 public web/social intelligence records correlating with this media signature."
+        }
+      },
+      "completedAt": "2026-10-26T15:19:15.493Z"
+    },
+    {
+      "id": "job_mvpejkwicugmjp",
+      "uploadId": "upl_mvpejkwikhmu",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-26T15:19:05.106Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_iphone_active",
+      "deviceName": "Manohar's iPhone 15 Pro",
+      "originalFilename": "IMG_2026_OPTICAL_CAPTURE.jpg",
+      "storedFilename": "1793027945105-IMG_2026_OPTICAL_CAPTURE.jpg",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/1793027945105-IMG_2026_OPTICAL_CAPTURE.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 4371,
+      "sha256": "b9723c3c423732a18157e1a973f70899e80a3596d03c7d8cac9f67fc410e5500",
+      "forensicReport": {
+        "sha256": "b9723c3c423732a18157e1a973f70899e80a3596d03c7d8cac9f67fc410e5500",
+        "md5": "753cfd70e7f998857fbe38f4de937ed9",
+        "fileSize": 4371,
+        "detectedType": "image/jpeg",
+        "cameraMake": "Apple",
+        "cameraModel": "iPhone 15 Pro",
+        "softwareTag": "iOS 17.5.1",
+        "dateTimeOriginal": "2026:10:26 15:30:00",
+        "verdict": "AUTHENTIC MEDIA (MINIMAL RISK)",
+        "probability": "4.8% Probability",
+        "isAlert": false,
+        "indicator": "Verified optical sensor signature: Apple iPhone 15 Pro",
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "val": "SHA-256 confirmed (b9723c3c423732a1...410e5500)",
+            "status": "VERIFIED"
+          },
+          {
+            "name": "Container & File Signature",
+            "val": "Magic bytes verified: IMAGE/JPEG (4.3 KB)",
+            "status": "VERIFIED"
+          },
+          {
+            "name": "Hardware Sensor Fingerprint (PRNU)",
+            "val": "Hardware Camera: Apple iPhone 15 Pro (Optical Sensor Tag)",
+            "status": "VERIFIED"
+          },
+          {
+            "name": "Generative AI & Model Watermark Scan",
+            "val": "Zero latent diffusion or GAN generator headers found",
+            "status": "CLEAN"
+          },
+          {
+            "name": "Quantization & Spatial Noise Distribution",
+            "val": "Entropy Index: 8.0% · DQT tables parsed: 1",
+            "status": "EVALUATED"
+          },
+          {
+            "name": "Agent-Reach Dissemination Intelligence",
+            "val": "Private Capture: Zero external leaks detected across Agent-Reach channels",
+            "status": "VERIFIED"
+          }
+        ],
+        "analyzedAt": "2026-10-26T15:19:08.583Z",
+        "provenance": {
+          "originClassification": "OPTICAL_HARDWARE",
+          "device": {
+            "make": "Apple",
+            "model": "iPhone 15 Pro",
+            "lens": "iPhone 15 Pro back triple camera 24mm f/",
+            "serialNumber": "HW-UID-B9723C3C42",
+            "software": "iOS 17.5.1"
+          },
+          "captureSettings": {
+            "aperture": "f/1.78",
+            "shutterSpeed": "1/120s",
+            "iso": "ISO 80",
+            "focalLength": "24mm (Full-Frame Eq.)",
+            "colorProfile": "Display P3 Wide Gamut",
+            "whiteBalance": "Auto (Daylight Calibrated)",
+            "flashMode": "Off (Natural Illumination)"
+          },
+          "temporal": {
+            "capturedAt": "2026:10:26 15:30:00",
+            "digitizedAt": "2026:10:26 15:30:00",
+            "timezone": "UTC+05:30 (Indian Standard Time)",
+            "clockSkewSeconds": 0.14
+          },
+          "geolocation": {
+            "hasGpsCoordinates": true,
+            "coordinates": "17.3850° N, 78.4867° E",
+            "altitude": "542 m MSL",
+            "geofenceDescription": "Hyderabad Metropolitan Area, Telangana, India",
+            "source": "Embedded EXIF GPS IFD0"
+          },
+          "generativeDetails": null
+        },
+        "dissemination": {
+          "spreadClassification": "ISOLATED_PRIVATE_LOCAL_STREAM",
+          "viralityIndex": "0% (Confidential Private Transfer)",
+          "recompressionGeneration": 1,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Twitter/X compression fingerprints",
+              "evidence": "Preserved lossless chroma"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Reddit repost markers",
+              "evidence": "Sensor noise intact"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachMatches": [
+            {
+              "title": "Orion's Optical Navigation Camera Captures Earth | NASA Image and Video Library",
+              "url": "https://images.nasa.gov/details-FD2%20OpNav%20art001e000009",
+              "author": "Public Origin",
+              "snippet": "Orion's Optical Navigation Camera Captures Earth | NASA Image and Video Library  1. FD2 OpNav art001e000009 2. Home  Image unavailable  Show EXIF Data  ### Shar...",
+              "publishedAt": "Recent"
+            },
+            {
+              "title": "Optical_Properties",
+              "url": "https://pds.nasa.gov/datastandards/documents/dd/all/current/ch40s64.html",
+              "author": "Public Origin",
+              "snippet": "Optical_Properties  ## Optical_Properties  | Name: Optical_Properties | | LDD Version: 1.9.3.0 | IM Version: 1.25.0.0 | | --- | --- | --- | --- | | Description:...",
+              "publishedAt": "Recent"
+            },
+            {
+              "title": "Using the Image Capture Command",
+              "url": "https://nexus.hexagon.com/documentationcenter/en-US/bundle/pcdmis-2026.2-vision/page/Using_the_Image_Capture_Command.htm",
+              "author": "Public Origin",
+              "snippet": "Using the Image Capture Command  # Using the Image Capture Command  Updated: Oct 21, 2026  The Vision | Image Capture menu item inserts an IMAGECAPTURE command ...",
+              "publishedAt": "Recent"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 3 public web/social intelligence records correlating with this media signature."
+        }
+      },
+      "completedAt": "2026-10-26T15:19:08.583Z"
+    }
+  ]
 }
