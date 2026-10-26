@@ -48,6 +48,33 @@
       "userAgent": "",
       "expiresAt": "2026-10-27T16:32:25.560Z",
       "createdAt": "2026-10-26T16:32:25.560Z"
+    },
+    {
+      "id": "ses_7i95mvpamvphxo0y",
+      "userId": "usr_mvphxo0x3iya",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-27T16:54:01.186Z",
+      "createdAt": "2026-10-26T16:54:01.186Z"
+    },
+    {
+      "id": "ses_6heyx3btmvphypiq",
+      "userId": "usr_mvphypiq6hap",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-27T16:54:49.778Z",
+      "createdAt": "2026-10-26T16:54:49.778Z"
+    },
+    {
+      "id": "ses_8oi0imusmvpi0pih",
+      "userId": "usr_mvpi0pihk3h8",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-27T16:56:23.081Z",
+      "createdAt": "2026-10-26T16:56:23.081Z"
     }
   ],
   "pairingCodes": [
@@ -118,6 +145,48 @@
       "expiresAt": "2026-10-26T16:37:25.563Z",
       "createdAt": "2026-10-26T16:32:25.563Z",
       "consumedAt": "2026-10-26T16:32:25.581Z"
+    },
+    {
+      "code": "FJGUNL2P",
+      "displayCode": "FJGU-NL2P",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_ub06o92dmvphxnxw",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "4528f3781f2aa4500699de282d4a3f7b9d070132ed3f7f9a65a5b4c5e9006987",
+      "deviceId": "dev_mvphxo1auslo",
+      "expiresAt": "2026-10-26T16:59:01.188Z",
+      "createdAt": "2026-10-26T16:54:01.188Z",
+      "consumedAt": "2026-10-26T16:54:01.199Z"
+    },
+    {
+      "code": "VUS2P6Z9",
+      "displayCode": "VUS2-P6Z9",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_cuzstsgqmvphypfo",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "ef432a6174a8ebd35b838206786439e449895818fca57a678470e6d3dce85bec",
+      "deviceId": "dev_mvphypj4yk9b",
+      "expiresAt": "2026-10-26T16:59:49.781Z",
+      "createdAt": "2026-10-26T16:54:49.781Z",
+      "consumedAt": "2026-10-26T16:54:49.792Z"
+    },
+    {
+      "code": "75A2JM5A",
+      "displayCode": "75A2-JM5A",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_f4cobl0bmvpi0pfc",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "706c8a3f7834ee3fcdf27bbb88d319a50435211b384f99b72626a06487f87586",
+      "deviceId": "dev_mvpi0piux0ur",
+      "expiresAt": "2026-10-26T17:01:23.084Z",
+      "createdAt": "2026-10-26T16:56:23.084Z",
+      "consumedAt": "2026-10-26T16:56:23.095Z"
     }
   ],
   "devices": [],

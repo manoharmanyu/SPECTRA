@@ -4,11 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "setup": "node setup.js",
     "dev": "vite",
     "server": "node server/index.js",
+    "start": "node server/index.js",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "NODE_ENV=test node tests/security_verification.js"
+    "test": "node tests/security_verification.js"
   },
   "dependencies": {
     "cookie-parser": "^1.4.7",

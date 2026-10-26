@@ -277,24 +277,52 @@ These are reported development-test results, not an independent security certifi
 
 ### Prerequisites
 
-- Node.js
-- npm
-- Git
-- A modern web browser
+- **Node.js** (version 18.0.0 or higher) — [https://nodejs.org/](https://nodejs.org/)
+- **npm** (included with Node.js)
+- **Git**
+- A modern web browser (Chrome, Edge, Firefox, or Safari)
 
-### Installation
+---
 
-#### Automated One-Click Setup (Recommended)
-SPECTRA includes an automated installer script (`install.sh`) that validates system runtime prerequisites, installs all production and development dependencies, creates required storage directories, initializes the database, compiles the production frontend bundle, and runs the cryptographic security test suite:
+### Cross-Platform Installation
+
+Clone the repository first:
 
 ```bash
 git clone https://github.com/manoharmanyu/SPECTRA.git
 cd SPECTRA
+```
+
+Then choose the installer for your operating system:
+
+#### 🍎 macOS & 🐧 Linux (Bash / Zsh)
+```bash
 chmod +x install.sh
 ./install.sh
 ```
 
-#### Manual Installation
+#### 🪟 Windows — Command Prompt (`cmd.exe`)
+Double-click `install.bat` in File Explorer, or run:
+```cmd
+install.bat
+```
+
+#### 🪟 Windows — PowerShell
+```powershell
+.\install.ps1
+```
+*(If PowerShell script execution is restricted on your machine, run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` first).*
+
+#### 🌐 Universal (Any OS via Node.js)
+Works across Windows, macOS, Linux, and BSD:
+```bash
+node setup.js
+```
+*(or `npm run setup` after installing npm packages).*
+
+---
+
+### Manual Installation (All OS)
 
 ```bash
 git clone https://github.com/manoharmanyu/SPECTRA.git
