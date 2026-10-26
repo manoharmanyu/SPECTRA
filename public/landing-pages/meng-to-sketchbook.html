@@ -2935,7 +2935,9 @@ const Q=new URLSearchParams(location.search);
 const DIR='meng-to-sketchbook/';
 const PAGES=[
   {
+    plateNumber: '01',
     file: 'case-01-rashmika.png',
+    cardTitle: 'Rashmika Mandanna — India',
     title: 'Rashmika Mandanna',
     place: 'India',
     category: 'Identity Misuse',
@@ -2957,29 +2959,10 @@ const PAGES=[
     }
   },
   {
-    file: 'case-02-taylor-swift.png',
-    title: 'Taylor Swift',
-    place: 'United States',
-    category: 'Non-consensual Sexual Imagery',
-    date: 'January 2024',
-    incident: 'AI-generated explicit images resembling Taylor Swift spread rapidly across social platforms, including X and Telegram.',
-    impact: 'The incident prompted widespread condemnation, renewed calls for legislation, and scrutiny of platforms\' ability to prevent and remove non-consensual synthetic sexual imagery.',
-    researchAngle: 'Synthetic-image detection, image provenance, perceptual hashing, content reporting workflows, and privacy-preserving evidence handling.',
-    sources: [
-      { name: 'The Guardian', url: 'https://www.theguardian.com/music/2024/jan/26/taylor-swift-deepfake-pornography-sparks-renewed-calls-for-us-legislation?utm_source=chatgpt.com' }
-    ],
-    deviceMeta: {
-      location: 'Washington D.C. / Global',
-      device: 'Distributed Diffusion GPU',
-      date: 'Jan 2024',
-      resolution: '1024 × 1024 (Latent)',
-      hash: 'ff55...f522',
-      software: 'Stable Diffusion XL / LoRA'
-    }
-  },
-  {
+    plateNumber: '03',
     file: 'case-03-south-korea.png',
-    title: "South Korea's Telegram Crisis",
+    cardTitle: "South Korea's Telegram deepfake crisis",
+    title: "South Korea's Telegram deepfake crisis",
     place: 'South Korea',
     category: 'Mass Victimization',
     date: '2024',
@@ -3000,7 +2983,9 @@ const PAGES=[
     }
   },
   {
+    plateNumber: '04',
     file: 'case-04-arup-fraud.png',
+    cardTitle: "Arup's $25.6 million deepfake fraud — Hong Kong",
     title: "Arup's $25.6M Deepfake Fraud",
     place: 'Hong Kong',
     category: 'Financial Fraud',
@@ -3022,7 +3007,9 @@ const PAGES=[
     }
   },
   {
+    plateNumber: '05',
     file: 'case-05-biden-robocall.png',
+    cardTitle: 'Fake Joe Biden robocall — United States',
     title: 'Fake Joe Biden Robocall',
     place: 'United States',
     category: 'Election Interference',
@@ -3043,7 +3030,9 @@ const PAGES=[
     }
   },
   {
+    plateNumber: '06',
     file: 'case-06-zelenskyy.png',
+    cardTitle: 'Volodymyr Zelenskyy surrender video — Ukraine',
     title: 'Volodymyr Zelenskyy Surrender Video',
     place: 'Ukraine',
     category: 'Wartime Disinformation',
@@ -3064,7 +3053,9 @@ const PAGES=[
     }
   },
   {
+    plateNumber: '07',
     file: 'case-07-slovakia-election.png',
+    cardTitle: 'Slovakia election audio deepfake',
     title: 'Slovakia Election Audio Deepfake',
     place: 'Slovakia',
     category: 'Political Disinformation',
@@ -3085,8 +3076,10 @@ const PAGES=[
     }
   },
   {
+    plateNumber: '08',
     file: 'case-08-tom-hanks.png',
-    title: "Tom Hanks' AI Advertisement",
+    cardTitle: "Tom Hanks' AI-generated advertisement — United States",
+    title: "Tom Hanks' AI-Generated Advertisement",
     place: 'United States',
     category: 'Commercial Impersonation',
     date: 'October 2023',
@@ -3106,7 +3099,9 @@ const PAGES=[
     }
   },
   {
+    plateNumber: '09',
     file: 'case-09-pope-puffer.png',
+    cardTitle: 'Pope Francis in the AI-generated puffer jacket',
     title: 'Pope Francis in AI Puffer Jacket',
     place: 'Vatican City / Global',
     category: 'Viral Misinformation',
@@ -3232,7 +3227,9 @@ function paint(){
 }
 function formatCap(p, i) {
   if (!p) return '';
-  return `Plate ${String(i+1).padStart(2,'0')} — ${p.title} (${p.place} · ${p.category})`;
+  const num = p.plateNumber || String(i+1).padStart(2,'0');
+  const name = p.cardTitle || (p.title + (p.place ? ' — ' + p.place : ''));
+  return `Plate ${num} — ${name}`;
 }
 function caption(){
   capBox.textContent='';
@@ -3601,9 +3598,9 @@ if (plateList) {
 
     const header = el('div', 'plate-card-header');
     header.innerHTML = `
-      <div class="plate-num-badge">PLATE ${String(i+1).padStart(2,'0')}</div>
+      <div class="plate-num-badge">PLATE ${p.plateNumber || String(i+1).padStart(2,'0')}</div>
       <div class="plate-card-title-box">
-        <h3 class="plate-card-title">${p.title} — ${p.place}</h3>
+        <h3 class="plate-card-title">${p.cardTitle || (p.title + (p.place ? ' — ' + p.place : ''))}</h3>
         <span class="plate-card-country">${p.date} &bull; Forensic Vector Dossier</span>
       </div>
       <div class="plate-card-meta-right">
@@ -3617,6 +3614,8 @@ if (plateList) {
     `;
 
     header.onclick = () => {
+      goTo(i);
+      (document.getElementById('sbWrap') || document.getElementById('sbStage'))?.scrollIntoView({behavior: 'smooth', block: 'center'});
       const isExp = card.getAttribute('aria-expanded') === 'true';
       card.setAttribute('aria-expanded', isExp ? 'false' : 'true');
     };
