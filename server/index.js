@@ -32,13 +32,16 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Static route for uploaded images
 app.use('/uploads', express.static(config.uploadsDir));
 
-// API Routes
+// API Routes (Mounted both with and without /api prefix for local and Vercel Serverless Function rewrites)
 app.use('/api/auth', authRouter);
+app.use('/auth', authRouter);
 app.use('/api/pairing', pairingRouter);
+app.use('/pairing', pairingRouter);
 app.use('/api', uploadRouter);
+app.use('/', uploadRouter);
 
 // System Status Endpoint
-app.get('/api/status', (req, res) => {
+const statusHandler = (req, res) => {
   const lanIp = getLocalIpAddress();
   res.json({
     name: 'SPECTRA Local Secure Forensic Server',
@@ -53,10 +56,13 @@ app.get('/api/status', (req, res) => {
     },
     timestamp: new Date().toISOString()
   });
-});
+};
 
-// Start Server if not imported as module in test
-if (process.env.NODE_ENV !== 'test') {
+app.get('/api/status', statusHandler);
+app.get('/status', statusHandler);
+
+// Start Server if not imported as module in test and not running in Vercel Serverless Function
+if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
   server.listen(config.port, config.host, () => {
     const lanIp = getLocalIpAddress();
     console.log(`\n======================================================`);

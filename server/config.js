@@ -6,7 +6,12 @@ import crypto from 'crypto';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const isVercel = Boolean(process.env.VERCEL);
+
 export function getLocalIpAddress() {
+  if (isVercel) {
+    return 'spectra-forensics.vercel.app';
+  }
   const interfaces = os.networkInterfaces();
   for (const name of Object.keys(interfaces)) {
     for (const iface of interfaces[name]) {
@@ -23,8 +28,8 @@ export const config = {
   port: parseInt(process.env.PORT || '3001', 10),
   host: process.env.HOST || '0.0.0.0',
   vitePort: parseInt(process.env.VITE_PORT || '5173', 10),
-  dataDir: path.resolve(__dirname, '../data'),
-  uploadsDir: path.resolve(__dirname, '../uploads'),
+  dataDir: isVercel ? path.join('/tmp', 'data') : path.resolve(__dirname, '../data'),
+  uploadsDir: isVercel ? path.join('/tmp', 'uploads') : path.resolve(__dirname, '../uploads'),
   sessionSecret: process.env.SESSION_SECRET || 'spectra_sec_session_32_bytes_token_key_auth',
   // 32-byte key for AES-256-GCM encryption of TOTP secrets at rest
   encryptionKey: crypto.createHash('sha256').update(process.env.ENCRYPTION_SECRET || 'spectra_totp_aes_master_secret').digest(),

@@ -8,11 +8,15 @@ const DB_FILE = process.env.SPECTRA_DB_FILE || (process.env.NODE_ENV === 'test'
   : path.join(config.dataDir, 'spectra.json'));
 
 function ensureDirectories() {
-  if (!fs.existsSync(config.dataDir)) {
-    fs.mkdirSync(config.dataDir, { recursive: true });
-  }
-  if (!fs.existsSync(config.uploadsDir)) {
-    fs.mkdirSync(config.uploadsDir, { recursive: true });
+  try {
+    if (!fs.existsSync(config.dataDir)) {
+      fs.mkdirSync(config.dataDir, { recursive: true });
+    }
+    if (!fs.existsSync(config.uploadsDir)) {
+      fs.mkdirSync(config.uploadsDir, { recursive: true });
+    }
+  } catch (e) {
+    console.warn('Directory creation notice:', e.message);
   }
 }
 
@@ -35,14 +39,22 @@ class SpectraDB {
       if (fs.existsSync(DB_FILE)) {
         const raw = fs.readFileSync(DB_FILE, 'utf8');
         this.data = JSON.parse(raw);
-        if (!this.data.users) this.data.users = [];
-        if (!this.data.sessions) this.data.sessions = [];
-        if (!this.data.pairingCodes) this.data.pairingCodes = [];
-        if (!this.data.devices) this.data.devices = [];
-        if (!this.data.jobs) this.data.jobs = [];
       } else {
-        this.save();
+        // Fallback to bundled repo DB if running in ephemeral /tmp
+        const bundledDb = path.resolve(__dirname, '../data/spectra.json');
+        if (fs.existsSync(bundledDb)) {
+          const raw = fs.readFileSync(bundledDb, 'utf8');
+          this.data = JSON.parse(raw);
+          this.save();
+        } else {
+          this.save();
+        }
       }
+      if (!this.data.users) this.data.users = [];
+      if (!this.data.sessions) this.data.sessions = [];
+      if (!this.data.pairingCodes) this.data.pairingCodes = [];
+      if (!this.data.devices) this.data.devices = [];
+      if (!this.data.jobs) this.data.jobs = [];
     } catch (e) {
       console.error('Error loading database, initializing fresh state:', e);
       this.save();

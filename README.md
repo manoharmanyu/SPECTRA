@@ -11,10 +11,17 @@
 </p>
 
 <p align="center">
+  <a href="https://spectra-omega-sooty.vercel.app" target="_blank">
+    <img src="https://img.shields.io/badge/Vercel-Live%20Deployment-000000?style=for-the-badge&logo=vercel&logoColor=white" />
+  </a>
   <img src="https://img.shields.io/badge/Platform-Web%20Application-7C3AED?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Focus-Digital%20Forensics-111827?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Security-First-2563EB?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Status-Active%20Development-0891B2?style=for-the-badge" />
+</p>
+
+<p align="center">
+  🚀 <strong>Live Production URL:</strong> <a href="https://spectra-omega-sooty.vercel.app">https://spectra-omega-sooty.vercel.app</a>
 </p>
 
 ---
