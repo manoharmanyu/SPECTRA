@@ -39,6 +39,15 @@
       "userAgent": "",
       "expiresAt": "2026-10-27T15:27:07.241Z",
       "createdAt": "2026-10-26T15:27:07.241Z"
+    },
+    {
+      "id": "ses_psrv8hrumvph5wbc",
+      "userId": "usr_mvph5wbc57wm",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-27T16:32:25.560Z",
+      "createdAt": "2026-10-26T16:32:25.560Z"
     }
   ],
   "pairingCodes": [
@@ -95,6 +104,20 @@
       "expiresAt": "2026-10-26T15:32:07.243Z",
       "createdAt": "2026-10-26T15:27:07.243Z",
       "consumedAt": "2026-10-26T15:27:07.262Z"
+    },
+    {
+      "code": "CYREAFET",
+      "displayCode": "CYRE-AFET",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_krtpthl9mvph5w89",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "55cdf9a100f41e38f7c80e6db772f4bd0368bd4eb3f18eaa0bf8e4caf01b36b6",
+      "deviceId": "dev_mvph5wbwmamn",
+      "expiresAt": "2026-10-26T16:37:25.563Z",
+      "createdAt": "2026-10-26T16:32:25.563Z",
+      "consumedAt": "2026-10-26T16:32:25.581Z"
     }
   ],
   "devices": [],

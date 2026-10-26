@@ -284,13 +284,25 @@ These are reported development-test results, not an independent security certifi
 
 ### Installation
 
+#### Automated One-Click Setup (Recommended)
+SPECTRA includes an automated installer script (`install.sh`) that validates system runtime prerequisites, installs all production and development dependencies, creates required storage directories, initializes the database, compiles the production frontend bundle, and runs the cryptographic security test suite:
+
 ```bash
-git clone <https://github.com/manoharmanyu/SPECTRA.git>
+git clone https://github.com/manoharmanyu/SPECTRA.git
 cd SPECTRA
-npm install
+chmod +x install.sh
+./install.sh
 ```
 
-Replace the placeholders with your actual repository URL and project directory.
+#### Manual Installation
+
+```bash
+git clone https://github.com/manoharmanyu/SPECTRA.git
+cd SPECTRA
+npm install
+npm run build
+npm test
+```
 
 ### Start the Application
 
