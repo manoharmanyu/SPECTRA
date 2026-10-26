@@ -285,8 +285,8 @@ These are reported development-test results, not an independent security certifi
 ### Installation
 
 ```bash
-git clone <YOUR_REPOSITORY_URL>
-cd <YOUR_PROJECT_DIRECTORY>
+git clone <https://github.com/manoharmanyu/SPECTRA.git>
+cd main
 npm install
 ```
 
