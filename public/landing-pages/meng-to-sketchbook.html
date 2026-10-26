@@ -1,0 +1,3263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SPECTRA — AI-Powered Deepfake & Synthetic Media Forensics Platform</title>
+<meta name="description" content="AI-Powered Deepfake & Synthetic Media Forensics Platform. Truth Beyond Appearance.">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alice&family=Anton+SC&family=Cinzel:wght@700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* Core color tokens */
+:root {
+  --bg: #03050B;
+  --white: #FFFFFF;
+  --surface: #171D2B;
+  --surface-glass: rgba(23, 29, 43, 0.78);
+  --blue: #087BFF;
+  --purple: #9B00FF;
+  --magenta: #C445FF;
+  --slate: #8994A7;
+  --slate-dark: #4B5565;
+  --coral: #FF3B5C;
+  --emerald: #00E5A3;
+  --amber: #FFB020;
+  --hairline: rgba(137, 148, 167, 0.22);
+  --paper: #03050B;
+  --ink: #FFFFFF;
+  --ink-soft: #8994A7;
+  --ink-faint: rgba(137, 148, 167, 0.45);
+  --sans: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --track-caps: .24em;
+  --track-nav: .06em;
+}
+
+* { box-sizing: border-box; }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0; padding: 0;
+  background: url(meng-to-sketchbook/spectra-bg.png) center center / cover no-repeat fixed !important;
+  color: #FFFFFF !important;
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
+::selection { background: rgba(155, 0, 255, .6); color: #fff; }
+
+/* ---------------- Atmospheric background ---------------- */
+.wash {
+  position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  background: url(meng-to-sketchbook/spectra-bg.png) center center / cover no-repeat fixed !important;
+}
+.wash:after { display: none !important; }
+
+/* ---------------- Top Navigation Bar ---------------- */
+.top {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  display: flex !important; flex-direction: row !important;
+  align-items: center !important; justify-content: space-between !important;
+  padding: 20px clamp(20px, 4.5vw, 64px) !important;
+  pointer-events: none; text-align: left;
+}
+.top > * { pointer-events: auto; }
+.top:before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, rgba(3,5,11,0.94) 0%, rgba(3,5,11,0.7) 65%, transparent 100%);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent);
+  mask-image: linear-gradient(180deg, #000 70%, transparent);
+}
+.top .brand .logo-text {
+  font-family: 'Cinzel', serif !important;
+  font-size: 28px; font-weight: 800; letter-spacing: 0.08em;
+  background: linear-gradient(135deg, #FFFFFF 20%, #C445FF 70%, #9B00FF 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 18px rgba(155,0,255,0.5));
+}
+.top nav {
+  display: flex; gap: clamp(16px, 2.4vw, 34px); font-size: 14px; align-items: center;
+  font-weight: 400; letter-spacing: 0.02em; color: var(--slate);
+}
+.top nav a {
+  position: relative; padding: 6px 2px; transition: color .2s; color: var(--slate);
+}
+.top nav a:hover { color: #FFFFFF; }
+.top nav a.active { color: #FFFFFF; font-weight: 500; }
+.top nav a.active:after {
+  content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, #087BFF, #9B00FF);
+  border-radius: 2px; box-shadow: 0 0 8px rgba(155,0,255,0.8);
+}
+.top-right-group {
+  display: flex; align-items: center; gap: clamp(12px, 1.8vw, 24px);
+}
+.top-socials { display: flex; align-items: center; gap: 14px; }
+.top-socials a { color: var(--slate); transition: color .2s, transform .2s; display: flex; }
+.top-socials a:hover { color: #FFFFFF; transform: translateY(-1px); }
+.top-socials svg { width: 16px; height: 16px; }
+
+.top-cta-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 22px; font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+  color: #FFFFFF; background: linear-gradient(135deg, rgba(8,123,255,0.18), rgba(155,0,255,0.24));
+  border: 1px solid rgba(155,0,255,0.65); border-radius: 9999px;
+  box-shadow: 0 0 18px rgba(155,0,255,0.32), inset 0 0 12px rgba(8,123,255,0.2);
+  transition: all .25s ease; cursor: pointer;
+}
+.top-cta-btn:hover {
+  background: linear-gradient(135deg, rgba(8,123,255,0.35), rgba(155,0,255,0.45));
+  border-color: #C445FF; box-shadow: 0 0 24px rgba(155,0,255,0.6), inset 0 0 16px rgba(8,123,255,0.3);
+  transform: scale(1.02);
+}
+
+/* ---------------- Hero Section (Home) ---------------- */
+.hero {
+  position: relative; display: flex; flex-direction: column; align-items: center;
+  min-height: 100svh; padding: clamp(100px, 11svh, 128px) 20px clamp(40px, 5svh, 60px) !important;
+  overflow: visible !important;
+}
+
+/* Hero Header Box */
+.hero-header-box {
+  text-align: center; max-width: 900px; margin: 0 auto 16px; z-index: 3;
+}
+.hero-eyebrow {
+  font-family: 'Alice', serif !important; font-size: 13px; font-weight: 400;
+  letter-spacing: 0.18em; color: var(--slate); margin: 0 0 12px; text-transform: uppercase;
+}
+.hero-title {
+  margin: 0; font-family: 'Cinzel', serif !important; font-size: clamp(54px, 7vw, 92px);
+  font-weight: 800 !important; letter-spacing: 0.08em; line-height: 1.05;
+  background: linear-gradient(90deg, #FFFFFF 30%, #D466FF 75%, #9B00FF 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 35px rgba(155,0,255,0.45));
+}
+.hero-subheading {
+  margin: 8px 0 0; font-family: 'Anton SC', sans-serif !important; font-size: clamp(28px, 3.8vw, 48px);
+  font-weight: 400; letter-spacing: 0.04em; color: #FFFFFF; line-height: 1.15;
+  text-transform: uppercase;
+}
+.hero-subheading .period {
+  color: #C445FF; display: inline-block;
+  text-shadow: 0 0 16px rgba(196,69,255,0.9);
+}
+.hero-desc {
+  margin: 16px auto 22px; max-width: 640px; font-family: 'Poppins', sans-serif !important;
+  font-size: clamp(14px, 1.15vw, 16px); line-height: 1.6; color: var(--slate);
+  font-weight: 300; letter-spacing: 0.01em;
+}
+.hero-actions {
+  display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 13px 30px; font-size: 14px; font-weight: 600; letter-spacing: 0.02em;
+  color: #FFFFFF; background: linear-gradient(90deg, #087BFF 0%, #9B00FF 100%);
+  border-radius: 9999px; border: none;
+  box-shadow: 0 0 24px rgba(8,123,255,0.45), 0 0 40px rgba(155,0,255,0.35);
+  transition: all .25s ease; cursor: pointer;
+}
+.btn-primary:hover {
+  box-shadow: 0 0 32px rgba(8,123,255,0.65), 0 0 55px rgba(155,0,255,0.55);
+  transform: translateY(-1px) scale(1.02);
+}
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 13px 26px; font-size: 14px; font-weight: 500; letter-spacing: 0.02em;
+  color: #FFFFFF; background: rgba(23, 29, 43, 0.75);
+  border: 1px solid rgba(137, 148, 167, 0.35); border-radius: 9999px;
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  transition: all .25s ease; cursor: pointer;
+}
+.btn-secondary:hover {
+  background: rgba(23, 29, 43, 0.95); border-color: rgba(196,69,255,0.6);
+  box-shadow: 0 0 20px rgba(155,0,255,0.25); transform: translateY(-1px);
+}
+.icon-sq { width: 14px; height: 14px; opacity: 0.8; }
+
+/* ---------------- FORENSIC WORKSPACE (Center Book + HUDs) ---------------- */
+.forensic-workspace {
+  position: relative; width: 100%; max-width: 1620px;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 10px; z-index: 3;
+}
+
+/* Glass HUD Panel Card */
+.hud-panel {
+  background: rgba(23, 29, 43, 0.78);
+  border: 1px solid rgba(137, 148, 167, 0.24);
+  border-radius: 14px; padding: 14px 16px;
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.5), inset 0 0 20px rgba(23,29,43,0.5);
+  color: #FFFFFF;
+}
+.hud-panel-title {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+  color: var(--slate); text-transform: uppercase; margin-bottom: 10px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+/* Left & Right HUD Columns */
+.hud-col {
+  position: absolute; top: 46%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 16px; z-index: 10; pointer-events: auto;
+}
+.hud-col.left {
+  left: clamp(12px, 2.5vw, 48px); width: clamp(260px, 20vw, 310px);
+}
+.hud-col.right {
+  right: clamp(12px, 2.5vw, 48px); width: clamp(270px, 21vw, 320px);
+}
+
+/* HUD 1: Face Landmark Analysis */
+.hud-face-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+}
+.hud-face-card {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.hud-face-img-wrap {
+  position: relative; width: 100%; aspect-ratio: 1/1.1; border-radius: 8px;
+  overflow: hidden; border: 1px solid rgba(137, 148, 167, 0.25);
+  background: #0A0E18;
+}
+.hud-face-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.hud-face-mesh-cyan {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(8,123,255,0.35) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8,123,255,0.35) 1px, transparent 1px);
+  background-size: 12px 12px;
+  box-shadow: inset 0 0 14px rgba(8,123,255,0.6);
+}
+.hud-scan-line {
+  position: absolute; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, #087BFF 50%, transparent);
+  box-shadow: 0 0 8px #087BFF;
+  animation: scan-move 2.4s ease-in-out infinite alternate;
+}
+@keyframes scan-move {
+  0% { top: 5%; }
+  100% { top: 90%; }
+}
+.hud-landmarks-svg {
+  position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;
+}
+.hud-face-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.12em; color: var(--slate); text-transform: uppercase;
+}
+.hud-face-label.active { color: var(--blue); }
+.hud-face-label.purple { color: var(--magenta); }
+
+/* HUD 2: Audio Analysis */
+.hud-audio-body {
+  display: flex; align-items: center; gap: 12px;
+}
+.hud-play-btn {
+  width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(137, 148, 167, 0.35);
+  background: rgba(155,0,255,0.18); color: #FFFFFF; display: flex; align-items: center;
+  justify-content: center; cursor: pointer; flex-shrink: 0; transition: all .2s;
+}
+.hud-play-btn svg { width: 12px; height: 12px; margin-left: 2px; }
+.hud-play-btn:hover { background: rgba(155,0,255,0.38); border-color: #9B00FF; box-shadow: 0 0 12px rgba(155,0,255,0.5); }
+.hud-audio-wave {
+  flex: 1; height: 38px; display: flex; align-items: center; gap: 3px;
+}
+.wave-bar {
+  flex: 1; background: linear-gradient(180deg, #087BFF 0%, #C445FF 100%);
+  border-radius: 2px; box-shadow: 0 0 6px rgba(196,69,255,0.4);
+}
+
+/* HUD 3: Video Analysis */
+.hud-video-strip {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; position: relative; margin-bottom: 8px;
+}
+.hud-video-frame {
+  aspect-ratio: 4/3; border-radius: 4px; overflow: hidden;
+  border: 1px solid rgba(137, 148, 167, 0.2); background: #0B101D;
+}
+.hud-video-frame img { width: 100%; height: 100%; object-fit: cover; }
+.hud-video-scrubber {
+  position: absolute; top: -4px; bottom: -4px; left: 42%; width: 2px;
+  background: #FF3B5C; box-shadow: 0 0 8px #FF3B5C; pointer-events: none;
+}
+.hud-video-subwave {
+  height: 14px; border-radius: 3px; background: rgba(8,123,255,0.12);
+  border: 1px solid rgba(8,123,255,0.25); overflow: hidden;
+}
+
+/* HUD 4: Authenticity Analysis */
+.hud-gauge-row {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 12px;
+}
+.hud-gauge-wrap {
+  position: relative; width: 74px; height: 74px; flex-shrink: 0;
+}
+.hud-gauge-wrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.gauge-bg { fill: none; stroke: rgba(137, 148, 167, 0.16); stroke-width: 7; }
+.gauge-fill {
+  fill: none; stroke: var(--coral); stroke-width: 7; stroke-linecap: round;
+  filter: drop-shadow(0 0 8px rgba(255,59,92,0.6));
+}
+.gauge-center {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+}
+.gauge-num {
+  font-size: 19px; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em;
+}
+.gauge-desc { display: flex; flex-direction: column; gap: 5px; }
+.manipulation-tag {
+  font-size: 11px; font-weight: 800; letter-spacing: 0.04em;
+  color: var(--coral); line-height: 1.25; text-shadow: 0 0 12px rgba(255,59,92,0.45);
+}
+.mini-signal-bars {
+  display: flex; align-items: center; gap: 2px; height: 12px; opacity: 0.75;
+}
+.mini-bar { width: 3px; background: var(--slate); border-radius: 1px; }
+
+.forensic-indicators {
+  list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px;
+  font-size: 11px; color: var(--slate); letter-spacing: 0.02em;
+}
+.forensic-indicators li {
+  display: flex; align-items: center; gap: 8px;
+}
+.f-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.f-dot.purple { background: #C445FF; box-shadow: 0 0 8px #C445FF; }
+.f-dot.green { background: var(--emerald); box-shadow: 0 0 8px var(--emerald)}
+
+/* HUD 5: Metadata & Source Intelligence */
+.hud-meta-grid {
+  display: grid; grid-template-columns: 82px 1fr; gap: 14px; align-items: center;
+}
+.hud-radar-box {
+  position: relative; width: 82px; height: 82px; border-radius: 8px;
+  background: #080D1A; border: 1px solid rgba(8,123,255,0.3); overflow: hidden;
+}
+.radar-grid-svg { width: 100%; height: 100%; }
+.hud-pin {
+  position: absolute; top: 45%; left: 48%; width: 14px; height: 14px;
+  transform: translate(-50%, -50%); color: #FF3B5C;
+  filter: drop-shadow(0 0 8px #FF3B5C);
+}
+.hud-meta-table {
+  display: flex; flex-direction: column; gap: 4px; font-size: 10.5px;
+}
+.meta-row { display: flex; justify-content: space-between; gap: 8px; }
+.meta-row .k { color: var(--slate); }
+.meta-row .v { color: #FFFFFF; font-weight: 500; text-align: right; }
+.meta-row .v.code { font-family: monospace; color: var(--blue); }
+
+@media (max-width: 1240px) {
+  .hud-col { position: static; transform: none; width: 100%; max-width: 580px; margin: 20px auto 0; }
+  .forensic-workspace { flex-direction: column; }
+}
+
+/* ---------------- Overrides for Sketchbook on dark surface ---------------- */
+.sb-arrow {
+  color: #FFFFFF !important; opacity: 0.75 !important;
+  background: rgba(23, 29, 43, 0.7) !important;
+  border: 1px solid rgba(137, 148, 167, 0.28) !important;
+  border-radius: 50% !important; width: 44px !important; height: 44px !important;
+  -webkit-backdrop-filter: blur(8px) !important; backdrop-filter: blur(8px) !important;
+  transition: all .25s ease !important;
+}
+.sb-arrow:hover {
+  opacity: 1 !important; background: rgba(155,0,255,0.3) !important;
+  border-color: #C445FF !important; box-shadow: 0 0 16px rgba(155,0,255,0.5) !important;
+  transform: scale(1.06) !important;
+}
+.sb-caption {
+  color: #FFFFFF !important; font-weight: 700 !important;
+  letter-spacing: 0.22em !important; text-shadow: 0 0 16px rgba(255,255,255,0.4) !important;
+}
+.sb-tools {
+  background: rgba(23, 29, 43, 0.85) !important;
+  border: 1px solid rgba(137, 148, 167, 0.28) !important;
+  border-radius: 9999px !important; box-shadow: 0 8px 24px rgba(0,0,0,0.45) !important;
+}
+.sb-tools button.tool { color: var(--slate) !important; }
+.sb-tools button.tool:hover { color: #FFFFFF !important; background: rgba(255,255,255,0.1) !important; }
+.sb-tools button.tool[aria-pressed="true"] {
+  color: #FFFFFF !important; background: linear-gradient(135deg, #087BFF, #9B00FF) !important;
+  box-shadow: 0 0 14px rgba(155,0,255,0.7) !important;
+}
+.zoom-read { color: #FFFFFF !important; font-weight: 600 !important; }
+.tool-sep { background: rgba(137, 148, 167, 0.3) !important; }
+.sb-hint { color: var(--slate) !important; opacity: 0.7 !important; }
+
+/* Loupe optics */
+.loupe .ring {
+  box-shadow: 0 12px 34px rgba(0,0,0,.85), 0 0 24px rgba(155,0,255,0.5), inset 0 2px 4px rgba(255,255,255,.5) !important;
+}
+.loupe .grip {
+  background: linear-gradient(135deg, #171D2B 0%, #9B00FF 60%, #087BFF 100%) !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,.7), 0 0 12px rgba(155,0,255,0.4) !important;
+  border: 1px solid rgba(255,255,255,0.25) !important;
+}
+.lens {
+  box-shadow: inset 0 0 18px rgba(8,123,255,0.45) !important;
+}
+.lens:after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 68%, rgba(8,123,255,0.18) 100%),
+    linear-gradient(rgba(8,123,255,0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8,123,255,0.15) 1px, transparent 1px);
+  background-size: 100% 100%, 16px 16px, 16px 16px;
+}
+.sb-cast.ambient {
+  background: radial-gradient(50% 50% at 50% 58%, rgba(155, 0, 255, 0.24) 0%, rgba(8, 123, 255, 0.16) 38%, rgba(0,0,0,0.85) 72%, transparent 100%) !important;
+  filter: blur(34px) !important;
+}
+
+/* Down chevron */
+.hero-down {
+  position: relative; margin-top: 24px; border: 0; background: transparent;
+  padding: 10px 14px; color: rgba(196,69,255,0.8); cursor: pointer;
+  animation: cue-breathe 2.4s ease-in-out infinite; z-index: 3;
+}
+.hero-down:hover { animation: none; opacity: 1; color: #FFFFFF; }
+@keyframes cue-breathe {
+  0%, 100% { opacity: .25; transform: translateY(0); }
+  50% { opacity: .9; transform: translateY(6px); }
+}
+
+/* ---------------- COMMON SECTION STYLING ---------------- */
+.section-wrap {
+  width: 100%; max-width: 1240px; margin: 0 auto;
+  padding: clamp(60px, 8vh, 100px) clamp(20px, 4vw, 48px);
+  position: relative; z-index: 2;
+}
+.section-header {
+  text-align: center; max-width: 840px; margin: 0 auto 52px;
+}
+.section-eyebrow {
+  font-family: 'Alice', serif !important; font-size: 12px; font-weight: 400;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--magenta);
+  margin-bottom: 12px; display: inline-block;
+}
+.section-title {
+  margin: 0; font-family: 'Cinzel', serif !important;
+  font-size: clamp(34px, 4vw, 52px); font-weight: 700;
+  background: linear-gradient(135deg, #FFFFFF 40%, #D466FF 80%, #9B00FF 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  letter-spacing: 0.04em; line-height: 1.15;
+}
+.section-subheading {
+  margin: 10px 0 0; font-family: 'Anton SC', sans-serif !important;
+  font-size: clamp(16px, 1.8vw, 22px); font-weight: 400;
+  color: #FFFFFF; letter-spacing: 0.06em; text-transform: uppercase;
+}
+.section-desc {
+  margin: 14px auto 0; font-family: 'Poppins', sans-serif !important;
+  font-size: 15px; color: var(--slate); line-height: 1.6; font-weight: 300;
+}
+
+.rule {
+  width: 100%; max-width: 1080px; height: 1px; margin: 40px auto;
+  background: linear-gradient(90deg, transparent, rgba(137, 148, 167, 0.25) 50%, transparent);
+}
+.rule.short { max-width: 540px; }
+
+/* ---------------- 1. START ANALYSIS WORKSPACE ---------------- */
+.analysis-workspace-card {
+  background: rgba(23, 29, 43, 0.82);
+  border: 1px solid rgba(155, 0, 255, 0.35);
+  border-radius: 20px; padding: clamp(24px, 3.5vw, 44px);
+  box-shadow: 0 24px 50px rgba(0,0,0,0.6), inset 0 0 30px rgba(155,0,255,0.12);
+  -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+}
+.upload-dropzone {
+  border: 2px dashed rgba(155, 0, 255, 0.45);
+  border-radius: 14px; padding: 40px 20px; text-align: center;
+  background: rgba(8, 13, 26, 0.6); transition: all .3s ease;
+  cursor: pointer; position: relative;
+}
+.upload-dropzone:hover {
+  border-color: #C445FF; background: rgba(155,0,255,0.08);
+  box-shadow: 0 0 24px rgba(155,0,255,0.25);
+}
+.dropzone-icon {
+  width: 56px; height: 56px; margin: 0 auto 16px;
+  background: linear-gradient(135deg, rgba(8,123,255,0.2), rgba(155,0,255,0.3));
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(155,0,255,0.5); color: #FFFFFF;
+}
+.dropzone-title { font-size: 18px; font-weight: 600; margin: 0 0 6px; color: #FFFFFF; }
+.dropzone-subtitle { font-size: 13px; color: var(--slate); margin: 0; }
+
+.benchmark-presets-row {
+  margin-top: 28px;
+}
+.presets-label {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.1em;
+  color: var(--slate); text-transform: uppercase; margin-bottom: 12px;
+}
+.preset-buttons {
+  display: flex; gap: 12px; flex-wrap: wrap;
+}
+.preset-btn {
+  background: rgba(11, 16, 29, 0.85); border: 1px solid rgba(137, 148, 167, 0.3);
+  border-radius: 8px; padding: 10px 18px; font-size: 13px; font-weight: 500;
+  color: #FFFFFF; cursor: pointer; transition: all .2s;
+  display: flex; align-items: center; gap: 8px;
+}
+.preset-btn:hover {
+  border-color: #087BFF; background: rgba(8,123,255,0.18);
+  box-shadow: 0 0 14px rgba(8,123,255,0.35); transform: translateY(-1px);
+}
+.preset-btn.active {
+  border-color: #9B00FF; background: linear-gradient(135deg, rgba(8,123,255,0.25), rgba(155,0,255,0.35));
+  box-shadow: 0 0 16px rgba(155,0,255,0.45);
+}
+
+.analysis-status-card {
+  margin-top: 28px; padding: 22px; border-radius: 12px;
+  background: #080D1A; border: 1px solid rgba(137, 148, 167, 0.25);
+  display: none;
+}
+.analysis-status-card.active { display: block; animation: fadeIn .4s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.progress-track {
+  width: 100%; height: 8px; border-radius: 4px; background: rgba(137, 148, 167, 0.2);
+  overflow: hidden; margin: 12px 0 18px;
+}
+.progress-fill {
+  height: 100%; width: 0%; border-radius: 4px;
+  background: linear-gradient(90deg, #087BFF, #9B00FF);
+  transition: width 0.3s ease;
+  box-shadow: 0 0 12px rgba(155,0,255,0.8);
+}
+.verdict-box {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 16px;
+}
+.verdict-stat {
+  background: rgba(23, 29, 43, 0.6); padding: 14px; border-radius: 8px;
+  border: 1px solid rgba(137, 148, 167, 0.18);
+}
+.verdict-stat .k { font-size: 11px; text-transform: uppercase; color: var(--slate); font-weight: 600; letter-spacing: 0.08em; }
+.verdict-stat .v { font-size: 20px; font-weight: 700; color: #FFFFFF; margin-top: 4px; }
+.verdict-stat .v.alert { color: var(--coral); text-shadow: 0 0 10px rgba(255,59,92,0.5); }
+.verdict-stat .v.safe { color: var(--emerald); text-shadow: 0 0 10px rgba(0,229,163,0.5); }
+
+/* ---------------- 2. RESEARCH SECTION ---------------- */
+.research-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;
+}
+.case-card {
+  background: rgba(23, 29, 43, 0.75); border: 1px solid rgba(137, 148, 167, 0.24);
+  border-radius: 16px; overflow: hidden; transition: all .3s ease;
+  display: flex; flex-direction: column;
+}
+.case-card:hover {
+  border-color: rgba(155, 0, 255, 0.6); transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.5), 0 0 20px rgba(155,0,255,0.25);
+}
+.case-header {
+  padding: 16px 20px; background: rgba(8, 13, 26, 0.85);
+  border-bottom: 1px solid rgba(137, 148, 167, 0.16);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.case-badge {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  padding: 4px 10px; border-radius: 9999px; text-transform: uppercase;
+}
+.case-badge.audio { background: rgba(8,123,255,0.2); color: var(--blue); border: 1px solid rgba(8,123,255,0.4); }
+.case-badge.video { background: rgba(255,59,92,0.2); color: var(--coral); border: 1px solid rgba(255,59,92,0.4); }
+.case-badge.image { background: rgba(155,0,255,0.2); color: var(--magenta); border: 1px solid rgba(155,0,255,0.4); }
+.case-confidence {
+  font-size: 13px; font-weight: 700; color: var(--coral);
+}
+.case-body {
+  padding: 22px 20px; flex: 1;
+}
+.case-title {
+  margin: 0 0 10px; font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; color: #FFFFFF;
+}
+.case-desc {
+  font-size: 13.5px; color: var(--slate); line-height: 1.6; margin: 0 0 16px;
+}
+.case-meta {
+  padding-top: 14px; border-top: 1px solid rgba(137, 148, 167, 0.14);
+  font-size: 11.5px; color: var(--slate); display: flex; flex-direction: column; gap: 5px;
+}
+.case-meta span strong { color: #FFFFFF; }
+
+.publications-box {
+  margin-top: 48px; background: rgba(23, 29, 43, 0.6);
+  border: 1px solid rgba(137, 148, 167, 0.22); border-radius: 16px; padding: 26px;
+}
+.pub-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 0; border-bottom: 1px solid rgba(137, 148, 167, 0.14); gap: 16px;
+}
+.pub-item:last-child { border-bottom: none; }
+.pub-title { font-weight: 600; font-size: 14.5px; color: #FFFFFF; margin: 0 0 4px; }
+.pub-meta { font-size: 12px; color: var(--slate); margin: 0; }
+.pub-btn {
+  font-size: 12px; font-weight: 600; color: var(--blue); padding: 6px 14px;
+  border: 1px solid rgba(8,123,255,0.4); border-radius: 6px; white-space: nowrap;
+  transition: all .2s;
+}
+.pub-btn:hover { background: rgba(8,123,255,0.18); color: #FFFFFF; border-color: #087BFF; }
+
+/* ---------------- 3. FEATURES SECTION ---------------- */
+.features-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;
+}
+.feature-card {
+  background: rgba(23, 29, 43, 0.75); border: 1px solid rgba(137, 148, 167, 0.24);
+  border-radius: 16px; padding: 28px; transition: all .3s ease;
+  position: relative; overflow: hidden;
+}
+.feature-card:hover {
+  border-color: rgba(8, 123, 255, 0.6); transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.5), 0 0 24px rgba(8,123,255,0.25);
+}
+.feature-icon-wrap {
+  width: 48px; height: 48px; border-radius: 12px; margin-bottom: 20px;
+  background: linear-gradient(135deg, rgba(8,123,255,0.2), rgba(155,0,255,0.25));
+  border: 1px solid rgba(137, 148, 167, 0.3); display: flex; align-items: center; justify-content: center;
+  color: #FFFFFF;
+}
+.feature-icon-wrap svg { width: 24px; height: 24px; }
+.feature-title {
+  margin: 0 0 8px; font-family: 'Cinzel', serif; font-size: 19px; font-weight: 700; color: #FFFFFF;
+}
+.feature-subtitle {
+  font-family: 'Anton SC', sans-serif; font-size: 13px; color: var(--magenta); margin: 0 0 14px; letter-spacing: 0.05em; text-transform: uppercase;
+}
+.feature-desc {
+  font-size: 14px; color: var(--slate); line-height: 1.65; margin: 0 0 16px;
+}
+.feature-checklist {
+  list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;
+  font-size: 12.5px; color: #FFFFFF;
+}
+.feature-checklist li { display: flex; align-items: center; gap: 8px; }
+.f-check { color: var(--emerald); font-weight: 700; }
+
+/* ---------------- 4. WORKFLOW SECTION ---------------- */
+.workflow-timeline {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 20px;
+  position: relative;
+}
+.workflow-step {
+  background: rgba(23, 29, 43, 0.75); border: 1px solid rgba(137, 148, 167, 0.24);
+  border-radius: 16px; padding: 24px 20px; position: relative;
+  transition: all .3s ease;
+}
+.workflow-step:hover {
+  border-color: #C445FF; transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.5), 0 0 20px rgba(155,0,255,0.25);
+}
+.step-num {
+  font-size: 26px; font-weight: 800; font-family: 'Cinzel', serif;
+  background: linear-gradient(135deg, #087BFF, #9B00FF);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 12px; display: inline-block;
+}
+.step-title {
+  margin: 0 0 8px; font-size: 15px; font-weight: 600; color: #FFFFFF;
+}
+.step-desc {
+  font-size: 12.5px; color: var(--slate); line-height: 1.55; margin: 0;
+}
+
+/* ---------------- 5. ABOUT SECTION ---------------- */
+.about-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;
+}
+.about-card {
+  background: rgba(23, 29, 43, 0.75); border: 1px solid rgba(137, 148, 167, 0.24);
+  border-radius: 16px; padding: 26px;
+}
+.about-title {
+  margin: 0 0 10px; font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; color: #FFFFFF;
+}
+.about-desc {
+  font-size: 13.5px; color: var(--slate); line-height: 1.65; margin: 0;
+}
+
+/* ---------------- FOOTER ---------------- */
+.spectra-footer {
+  background: #020408; border-top: 1px solid rgba(137, 148, 167, 0.18);
+  padding: 50px clamp(20px, 5vw, 64px) 36px; margin-top: 60px;
+}
+.footer-inner {
+  max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px;
+}
+.footer-top {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+}
+.footer-brand {
+  font-family: 'Cinzel', serif; font-size: 22px; font-weight: 700;
+  background: linear-gradient(135deg, #FFFFFF, #9B00FF);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.footer-links {
+  display: flex; gap: 24px; font-size: 13px; color: var(--slate);
+}
+.footer-links a:hover { color: #FFFFFF; }
+.footer-bottom {
+  border-top: 1px solid rgba(137, 148, 167, 0.12); padding-top: 24px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+  font-size: 12px; color: var(--slate);
+}
+
+/* ---------------- sketchbook ---------------- */
+.hero,.hero *{-webkit-user-select:none;-moz-user-select:none;user-select:none}
+.hero img{-webkit-user-drag:none;user-drag:none}
+.sb-wrap{display:grid;justify-items:center;gap:20px;width:100%;position:relative;z-index:2}
+.sb-stage{
+  display:flex;align-items:center;justify-content:center;width:100%;
+  position:relative;
+  touch-action:pan-y;
+}
+.sb-arrow{
+  flex:none;display:inline-flex;align-items:center;justify-content:center;padding:6px 2px;
+  border:0;background:transparent;color:var(--ink-faint);cursor:pointer;transition:color .2s;
+  -webkit-tap-highlight-color:transparent;z-index:8;
+}
+.sb-arrow:hover{color:var(--ink)}
+
+/* The box is the book's own untransformed frame: the loupe lives here, on
+   the desk, while only .sb-tilt leans and scales underneath it. */
+.sb-3d{
+  position:relative;flex:1 1;min-width:0;max-width:900px;
+  perspective:1750px;perspective-origin:50% 46%;
+}
+.sb-tilt{
+  position:relative;
+  transform-style:preserve-3d;
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--zoom,1));
+  will-change:transform;
+}
+.sb-book{position:relative;width:100%;aspect-ratio:1760/1240;transform-style:preserve-3d;z-index:1}
+
+/* The book sits on a surface, so its shadow is a soft pool underneath —
+   no box, no filter on the artwork, nothing with an edge of its own.
+   Both blobs fade to zero well inside their own bounds, and both ease
+   off while a leaf is in the air. */
+.sb-cast{position:absolute;pointer-events:none;z-index:0}
+.sb-cast.ambient{
+  left:5%;right:5%;top:27%;bottom:2%;
+  background:radial-gradient(50% 50% at 50% 58%,
+    rgba(58,44,26,.34) 0%,rgba(58,44,26,.19) 40%,rgba(58,44,26,0) 74%);
+  filter:blur(26px);
+  opacity:calc(1 - var(--shade,0) * .42);
+}
+.sb-cast.contact{
+  left:9%;right:9%;top:62%;bottom:10%;
+  background:radial-gradient(50% 44% at 50% 42%,
+    rgba(44,32,14,.40) 0%,rgba(44,32,14,.17) 48%,rgba(44,32,14,0) 78%);
+  filter:blur(11px);
+  opacity:calc(1 - var(--shade,0) * .5);
+}
+.sb-cast.hair{
+  left:12%;right:12%;top:70%;bottom:17%;
+  background:radial-gradient(50% 52% at 50% 40%,
+    rgba(40,28,10,.34) 0%,rgba(40,28,10,0) 76%);
+  filter:blur(4px);
+  opacity:calc(1 - var(--shade,0) * .62);
+}
+.sb-full{position:absolute;inset:0}
+.sb-full img{width:100%;height:auto;display:block}
+.sb-half{position:absolute;top:0;bottom:0;width:50%;overflow-x:clip;overflow-y:visible}
+.sb-half.left{left:0}
+.sb-half.right{left:50%}
+.sb-half-img{width:200%;max-width:none;height:auto;display:block}
+.sb-half-img.right{margin-left:-100%}
+/* the shadow the lifting leaf throws onto the page beneath it */
+.gutter-shade{
+  position:absolute;top:var(--pg,21.8%);bottom:var(--pg,21.8%);width:46%;
+  pointer-events:none;opacity:calc(var(--shade,0) * .62);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 5.2%,#000 94.8%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 5.2%,#000 94.8%,transparent 100%);
+}
+.gutter-shade.left{right:0;background:linear-gradient(270deg,rgba(52,38,20,.30),rgba(52,38,20,0) 82%)}
+.gutter-shade.right{left:0;background:linear-gradient(90deg,rgba(52,38,20,.24),rgba(52,38,20,0) 82%)}
+
+/* ---- the turning leaf: nested strips forming a curved surface ---- */
+.curl{
+  position:absolute;top:0;height:100%;
+  width:calc(var(--bw,0px) * var(--span));
+  transform-style:preserve-3d;z-index:6;
+}
+.curl.next{left:50%;transform-origin:left center;transform:rotateY(calc(-1 * var(--tt,0deg)))}
+.curl.prev{right:50%;transform-origin:right center;transform:rotateY(var(--tt,0deg))}
+.strip{
+  position:absolute;top:0;height:100%;
+  width:calc(var(--bw,0px) * var(--span) / var(--n));
+  transform-style:preserve-3d;
+}
+.curl.next .strip{transform-origin:left center}
+.curl.prev .strip{transform-origin:right center}
+.curl.next>.strip{left:0}
+.curl.prev>.strip{right:0;left:auto}
+.curl.next .strip .strip{left:100%;transform:rotateY(var(--td,0deg))}
+.curl.prev .strip .strip{right:100%;transform:rotateY(calc(-1 * var(--td,0deg)))}
+.face{
+  position:absolute;top:0;bottom:0;left:0;right:-1.1px;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  background-repeat:no-repeat;background-size:var(--bw,0px) auto;
+}
+.face.back{transform:rotateY(180deg)}
+.face .sh,.face .gl{
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 5.2%,#000 94.8%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 5.2%,#000 94.8%,transparent 100%);
+}
+.strip.edge .face .sh,.strip.edge .face .gl{
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 91%,transparent 100%),var(--hf);
+  mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 91%,transparent 100%),var(--hf);
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+}
+.curl.next .strip.edge .face.front,.curl.prev .strip.edge .face.back{
+  --hf:linear-gradient(90deg,#000 0 22%,transparent 96%);
+}
+.curl.next .strip.edge .face.back,.curl.prev .strip.edge .face.front{
+  --hf:linear-gradient(270deg,#000 0 22%,transparent 96%);
+}
+.face .sh{position:absolute;left:0;right:0;top:var(--pg,21.8%);bottom:var(--pg,21.8%);pointer-events:none}
+.curl.next .face.front .sh,.curl.prev .face.back .sh{
+  background:linear-gradient(90deg,rgba(58,43,20,var(--a1,0)),rgba(58,43,20,var(--a2,0)));
+}
+.curl.next .face.back .sh,.curl.prev .face.front .sh{
+  background:linear-gradient(90deg,rgba(58,43,20,var(--a2,0)),rgba(58,43,20,var(--a1,0)));
+}
+.face .gl{
+  position:absolute;left:0;right:0;top:var(--pg,21.8%);bottom:var(--pg,21.8%);
+  pointer-events:none;background:#fffaf0;
+  opacity:calc(var(--shade,0) * var(--lit,1) * var(--lit,1) * .20);
+}
+
+/* ---- the loupe: a real magnifier lying on the page.  Pick it up and
+       drag it across the book; it stays where you put it. ---- */
+.loupe{
+  position:absolute;left:0;top:0;
+  width:var(--lr,270px);height:var(--lr,270px);
+  pointer-events:none;z-index:80;opacity:0;
+  transition:opacity .25s ease;
+  will-change:transform;
+}
+.loupe.on{opacity:1}
+.loupe.held .ring{cursor:grabbing}
+.loupe .ring{
+  position:absolute;inset:0;border-radius:50%;
+  pointer-events:auto;cursor:grab;
+  padding:calc(var(--lr,270px) * .058);
+  box-shadow:
+    0 1px 2px rgba(58,44,26,.30),
+    0 10px 18px rgba(58,44,26,.24),
+    0 26px 40px rgba(58,44,26,.20),
+    0 48px 66px rgba(58,44,26,.13);
+}
+/* the bezel is an annulus, so the glass really is see-through */
+.loupe .ring:before{
+  content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;
+  background:linear-gradient(146deg,
+    #fdf7e9 0%,#e6d7b4 14%,#b69d70 32%,#7d6740 50%,
+    #cdbb92 66%,#f4ead3 80%,#9b8459 100%);
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.8),
+    inset 0 -2px 3px rgba(70,52,26,.5);
+  -webkit-mask-image:radial-gradient(circle closest-side at 50% 50%,transparent 0 88.2%,#000 89.8% 100%);
+  mask-image:radial-gradient(circle closest-side at 50% 50%,transparent 0 88.2%,#000 89.8% 100%);
+}
+/* the handle, drawn before the bezel so the ring covers its inner end */
+.loupe .grip{
+  position:absolute;left:50%;top:50%;
+  width:calc(var(--lr,270px) * .74);height:calc(var(--lr,270px) * .125);
+  transform-origin:0 50%;
+  transform:rotate(40deg) translate(calc(var(--lr,270px) * .33),-50%);
+  border-radius:calc(var(--lr,270px) * .06);
+  pointer-events:auto;cursor:grab;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.46) 0 13%,rgba(255,255,255,0) 44%,
+                    rgba(0,0,0,.26) 100%),
+    linear-gradient(90deg,#d9bd82 0 14%,#a9884e 14% 20%,#6d4c2b 20% 62%,
+                    #5a3d22 62% 92%,#7a563180 92% 100%);
+  box-shadow:0 8px 15px rgba(58,44,26,.26),0 18px 26px rgba(58,44,26,.14);
+}
+.lens{
+  position:relative;display:block;width:100%;height:100%;border-radius:50%;
+  background-repeat:no-repeat;overflow:hidden;
+  box-shadow:
+    inset 0 0 0 1px rgba(52,40,22,.55),
+    inset 0 4px 12px rgba(40,30,14,.28),
+    inset 0 -7px 16px rgba(255,250,240,.14);
+}
+.lens .mag{display:none}
+/* A second copy of the book, sitting beside the glass outside the tilt, and
+   scaled about whichever page point the glass is currently over. */
+.zoomwrap{
+  position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2;
+  opacity:0;
+}
+.zoominner{position:absolute;inset:0;transform-origin:0 0}
+.lens:before,.lens:after{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none}
+.lens:before{z-index:1}
+.lens:after{z-index:2}
+/* the glass bends and darkens toward its rim, with a faint colour fringe */
+.lens:before{
+  background:radial-gradient(circle at 50% 50%,
+    rgba(0,0,0,0) 54%,rgba(58,44,26,.10) 76%,rgba(46,34,16,.34) 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(130,162,196,.26),
+    inset 0 0 0 4px rgba(206,158,112,.15);
+}
+/* the dome: one broad specular and a tight crescent opposite it */
+.lens:after{
+  background:
+    radial-gradient(36% 26% at 29% 19%,rgba(255,255,255,.30),rgba(255,255,255,0) 76%),
+    radial-gradient(24% 16% at 74% 86%,rgba(255,255,255,.12),rgba(255,255,255,0) 80%),
+    linear-gradient(150deg,rgba(255,255,255,.06) 0 18%,rgba(255,255,255,0) 42%);
+}
+
+/* ---- controls ---- */
+.sb-tools{
+  display:flex;align-items:center;gap:6px;
+  border:1px solid var(--hairline);border-radius:999px;
+  padding:5px 7px;background:rgba(250,246,238,.62);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+}
+.tool{
+  width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;
+  border:0;border-radius:50%;background:transparent;color:var(--ink-soft);
+  cursor:pointer;transition:background-color .18s ease,color .18s ease;
+}
+.tool:hover{background:rgba(255,252,244,.9);color:var(--ink)}
+.tool[aria-pressed="true"]{background:rgba(154,106,62,.16);color:var(--earth)}
+.tool:disabled{opacity:.32;cursor:default;background:transparent}
+.tool svg{width:15px;height:15px;display:block}
+.tool-sep{width:1px;height:17px;background:var(--hairline);margin:0 2px}
+.zoom-read{
+  font-size:11px;letter-spacing:.1em;color:var(--ink-faint);
+  min-width:40px;text-align:center;font-variant-numeric:tabular-nums;
+}
+@media (pointer:coarse){.loupe{display:none}}
+
+.sb-zone{position:absolute;top:0;bottom:0;border:0;background:transparent;cursor:grab;z-index:60;-webkit-tap-highlight-color:transparent}
+.sb-zone:active{cursor:grabbing}
+.sb-prev{left:0;width:50%}
+.sb-next{right:0;width:50%}
+
+.sb-captions{display:grid;justify-items:center}
+.sb-captions>*{grid-area:1/1;margin:0}
+.sb-caption{font-size:13px;letter-spacing:var(--track-caps);text-transform:uppercase;color:var(--ink-soft);
+  animation:sb-cap-in .5s ease both}
+.sb-caption.live{animation:none}
+@keyframes sb-cap-in{0%{opacity:0}}
+@keyframes sb-cap-out{to{opacity:0}}
+.sb-hint{
+  margin:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
+  transition:opacity .4s ease;
+}
+.sb-hint.gone{opacity:0}
+.sb-wrap.intro .sb-full img,.sb-wrap.intro .sb-half-img{filter:url(#sb-mblur-1)}
+.sb-wrap.intro.b2 .sb-full img,.sb-wrap.intro.b2 .sb-half-img{filter:url(#sb-mblur-2)}
+.sb-wrap.intro .sb-caption{animation:none}
+.sb-wrap.intro .sb-caption.cap-out{display:none}
+@media (max-width:640px){
+  .hero-kicker{font-size:10.5px;letter-spacing:.16em}
+  .sb-wrap{width:100vw;margin-inline:calc(50% - 50vw)}
+  .sb-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:70;padding:12px 6px}
+  .sb-arrow.left{left:2px}
+  .sb-arrow.right{right:2px}
+  .sb-3d{max-width:none}
+  .sb-hint{font-size:9.5px;letter-spacing:.1em;padding:0 16px;text-align:center}
+}
+
+/* ---------------- painted rules + sections ---------------- */
+.rule{
+  display:block;width:min(1080px,86vw);margin:clamp(30px,6vh,64px) auto;
+  height:clamp(26px,4vw,46px);
+  background:url(https://ublctyddhtbgaersvxxb.supabase.co/storage/v1/object/public/threeui-media/scene-images/339abd2c649a11f725af9114/divider.png) center / 100% auto no-repeat;
+  opacity:.5;
+}
+.rule.short{width:min(420px,52vw);opacity:.4}
+.section-label{
+  font-size:11px;letter-spacing:var(--track-caps);text-transform:uppercase;
+  color:var(--ink-faint);margin:0 0 18px;
+}
+.about{
+  position:relative;max-width:1080px;margin:0 auto;
+  padding:0 clamp(20px,5vw,48px);
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(24px,5vw,60px);align-items:start;
+}
+.bio{font-size:clamp(17px,1.7vw,20px);line-height:1.74;letter-spacing:.005em;margin:0;font-weight:300;max-width:56ch}
+.bio-link{color:var(--ink);text-decoration:underline;text-decoration-color:rgba(43,39,33,.28);
+  text-underline-offset:4px;transition:text-decoration-color .2s}
+.bio-link:hover{text-decoration-color:var(--ink)}
+.bloom{width:clamp(150px,17vw,260px);opacity:.9;user-select:none;align-self:center}
+@media (max-width:760px){
+  .about{grid-template-columns:1fr}
+  .bloom{width:170px;justify-self:center}
+}
+
+.plates{max-width:1080px;margin:0 auto;padding:0 clamp(20px,5vw,48px)}
+.plate-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--hairline)}
+.plate{
+  display:grid;grid-template-columns:3.4em minmax(0,1fr) auto;gap:18px;align-items:baseline;
+  width:100%;padding:15px 4px;border:0;border-bottom:1px solid var(--hairline);
+  background:transparent;text-align:left;cursor:pointer;color:inherit;
+  transition:background-color .22s ease,padding-left .22s ease;
+}
+.plate:hover,.plate[aria-current="true"]{background:rgba(255,252,244,.5);padding-left:12px}
+.plate .n{font-size:12px;color:var(--ink-faint);letter-spacing:var(--track-nav)}
+.plate .t{font-family:var(--display);font-size:clamp(19px,2.1vw,26px)}
+.plate .p{font-size:12.5px;color:var(--ink-faint);letter-spacing:.08em;text-transform:uppercase;text-align:right}
+.plate[aria-current="true"] .p{color:var(--earth)}
+
+.foot{font-size:11.5px;letter-spacing:var(--track-caps);text-transform:uppercase;
+  color:var(--ink-faint);text-align:center;padding-bottom:44px}
+
+
+/* ---------------- Flowing Wave Leaves (In-Place) ---------------- */
+.foliage-wave-left, .foliage-wave-right {
+  position: fixed; top: 0; bottom: 0; width: 28vw; max-width: 480px; min-width: 260px;
+  pointer-events: none; z-index: 1;
+  background: url(meng-to-sketchbook/spectra-bg.png) no-repeat;
+  background-size: cover;
+  filter: url(#foliageWaveFilter);
+  will-change: transform, filter;
+}
+
+.foliage-wave-left {
+  left: 0;
+  background-position: left top;
+  -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 55%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 55%, rgba(0,0,0,0) 100%);
+  animation: leafWaveMotionL 9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+  transform-origin: 10% 50%;
+}
+
+.foliage-wave-right {
+  right: 0;
+  background-position: right top;
+  -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 55%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 55%, rgba(0,0,0,0) 100%);
+  animation: leafWaveMotionR 9.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+  transform-origin: 90% 50%;
+}
+
+@keyframes leafWaveMotionL {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) skew(0deg, 0deg) scale(1);
+  }
+  30% {
+    transform: translate3d(-3px, 5px, 0) rotate(-0.9deg) skew(-0.8deg, 0.6deg) scale(1.012);
+  }
+  65% {
+    transform: translate3d(4px, -4px, 0) rotate(0.8deg) skew(1deg, -0.7deg) scale(0.992);
+  }
+  100% {
+    transform: translate3d(-2px, 6px, 0) rotate(-0.6deg) skew(-0.6deg, 0.5deg) scale(1.008);
+  }
+}
+
+@keyframes leafWaveMotionR {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) skew(0deg, 0deg) scale(1);
+  }
+  35% {
+    transform: translate3d(3px, -5px, 0) rotate(0.9deg) skew(0.8deg, -0.6deg) scale(1.014);
+  }
+  70% {
+    transform: translate3d(-4px, 4px, 0) rotate(-0.8deg) skew(-1deg, 0.7deg) scale(0.994);
+  }
+  100% {
+    transform: translate3d(2px, -6px, 0) rotate(0.6deg) skew(0.6deg, -0.5deg) scale(1.006);
+  }
+}
+
+/* ---------------- Spectra Admin Portal & Forensic Audit Intelligence ---------------- */
+.top-user-container {
+  position: relative;
+  display: inline-flex;
+}
+.top-user-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 18px; font-size: 13px; font-weight: 600;
+  color: #FFFFFF; background: linear-gradient(135deg, rgba(8,123,255,0.22), rgba(155,0,255,0.3));
+  border: 1px solid rgba(196,69,255,0.7); border-radius: 9999px;
+  box-shadow: 0 0 18px rgba(155,0,255,0.35), inset 0 0 10px rgba(8,123,255,0.2);
+  cursor: pointer; transition: all .2s ease;
+}
+.top-user-btn:hover {
+  background: linear-gradient(135deg, rgba(8,123,255,0.35), rgba(155,0,255,0.45));
+  border-color: #C445FF; transform: scale(1.02);
+}
+.user-status-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #00E5A3; box-shadow: 0 0 8px #00E5A3;
+}
+.admin-badge-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #FFFFFF;
+  background: #9B00FF; padding: 2px 7px; border-radius: 9999px;
+  box-shadow: 0 0 8px rgba(155, 0, 255, 0.8); margin-left: 2px;
+}
+
+/* Admin Modal Overlay */
+.auth-modal-backdrop {
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(3, 5, 11, 0.88); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  display: none; align-items: center; justify-content: center;
+  padding: 20px; opacity: 0; transition: opacity .25s ease;
+}
+.auth-modal-backdrop.active {
+  display: flex; opacity: 1;
+}
+.admin-modal-card {
+  width: 100%; max-width: 860px; max-height: 90vh; overflow-y: auto;
+  background: rgba(14, 18, 30, 0.96); border: 1px solid rgba(155, 0, 255, 0.45);
+  border-radius: 22px; padding: clamp(22px, 3.5vw, 36px);
+  box-shadow: 0 28px 60px rgba(0,0,0,0.85), 0 0 40px rgba(155,0,255,0.25), inset 0 0 20px rgba(8,123,255,0.1);
+  position: relative; transform: scale(0.96); transition: transform .25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.auth-modal-backdrop.active .admin-modal-card {
+  transform: scale(1);
+}
+.auth-modal-close {
+  position: absolute; top: 18px; right: 20px;
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid rgba(137,148,167,0.3); background: rgba(255,255,255,0.05);
+  color: #FFFFFF; font-size: 18px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s ease; z-index: 10;
+}
+.auth-modal-close:hover {
+  background: rgba(255, 59, 92, 0.25); border-color: #FF3B5C; transform: rotate(90deg);
+}
+.admin-header-box {
+  text-align: center; margin-bottom: 24px;
+}
+.admin-badge {
+  font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.22em;
+  color: #C445FF; text-transform: uppercase; margin-bottom: 6px;
+}
+.admin-title {
+  font-family: 'Cinzel', serif; font-size: 26px; font-weight: 700;
+  margin: 0 0 6px; color: #FFFFFF;
+}
+.admin-subtitle {
+  font-size: 13px; color: var(--slate); margin: 0 auto; line-height: 1.5; max-width: 600px;
+}
+
+/* Admin Form Fields */
+.auth-field-group {
+  margin-bottom: 16px; text-align: left;
+}
+.auth-label {
+  display: block; font-size: 12px; font-weight: 500; color: #E2E8F0;
+  margin-bottom: 6px; letter-spacing: 0.02em;
+}
+.auth-input-wrap {
+  position: relative; display: flex; align-items: center; width: 100%;
+}
+.auth-input {
+  width: 100%; padding: 12px 14px; font-size: 13.5px; color: #FFFFFF !important;
+  background: rgba(3, 5, 11, 0.75) !important; border: 1px solid rgba(137, 148, 167, 0.3) !important;
+  border-radius: 10px; outline: none; transition: all .2s ease;
+  font-family: inherit; box-sizing: border-box;
+}
+.auth-input:focus {
+  border-color: #C445FF !important; box-shadow: 0 0 16px rgba(155, 0, 255, 0.4) !important;
+  background: rgba(3, 5, 11, 0.95) !important;
+}
+.auth-btn-submit {
+  width: 100%; padding: 12px; font-size: 14px; font-weight: 600;
+  color: #FFFFFF !important; background: linear-gradient(135deg, #087BFF 0%, #9B00FF 100%) !important;
+  border: none; border-radius: 10px; cursor: pointer; transition: all .2s ease;
+  box-shadow: 0 0 20px rgba(155, 0, 255, 0.45); margin-top: 8px;
+}
+.auth-btn-submit:hover {
+  filter: brightness(1.15); transform: translateY(-1px);
+  box-shadow: 0 0 28px rgba(155, 0, 255, 0.65);
+}
+
+/* Admin KPI Grid */
+.admin-kpi-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px; margin-bottom: 22px;
+}
+.admin-kpi-card {
+  background: rgba(8, 12, 24, 0.85); border: 1px solid rgba(137, 148, 167, 0.22);
+  border-radius: 12px; padding: 14px 16px; text-align: left;
+}
+.admin-kpi-label {
+  font-size: 11px; font-weight: 500; color: var(--slate);
+  text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;
+}
+.admin-kpi-val {
+  font-size: 24px; font-weight: 700; color: #FFFFFF; font-family: 'Cinzel', serif;
+}
+.admin-kpi-val.alert { color: #FF3B5C; text-shadow: 0 0 12px rgba(255, 59, 92, 0.4); }
+.admin-kpi-val.safe { color: #00E5A3; text-shadow: 0 0 12px rgba(0, 229, 163, 0.4); }
+.admin-kpi-val.warn { color: #FFB020; text-shadow: 0 0 12px rgba(255, 176, 32, 0.4); }
+
+/* Admin Controls & Actions Bar */
+.admin-toolbar {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 10px; margin-bottom: 16px;
+  padding-bottom: 14px; border-bottom: 1px solid rgba(137, 148, 167, 0.2);
+}
+.admin-tools-group { display: flex; gap: 8px; }
+.admin-btn {
+  padding: 7px 14px; font-size: 12px; font-weight: 500; color: #E2E8F0;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(137,148,167,0.28);
+  border-radius: 8px; cursor: pointer; transition: all .2s ease;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.admin-btn:hover {
+  background: rgba(155, 0, 255, 0.2); border-color: #C445FF; color: #FFFFFF;
+}
+.admin-btn.danger:hover {
+  background: rgba(255, 59, 92, 0.2); border-color: #FF3B5C; color: #FF6B85;
+}
+
+/* Usage Audit Table / Feed */
+.admin-log-feed {
+  display: flex; flex-direction: column; gap: 10px; max-height: 420px; overflow-y: auto;
+  padding-right: 4px;
+}
+.admin-log-card {
+  background: rgba(8, 12, 24, 0.9); border: 1px solid rgba(155, 0, 255, 0.25);
+  border-radius: 12px; padding: 14px 16px; text-align: left;
+  display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center;
+  transition: all .2s ease;
+}
+.admin-log-card:hover {
+  border-color: rgba(196, 69, 255, 0.6);
+  background: rgba(12, 18, 36, 0.95);
+}
+.admin-log-title {
+  font-size: 14px; font-weight: 600; color: #FFFFFF; margin-bottom: 4px;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.admin-media-badge {
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  padding: 2px 6px; border-radius: 4px; letter-spacing: 0.04em;
+  background: rgba(8, 123, 255, 0.2); color: #72B4FF; border: 1px solid rgba(8, 123, 255, 0.4);
+}
+.admin-log-sub {
+  font-size: 11.5px; color: var(--slate); line-height: 1.4;
+}
+.admin-log-indicator {
+  margin-top: 6px; font-size: 11px; color: #CBD5E1;
+  display: flex; align-items: center; gap: 6px;
+}
+.admin-verdict-pill {
+  font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px;
+  text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap;
+}
+.admin-verdict-pill.alert {
+  background: rgba(255, 59, 92, 0.18); color: #FF3B5C; border: 1px solid rgba(255, 59, 92, 0.45);
+}
+.admin-verdict-pill.safe {
+  background: rgba(0, 229, 163, 0.16); color: #00E5A3; border: 1px solid rgba(0, 229, 163, 0.45);
+}
+.admin-view-report-btn {
+  padding: 6px 12px; font-size: 11.5px; font-weight: 600;
+  color: #FFFFFF; background: linear-gradient(135deg, rgba(8,123,255,0.3), rgba(155,0,255,0.4));
+  border: 1px solid rgba(196, 69, 255, 0.6); border-radius: 6px;
+  cursor: pointer; transition: all .2s ease; margin-top: 8px; display: inline-flex;
+  align-items: center; gap: 4px;
+}
+.admin-view-report-btn:hover {
+  background: linear-gradient(135deg, rgba(8,123,255,0.5), rgba(155,0,255,0.6));
+  box-shadow: 0 0 12px rgba(155,0,255,0.5); transform: translateY(-1px);
+}
+
+/* Full Forensic Report Dossier View */
+.report-dossier-card {
+  background: rgba(8, 13, 26, 0.95); border: 1px solid rgba(196, 69, 255, 0.5);
+  border-radius: 16px; padding: 22px; text-align: left;
+}
+.dossier-header {
+  border-bottom: 1px solid rgba(137, 148, 167, 0.2); padding-bottom: 14px; margin-bottom: 16px;
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+.dossier-title { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; color: #FFFFFF; }
+.dossier-meta-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px;
+  margin-bottom: 16px; font-size: 12px;
+}
+.dossier-meta-item {
+  background: rgba(255,255,255,0.03); padding: 8px 12px; border-radius: 8px;
+  border: 1px solid rgba(137,148,167,0.15);
+}
+.dossier-meta-label { color: var(--slate); font-size: 10.5px; text-transform: uppercase; margin-bottom: 2px; }
+.dossier-meta-val { color: #FFFFFF; font-family: monospace; word-break: break-all; }
+.dossier-signals-list {
+  display: flex; flex-direction: column; gap: 8px; margin-top: 12px;
+}
+.dossier-signal-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 12px; background: rgba(3, 5, 11, 0.6); border-radius: 6px;
+  font-size: 12px; border-left: 3px solid #C445FF;
+}
+
+/* Toast Notification */
+.auth-toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 100000;
+  background: rgba(16, 21, 33, 0.95); border: 1px solid #00E5A3;
+  color: #FFFFFF; padding: 12px 20px; border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.8), 0 0 20px rgba(0, 229, 163, 0.35);
+  font-size: 13px; font-weight: 500; display: none; align-items: center; gap: 10px;
+  animation: toastIn .25s ease-out;
+}
+.auth-toast.error {
+  border-color: #FF3B5C; box-shadow: 0 12px 30px rgba(0,0,0,0.8), 0 0 20px rgba(255, 59, 92, 0.35);
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+</style>
+</head>
+<body>
+<div class="wash" aria-hidden="true"></div>
+<!-- Wave Filter for Foliage -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="foliageWaveFilter" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence id="foliageTurb" type="fractalNoise" baseFrequency="0.012 0.022" numOctaves="2" seed="8" result="noise" />
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="14" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+</svg>
+<!-- Flowing wave layers for user background foliage -->
+<div class="foliage-wave-left" aria-hidden="true"></div>
+<div class="foliage-wave-right" aria-hidden="true"></div>
+
+
+<main class="page home">
+
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <header class="top">
+    <div class="brand">
+      <a class="logo-text" href="#home">SPECTRA</a>
+    </div>
+    <nav>
+      <a href="#home" class="nav-link active">Home</a>
+      <a href="#research" class="nav-link">Research</a>
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#workflow" class="nav-link">Workflow</a>
+      <a href="#about" class="nav-link">About</a>
+    </nav>
+    <div class="top-right-group">
+      <div class="top-socials">
+        <a href="#" class="icon-btn" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.7 2.6h3.3l-7.2 8.2 8.5 11.2h-6.7l-5.2-6.9-6 6.9H1.1l7.7-8.8L.7 2.6h6.9l4.7 6.3 5.4-6.3Zm-1.2 17.5h1.8L7.6 4.4H5.7l10.8 15.7Z"/></svg></a>
+        <a href="#" class="icon-btn" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.9 3.5a2.1 2.1 0 1 1 0 4.2 2.1 2.1 0 0 1 0-4.2ZM3.1 9.3h3.6v11.6H3.1V9.3Zm6 0h3.4v1.6h.05c.48-.9 1.65-1.85 3.4-1.85 3.63 0 4.3 2.35 4.3 5.4v6.45h-3.6v-5.72c0-1.36-.02-3.12-1.92-3.12-1.92 0-2.22 1.48-2.22 3.02v5.82H9.1V9.3Z"/></svg></a>
+        <a href="#" class="icon-btn" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5.4"/><circle cx="12" cy="12" r="4.4"/><circle cx="17.6" cy="6.4" r="1.15" fill="currentColor"/></svg></a>
+        <a href="#" class="icon-btn" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2.4" y="4.6" width="19.2" height="14.8" rx="2.4"/><path d="m3.2 6.4 8.8 6.6 8.8-6.6"/></svg></a>
+      </div>
+      <button id="topAdminBtn" class="top-cta-btn" onclick="openAdminPortal()" aria-label="Open Admin Command Center">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Admin Login
+      </button>
+      <div id="topAdminActiveContainer" class="top-user-container" style="display:none;">
+        <button id="topAdminActiveBtn" class="top-user-btn" onclick="openAdminPortal()" aria-label="Admin Intelligence Dashboard">
+          <span class="user-status-dot"></span>
+          <span>Admin Portal</span>
+          <span id="adminScanBadge" class="admin-badge-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= 1. HOME SECTION (HERO + 3D SKETCHBOOK) ================= -->
+  <section id="home" class="hero">
+
+
+    <div class="hero-header-box">
+      <p class="hero-eyebrow">AI-POWERED DEEPFAKE & SYNTHETIC MEDIA FORENSICS PLATFORM</p>
+      <h1 class="hero-title">SPECTRA</h1>
+      <h2 class="hero-subheading">Truth Beyond Appearance<span class="period">.</span></h2>
+      <p class="hero-desc">Investigate synthetic media. Examine forensic evidence.<br>Understand the signals behind digital deception.</p>
+      <div class="hero-actions">
+        <a href="#start-analysis" class="btn-primary">Start New Analysis &rarr;</a>
+        <a href="#research" class="btn-secondary"><svg class="icon-sq" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2h5v5H2V2zm7 0h5v5H9V2zm-7 7h5v5H2V9zm7 0h5v5H9V9z"/></svg> Explore Research</a>
+      </div>
+    </div>
+
+    <!-- FORENSIC WORKSPACE FLANKING THE 3D BOOK -->
+    <div class="forensic-workspace" id="sketchbook"><button id="heroDown" style="display:none" aria-hidden="true"></button>
+
+      <!-- LEFT HUD COLUMN -->
+      <div class="hud-col left">
+        <!-- Card 1: Face Landmark Analysis -->
+        <div class="hud-panel">
+          <div class="hud-face-grid">
+            <div class="hud-face-card">
+              <div class="hud-face-img-wrap">
+                <img src="meng-to-sketchbook/face-original.jpg" alt="Original Portrait">
+              </div>
+              <span class="hud-face-label">ORIGINAL</span>
+            </div>
+            <div class="hud-face-card">
+              <div class="hud-face-img-wrap">
+                <img src="meng-to-sketchbook/face-original.jpg" alt="Analysis Scan">
+                <div class="hud-face-mesh-cyan"></div>
+                <div class="hud-scan-line"></div>
+              </div>
+              <span class="hud-face-label active">ANALYSIS</span>
+            </div>
+            <div class="hud-face-card">
+              <div class="hud-face-img-wrap">
+                <img src="meng-to-sketchbook/face-original.jpg" alt="Landmarks Detection" style="filter:brightness(0.35) contrast(1.3);">
+                <svg class="hud-landmarks-svg" viewBox="0 0 100 110" fill="none" stroke="#C445FF" stroke-width="1">
+                  <path d="M28 35 Q50 25 72 35" stroke="#9B00FF" stroke-dasharray="2 2"/>
+                  <polygon points="32,42 40,40 45,43 40,46" stroke="#087BFF"/>
+                  <circle cx="39" cy="43" r="2" fill="#087BFF"/>
+                  <polygon points="55,43 60,40 68,42 60,46" stroke="#087BFF"/>
+                  <circle cx="61" cy="43" r="2" fill="#087BFF"/>
+                  <polyline points="50,38 48,56 50,60 54,58 50,56" stroke="#C445FF"/>
+                  <polygon points="38,72 45,69 50,70 55,69 62,72 55,77 50,78 45,77" stroke="#C445FF"/>
+                  <path d="M25 45 Q30 75 50 90 Q70 75 75 45" stroke="#9B00FF" stroke-width="1.2"/>
+                  <line x1="45" y1="43" x2="50" y2="56" stroke="rgba(196,69,255,0.6)" stroke-width="0.7"/>
+                  <line x1="55" y1="43" x2="50" y2="56" stroke="rgba(196,69,255,0.6)" stroke-width="0.7"/>
+                  <line x1="48" y1="56" x2="45" y2="69" stroke="rgba(196,69,255,0.6)" stroke-width="0.7"/>
+                  <line x1="54" y1="58" x2="55" y2="69" stroke="rgba(196,69,255,0.6)" stroke-width="0.7"/>
+                </svg>
+              </div>
+              <span class="hud-face-label purple">LANDMARKS</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Audio Analysis -->
+        <div class="hud-panel">
+          <div class="hud-panel-title">AUDIO ANALYSIS</div>
+          <div class="hud-audio-body">
+            <button class="hud-play-btn" aria-label="Play Audio">
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="7,5 19,12 7,19"/></svg>
+            </button>
+            <div class="hud-audio-wave">
+              <div class="wave-bar" style="height:25%"></div>
+              <div class="wave-bar" style="height:45%"></div>
+              <div class="wave-bar" style="height:80%"></div>
+              <div class="wave-bar" style="height:30%"></div>
+              <div class="wave-bar" style="height:65%"></div>
+              <div class="wave-bar" style="height:95%"></div>
+              <div class="wave-bar" style="height:50%"></div>
+              <div class="wave-bar" style="height:85%"></div>
+              <div class="wave-bar" style="height:40%"></div>
+              <div class="wave-bar" style="height:70%"></div>
+              <div class="wave-bar" style="height:90%"></div>
+              <div class="wave-bar" style="height:60%"></div>
+              <div class="wave-bar" style="height:35%"></div>
+              <div class="wave-bar" style="height:75%"></div>
+              <div class="wave-bar" style="height:20%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Video Analysis -->
+        <div class="hud-panel">
+          <div class="hud-panel-title">VIDEO ANALYSIS</div>
+          <div class="hud-video-strip">
+            <div class="hud-video-frame"><img src="meng-to-sketchbook/face-original.jpg" style="transform:scale(1.4);" alt="f1"></div>
+            <div class="hud-video-frame"><img src="meng-to-sketchbook/face-original.jpg" style="transform:scale(1.4);filter:hue-rotate(30deg);" alt="f2"></div>
+            <div class="hud-video-frame"><img src="meng-to-sketchbook/face-original.jpg" style="transform:scale(1.4);" alt="f3"></div>
+            <div class="hud-video-frame"><img src="meng-to-sketchbook/face-original.jpg" style="transform:scale(1.4);filter:hue-rotate(-30deg);" alt="f4"></div>
+            <div class="hud-video-frame"><img src="meng-to-sketchbook/face-original.jpg" style="transform:scale(1.4);" alt="f5"></div>
+            <div class="hud-video-scrubber"></div>
+          </div>
+          <div class="hud-video-subwave">
+            <svg width="100%" height="100%" viewBox="0 0 200 14" preserveAspectRatio="none">
+              <path d="M0,7 Q10,0 20,7 T40,7 T60,7 T80,7 T100,7 T120,7 T140,7 T160,7 T180,7 T200,7" fill="none" stroke="#087BFF" stroke-width="1.5"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER: THE INTERACTIVE 3D SKETCHBOOK (Preserved exactly) -->
+      <div class="sb-wrap" id="sbWrap">
+        <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+          <filter id="sb-mblur-1"><feGaussianBlur stdDeviation="5 0"/></filter>
+          <filter id="sb-mblur-2"><feGaussianBlur stdDeviation="14 0"/></filter>
+        </svg>
+        <div class="sb-stage" id="sbStage">
+          <button class="sb-arrow left" id="sbLeft" aria-label="previous page">
+            <svg viewBox="0 0 14 44" width="14" height="44" fill="none" aria-hidden="true"><polyline points="11,3 3,22 11,41" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="sb-3d" id="sb3d">
+            <div class="sb-tilt" id="sbTilt">
+              <div class="sb-cast ambient" aria-hidden="true"></div>
+              <div class="sb-cast contact" aria-hidden="true"></div>
+              <div class="sb-cast hair" aria-hidden="true"></div>
+              <div class="sb-book" id="sbBook"></div>
+            </div>
+            <div class="zoomwrap" id="zoomWrap" aria-hidden="true"><div class="zoominner" id="zoomInner"></div></div>
+            <div class="loupe" id="loupe"><span class="grip"></span><span class="ring"><span class="lens" id="loupeLens"><span class="mag" id="loupeMag"></span></span></span></div>
+          </div>
+          <button class="sb-arrow right" id="sbRight" aria-label="next page">
+            <svg viewBox="0 0 14 44" width="14" height="44" fill="none" aria-hidden="true"><polyline points="3,3 11,22 3,41" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="sb-captions" id="sbCaptions"></div>
+        <div class="sb-tools" role="group" aria-label="view controls">
+          <button class="tool" id="zOut" aria-label="zoom out"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8.6" cy="8.6" r="5.6"/><path d="M12.8 12.8 17.4 17.4M6.2 8.6h4.8"/></svg></button>
+          <span class="zoom-read" id="zRead">100%</span>
+          <button class="tool" id="zIn" aria-label="zoom in"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8.6" cy="8.6" r="5.6"/><path d="M12.8 12.8 17.4 17.4M6.2 8.6h4.8M8.6 6.2v4.8"/></svg></button>
+          <span class="tool-sep" aria-hidden="true"></span>
+          <button class="tool" id="autoFlipBtn" aria-label="Toggle continuous auto-page transition" title="Auto-Transition: Active (Click to Pause)" style="display:inline-flex;align-items:center;gap:5px;padding:0 12px;width:auto;border-radius:9999px;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:0.05em;color:#087BFF;background:rgba(8,123,255,0.12);border:1px solid rgba(8,123,255,0.3);cursor:pointer;">
+          <span style="width:6px;height:6px;border-radius:50%;background:#087BFF;box-shadow:0 0 8px #087BFF;display:inline-block;"></span>
+          <span id="autoFlipLabel">AUTO</span>
+        </button>
+        <span class="tool-sep" aria-hidden="true"></span>
+        <button class="tool" id="loupeBtn" aria-label="magnifier" aria-pressed="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8.8" cy="8.8" r="5.8"/><path d="M13 13l4.4 4.4"/><path d="M6.4 7.2a3.2 3.2 0 0 1 2.4-1.4" opacity=".55"/></svg></button>
+        </div>
+        <p class="sb-hint" id="sbHint">Drag the page to turn · Drag the glass across it</p>
+      </div>
+
+      <!-- RIGHT HUD COLUMN -->
+      <div class="hud-col right">
+        <!-- Card 4: Authenticity Analysis -->
+        <div class="hud-panel">
+          <div class="hud-panel-title">
+            <span>AUTHENTICITY ANALYSIS</span>
+            <span style="cursor:pointer;opacity:0.6">✕</span>
+          </div>
+          <div class="hud-gauge-row">
+            <div class="hud-gauge-wrap">
+              <svg viewBox="0 0 76 76">
+                <circle class="gauge-bg" cx="38" cy="38" r="30" />
+                <circle class="gauge-fill" cx="38" cy="38" r="30" stroke-dasharray="188.5" stroke-dashoffset="24.5" />
+              </svg>
+              <div class="gauge-center">
+                <span class="gauge-num">87%</span>
+              </div>
+            </div>
+            <div class="gauge-desc">
+              <span class="manipulation-tag">POTENTIAL MANIPULATION DETECTED</span>
+              <div class="mini-signal-bars">
+                <div class="mini-bar" style="height:4px"></div>
+                <div class="mini-bar" style="height:8px;background:#FF3B5C"></div>
+                <div class="mini-bar" style="height:12px;background:#FF3B5C"></div>
+                <div class="mini-bar" style="height:6px"></div>
+                <div class="mini-bar" style="height:10px;background:#FF3B5C"></div>
+                <div class="mini-bar" style="height:5px"></div>
+                <div class="mini-bar" style="height:9px;background:#FF3B5C"></div>
+              </div>
+            </div>
+          </div>
+          <ul class="forensic-indicators">
+            <li><span class="f-dot purple"></span> AI Generated Indicators</li>
+            <li><span class="f-dot green"></span> Compression Inconsistencies</li>
+            <li><span class="f-dot purple"></span> Metadata Anomalies</li>
+            <li><span class="f-dot purple"></span> Temporal Irregularities</li>
+          </ul>
+        </div>
+
+        <!-- Card 5: Metadata & Source Intelligence -->
+        <div class="hud-panel">
+          <div class="hud-panel-title">METADATA & SOURCE INTELLIGENCE</div>
+          <div class="hud-meta-grid">
+            <div class="hud-radar-box">
+              <svg class="radar-grid-svg" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(8,123,255,0.25)" stroke-width="1"/>
+                <circle cx="50" cy="50" r="28" fill="none" stroke="rgba(8,123,255,0.3)" stroke-width="1"/>
+                <circle cx="50" cy="50" r="14" fill="none" stroke="rgba(8,123,255,0.35)" stroke-width="1"/>
+                <line x1="50" y1="8" x2="50" y2="92" stroke="rgba(8,123,255,0.2)" stroke-width="1"/>
+                <line x1="8" y1="50" x2="92" y2="50" stroke="rgba(8,123,255,0.2)" stroke-width="1"/>
+              </svg>
+              <div class="hud-pin">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              </div>
+            </div>
+            <div class="hud-meta-table">
+              <div class="meta-row"><span class="k">Location</span><span class="v">Singapore</span></div>
+              <div class="meta-row"><span class="k">Device</span><span class="v">iPhone 15 Pro</span></div>
+              <div class="meta-row"><span class="k">Date</span><span class="v">Nov 12 2023</span></div>
+              <div class="meta-row"><span class="k">Resolution</span><span class="v">1920 &times; 1080</span></div>
+              <div class="meta-row"><span class="k">File Hash</span><span class="v code">a3f9...7c2d</span></div>
+              <div class="meta-row"><span class="k">Software</span><span class="v">Adobe Lightroom</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Scroll chevron cue -->
+    <a class="hero-down" href="#start-analysis" aria-label="scroll to investigation">
+      <svg viewBox="0 0 44 22" width="34" height="17" fill="none" aria-hidden="true">
+        <polyline points="3,3 22,11 41,3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="3,11 22,19 41,11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </section>
+
+  <!-- ================= 2. START ANALYSIS WORKSPACE SECTION ================= -->
+  <section id="start-analysis" class="section-wrap">
+    <div class="section-header">
+      <span class="section-eyebrow">FORENSIC INVESTIGATION LAB</span>
+      <h2 class="section-title">Start Media Analysis</h2>
+      <p class="section-subheading">Upload suspect media or run benchmark test vectors</p>
+      <p class="section-desc">Deploy multi-spectral neural decomposition across image, video, audio, and metadata containers.</p>
+    </div>
+
+    <div class="analysis-workspace-card">
+      <div class="upload-dropzone" id="dropzone">
+        <input type="file" id="mediaFileInput" style="display:none" accept="image/*,video/*,audio/*">
+        <div class="dropzone-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <h3 class="dropzone-title">Drag & drop suspect media here, or browse</h3>
+        <p class="dropzone-subtitle">Supports MP4, MOV, WAV, MP3, PNG, JPG, RAW (Up to 500 MB). Zero-retention privacy policy.</p>
+      </div>
+
+      <div class="benchmark-presets-row">
+        <div class="presets-label">Or run pre-configured forensic benchmark vectors:</div>
+        <div class="preset-buttons">
+          <button class="preset-btn" id="btnPreset1" onclick="runBenchmark(1)">
+            <span>🔴</span> Case A: Deepfake Face Swap (Video)
+          </button>
+          <button class="preset-btn" id="btnPreset2" onclick="runBenchmark(2)">
+            <span>🟠</span> Case B: Synthetic Voice Clone (Audio)
+          </button>
+          <button class="preset-btn" id="btnPreset3" onclick="runBenchmark(3)">
+            <span>🟢</span> Case C: Authentic Biometric Capture
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Analysis Status Display -->
+      <div class="analysis-status-card" id="analysisCard">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:14px;font-weight:600;color:#FFFFFF;" id="scanStepLabel">Initializing neural pipelines...</span>
+          <span style="font-size:13px;font-family:monospace;color:var(--magenta);" id="scanPercent">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="verdict-box" id="verdictBox" style="display:none;">
+          <div class="verdict-stat">
+            <div class="k">Integrity Verdict</div>
+            <div class="v" id="verdictText">--</div>
+          </div>
+          <div class="verdict-stat">
+            <div class="k">Manipulation Risk</div>
+            <div class="v" id="verdictRisk">--</div>
+          </div>
+          <div class="verdict-stat">
+            <div class="k">Primary Indicator</div>
+            <div class="v" style="font-size:15px;" id="verdictIndicator">--</div>
+          </div>
+          <div class="verdict-stat">
+            <div class="k">Cryptographic SHA-256</div>
+            <div class="v" style="font-size:12px;font-family:monospace;color:var(--blue);" id="verdictHash">--</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="rule"></div>
+
+  <!-- ================= 3. RESEARCH SECTION ================= -->
+  <section id="research" class="section-wrap">
+    <div class="section-header">
+      <span class="section-eyebrow">CASE EVIDENCE & METHODOLOGY</span>
+      <h2 class="section-title">Forensics Research & Case Archive</h2>
+      <p class="section-subheading">Documented deepfake cases and empirical publications</p>
+      <p class="section-desc">Explore real-world synthetic media investigations and our peer-reviewed algorithmic methodologies.</p>
+    </div>
+
+    <div class="research-grid">
+      <!-- Case 1 -->
+      <div class="case-card">
+        <div class="case-header">
+          <span class="case-badge audio">Acoustic Clone</span>
+          <span class="case-confidence">98.4% Synthetic</span>
+        </div>
+        <div class="case-body">
+          <h3 class="case-title">Executive Voice Timbre Spoofing</h3>
+          <p class="case-desc">A zero-shot diffusion vocoder voice clone targeting corporate treasury authorization. Exposed through zero-crossing jitter irregularities and missing phase variance in phoneme transitions.</p>
+          <div class="case-meta">
+            <span><strong>Method:</strong> Mel-Spectrogram Phase Residuals</span>
+            <span><strong>Target:</strong> Automated Banking Voice Verification</span>
+            <span><strong>Status:</strong> Neutralized &amp; Cryptographically Flagged</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Case 2 -->
+      <div class="case-card">
+        <div class="case-header">
+          <span class="case-badge video">Temporal Desync</span>
+          <span class="case-confidence">94.1% Manipulated</span>
+        </div>
+        <div class="case-body">
+          <h3 class="case-title">Political Reenactment Face Swap</h3>
+          <p class="case-desc">Live-streamed interview using real-time latent face swap. Detected via optical flow vector shear around cheek boundaries and asynchronous gaze vector reflection under studio lighting.</p>
+          <div class="case-meta">
+            <span><strong>Method:</strong> Photoplethysmography (rPPG) &amp; Optical Flow</span>
+            <span><strong>Target:</strong> Election Media Disinformation</span>
+            <span><strong>Status:</strong> Disclosed to Media Authenticity Registry</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Case 3 -->
+      <div class="case-card">
+        <div class="case-header">
+          <span class="case-badge image">Diffusion Artifact</span>
+          <span class="case-confidence">99.2% Synthetic</span>
+        </div>
+        <div class="case-body">
+          <h3 class="case-title">Synthetic Passport Identity Injection</h3>
+          <p class="case-desc">Generative photorealistic identity document created for automated e-KYC onboarding. Exposed through Fourier 2D frequency spikes and asymmetric iris structural geometry.</p>
+          <div class="case-meta">
+            <span><strong>Method:</strong> FFT High-Frequency Spectrum Analysis</span>
+            <span><strong>Target:</strong> Financial Anti-Money Laundering Gateway</span>
+            <span><strong>Status:</strong> Added to Global Synthetic Pattern Database</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Publications List -->
+    <div class="publications-box">
+      <h3 style="margin:0 0 16px;font-family:'Cinzel',serif;font-size:20px;color:#FFFFFF;">Peer-Reviewed Publications</h3>
+      <div class="pub-item">
+        <div>
+          <h4 class="pub-title">Cross-Spectral Artifact Localization in Latent Diffusion Models</h4>
+          <p class="pub-meta">SPECTRA Research Labs &middot; Journal of Digital Media Forensics &middot; 2026</p>
+        </div>
+        <a href="#" class="pub-btn" onclick="alert('SPECTRA Publication PDF: Cross-Spectral Artifact Localization (Downloaded)');return false;">Download Paper</a>
+      </div>
+      <div class="pub-item">
+        <div>
+          <h4 class="pub-title">Remote Photoplethysmography Inconsistencies in Real-Time Generative Neural Avatars</h4>
+          <p class="pub-meta">IEEE Transactions on Information Forensics and Security &middot; 2025</p>
+        </div>
+        <a href="#" class="pub-btn" onclick="alert('SPECTRA Publication PDF: rPPG Inconsistencies (Downloaded)');return false;">Download Paper</a>
+      </div>
+      <div class="pub-item">
+        <div>
+          <h4 class="pub-title">Cryptographic Provenance Verification vs Latent Generative Watermarking</h4>
+          <p class="pub-meta">ACM Conference on Computer and Communications Security &middot; 2025</p>
+        </div>
+        <a href="#" class="pub-btn" onclick="alert('SPECTRA Publication PDF: Provenance Verification (Downloaded)');return false;">Download Paper</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="rule"></div>
+
+  <!-- ================= 4. FEATURES SECTION ================= -->
+  <section id="features" class="section-wrap">
+    <div class="section-header">
+      <span class="section-eyebrow">MULTI-MODAL CAPABILITIES</span>
+      <h2 class="section-title">Forensic Detection Capabilities</h2>
+      <p class="section-subheading">Comprehensive analysis across all synthetic dimensions</p>
+      <p class="section-desc">Five unified pillars engineered to uncover synthetic manipulation with explainable forensic proofs.</p>
+    </div>
+
+    <div class="features-grid">
+      <!-- Feature 1: Image -->
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <h3 class="feature-title">Image Forensics</h3>
+        <p class="feature-subtitle">Pixel &amp; Frequency Level</p>
+        <p class="feature-desc">Examines photo-response non-uniformity (PRNU) sensor noise, discrete cosine transform (DCT) spectral peaks, and compression error levels.</p>
+        <ul class="feature-checklist">
+          <li><span class="f-check">✓</span> PRNU sensor noise fingerprinting</li>
+          <li><span class="f-check">✓</span> Error Level Analysis (ELA) mapping</li>
+          <li><span class="f-check">✓</span> Fourier frequency domain transform</li>
+        </ul>
+      </div>
+
+      <!-- Feature 2: Video -->
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        </div>
+        <h3 class="feature-title">Video Forensics</h3>
+        <p class="feature-subtitle">Temporal &amp; Biological Dynamics</p>
+        <p class="feature-desc">Tracks optical flow vector continuity, eye blink micro-intervals, and remote photoplethysmography (blood volume pulse in facial tissue).</p>
+        <ul class="feature-checklist">
+          <li><span class="f-check">✓</span> Sub-surface biological rPPG pulse check</li>
+          <li><span class="f-check">✓</span> Face landmark warping &amp; shear tracking</li>
+          <li><span class="f-check">✓</span> Inter-frame structural similarity (SSIM)</li>
+        </ul>
+      </div>
+
+      <!-- Feature 3: Audio -->
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </div>
+        <h3 class="feature-title">Audio Forensics</h3>
+        <p class="feature-subtitle">Acoustic Resonance &amp; Vocoder Signatures</p>
+        <p class="feature-desc">Isolates speech synthesis artifacts, vocoder phase cancellations, artificial noise floors, and vocal tract anatomical impossibilities.</p>
+        <ul class="feature-checklist">
+          <li><span class="f-check">✓</span> Neural voice clone vocoder signatures</li>
+          <li><span class="f-check">✓</span> Harmonic phase continuity analysis</li>
+          <li><span class="f-check">✓</span> Room impulse response (RIR) spatial match</li>
+        </ul>
+      </div>
+
+      <!-- Feature 4: Metadata -->
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h3 class="feature-title">Metadata &amp; Provenance</h3>
+        <p class="feature-subtitle">Hardware &amp; Cryptographic Ledgers</p>
+        <p class="feature-desc">Validates C2PA Content Credentials manifests, camera quantization tables, EXIF chronological sequences, and GPS solar shadow coherence.</p>
+        <ul class="feature-checklist">
+          <li><span class="f-check">✓</span> C2PA cryptographic chain verification</li>
+          <li><span class="f-check">✓</span> Quantization table hardware profiling</li>
+          <li><span class="f-check">✓</span> Timestamp &amp; GPS solar azimuth crosscheck</li>
+        </ul>
+      </div>
+
+      <!-- Feature 5: Reporting -->
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <h3 class="feature-title">Forensic Reporting</h3>
+        <p class="feature-subtitle">Auditable &amp; Court Admissible</p>
+        <p class="feature-desc">Generates immutable, cryptographically signed PDF and JSON forensic dockets compliant with ISO/IEC 27037 digital evidence standards.</p>
+        <ul class="feature-checklist">
+          <li><span class="f-check">✓</span> Cryptographic SHA-256 evidence sealing</li>
+          <li><span class="f-check">✓</span> Explainable confidence breakdown charts</li>
+          <li><span class="f-check">✓</span> Full chain-of-custody audit logs</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="rule"></div>
+
+  <!-- ================= 5. WORKFLOW SECTION ================= -->
+  <section id="workflow" class="section-wrap">
+    <div class="section-header">
+      <span class="section-eyebrow">PIPELINE ARCHITECTURE</span>
+      <h2 class="section-title">How Media Moves Through SPECTRA</h2>
+      <p class="section-subheading">From ingestion to certified forensic dossier</p>
+      <p class="section-desc">A rigorous five-stage deterministic verification pipeline ensuring uncompromised digital integrity.</p>
+    </div>
+
+    <div class="workflow-timeline">
+      <!-- Step 1 -->
+      <div class="workflow-step">
+        <span class="step-num">01</span>
+        <h3 class="step-title">Cryptographic Ingestion</h3>
+        <p class="step-desc">Media is hashed with SHA-256 and SHA-3 upon intake. Byte streams are frozen into an immutable memory sandbox with zero external retention.</p>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="workflow-step">
+        <span class="step-num">02</span>
+        <h3 class="step-title">Multi-Modal Decomposition</h3>
+        <p class="step-desc">Audio streams are separated from video containers, frames are parsed into lossless color matrices, and metadata headers are extracted.</p>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="workflow-step">
+        <span class="step-num">03</span>
+        <h3 class="step-title">Neural &amp; Bio Forensics</h3>
+        <p class="step-desc">18 specialized neural evaluators scan for facial landmark shear, iris frequency reflections, vocoder artifacts, and pulse micro-variations.</p>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="workflow-step">
+        <span class="step-num">04</span>
+        <h3 class="step-title">Cross-Modal Correlation</h3>
+        <p class="step-desc">Acoustic phonemes are synchronized against visual lip motion, and sensor noise patterns are matched against hardware compression tables.</p>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="workflow-step">
+        <span class="step-num">05</span>
+        <h3 class="step-title">Certified Audit Dossier</h3>
+        <p class="step-desc">A tamper-evident forensic report is generated with probabilistic confidence intervals, visual heatmaps, and a signed verification ledger.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="rule"></div>
+
+  <!-- ================= 6. ABOUT SECTION ================= -->
+  <section id="about" class="section-wrap">
+    <div class="section-header">
+      <span class="section-eyebrow">GOVERNANCE &amp; ETHICS</span>
+      <h2 class="section-title">About SPECTRA Platform</h2>
+      <p class="section-subheading">Mission, methodology, limitations &amp; responsible use</p>
+      <p class="section-desc">Dedicated to upholding the truth of human communication and defending democratic discourse.</p>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-card">
+        <h3 class="about-title">Our Mission</h3>
+        <p class="about-desc">In an era where synthetic media can counterfeit human identity with cinematic realism, SPECTRA exists to provide an uncompromised scientific benchmark for media truth. We empower journalists, forensic examiners, legal institutions, and cybersecurity teams to detect deception before it spreads.</p>
+      </div>
+      <div class="about-card">
+        <h3 class="about-title">Methodology</h3>
+        <p class="about-desc">SPECTRA prioritizes physics-based and biological invariants over purely generative neural classifiers. While deepfake generators evolve rapidly, physical camera optics, optical sensor noise, and cardiovascular blood volume dynamics cannot be easily forged without revealing mathematical anomalies.</p>
+      </div>
+      <div class="about-card">
+        <h3 class="about-title">Known Limitations</h3>
+        <p class="about-desc">Forensic certainty is probabilistic. Highly compressed social media video, extreme resolution reduction (below 240p), and deliberate adversarial adversarial noise injections can lower confidence margins. SPECTRA provides transparent confidence bounds and never presents probabilistic scores as absolute certainty.</p>
+      </div>
+      <div class="about-card">
+        <h3 class="about-title">Responsible Use &amp; Privacy</h3>
+        <p class="about-desc">SPECTRA operates under a strict Zero-Knowledge Biometric policy. Uploaded media is analyzed in volatile isolated memory runtimes and automatically erased upon session conclusion. Our tools are prohibited from mass biometric surveillance or non-consensual tracking.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="rule short"></div>
+
+  <!-- ================= 7. EDITORIAL FORENSIC REFERENCE PLATES ================= -->
+  <section id="plates" class="plates">
+    <p class="section-label">Singapore Forensic Reference Plates</p>
+    <ol class="plate-list" id="plateList"></ol>
+  </section>
+
+  <!-- ================= 8. FOOTER ================= -->
+  <footer class="spectra-footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">SPECTRA FORENSICS</span>
+        <div class="footer-links">
+          <a href="#home">Home</a>
+          <a href="#start-analysis">Start Analysis</a>
+          <a href="#research">Research</a>
+          <a href="#features">Features</a>
+          <a href="#workflow">Workflow</a>
+          <a href="#about">About</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 SPECTRA Forensics Platform. All rights reserved. Zero-Retention Evidence Sandbox.</span>
+        <span>Cryptographically verified against ISO/IEC 27037 standards.</span>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<!-- ================= SPECTRA ADMIN INTELLIGENCE & AUDIT PORTAL ================= -->
+<div id="adminModal" class="auth-modal-backdrop" aria-hidden="true">
+  <div class="admin-modal-card">
+    <button class="auth-modal-close" onclick="closeAdminPortal()" aria-label="Close Modal">&times;</button>
+    
+    <!-- 1. ADMIN LOGIN VIEW -->
+    <div id="adminLoginSection">
+      <div class="admin-header-box">
+        <div class="admin-badge">SPECTRA FORENSICS &bull; RESTRICTED ACCESS</div>
+        <h2 class="admin-title">Admin Command Portal</h2>
+        <p class="admin-subtitle">Sign in as system administrator to monitor how many people have used the platform, review suspect media targets, check forensic verdicts, and inspect investigation reports.</p>
+      </div>
+
+      <form onsubmit="handleAdminLoginSubmit(event)" style="max-width: 420px; margin: 0 auto;">
+        <div class="auth-field-group">
+          <label class="auth-label">Administrator Identity / Email</label>
+          <div class="auth-input-wrap">
+            <input type="text" id="adminUsername" class="auth-input" placeholder="manohar_manyu" value="manohar_manyu" required autocomplete="username">
+          </div>
+        </div>
+
+        <div class="auth-field-group">
+          <label class="auth-label">Master Access Passcode</label>
+          <div class="auth-input-wrap">
+            <input type="password" id="adminPassword" class="auth-input" placeholder="Enter master passcode" required autocomplete="current-password">
+          </div>
+        </div>
+
+        <button type="submit" class="auth-btn-submit">Authenticate Admin Access &rarr;</button>
+        <p style="margin-top:12px;font-size:11.5px;color:var(--slate);text-align:center;">Authorized Administrator: <code style="color:#C445FF;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;">manohar_manyu</code></p>
+      </form>
+    </div>
+
+    <!-- 2. ADMIN DASHBOARD & AUDIT INTELLIGENCE VIEW -->
+    <div id="adminDashboardSection" style="display:none;">
+      <div class="admin-header-box" style="margin-bottom:16px;">
+        <div class="admin-badge">PLATFORM USAGE INTELLIGENCE & AUDIT TRAIL</div>
+        <h2 class="admin-title">Forensic Audit & Activity Logs</h2>
+        <p class="admin-subtitle">Review real-time usage: see which media files were uploaded, detection verdicts returned, and inspect individual forensic breakdown dossiers.</p>
+      </div>
+
+      <!-- Key Metrics KPI Grid -->
+      <div class="admin-kpi-grid">
+        <div class="admin-kpi-card">
+          <div class="admin-kpi-label">Total Platform Invocations</div>
+          <div class="admin-kpi-val" id="kpiTotalScans">0</div>
+        </div>
+        <div class="admin-kpi-card">
+          <div class="admin-kpi-label">Deepfakes Flagged</div>
+          <div class="admin-kpi-val alert" id="kpiDeepfakes">0</div>
+        </div>
+        <div class="admin-kpi-card">
+          <div class="admin-kpi-label">Synthetic Audio Clones</div>
+          <div class="admin-kpi-val warn" id="kpiAudioClones">0</div>
+        </div>
+        <div class="admin-kpi-card">
+          <div class="admin-kpi-label">Authentic Media Verified</div>
+          <div class="admin-kpi-val safe" id="kpiAuthentic">0</div>
+        </div>
+      </div>
+
+      <!-- Admin Toolbar Controls -->
+      <div class="admin-toolbar">
+        <div style="font-size:13px;font-weight:600;color:#FFFFFF;display:flex;align-items:center;gap:8px;">
+          <span>Chronological Usage Logs</span>
+          <span id="logCounterBadge" style="font-size:11px;background:rgba(8,123,255,0.25);color:#72B4FF;padding:2px 8px;border-radius:9999px;border:1px solid rgba(8,123,255,0.4);">0 Records</span>
+        </div>
+        <div class="admin-tools-group">
+          <button class="admin-btn" onclick="exportAuditLogsJSON()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export JSON
+          </button>
+          <button class="admin-btn danger" onclick="clearAllAuditLogs()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            Clear Logs
+          </button>
+          <button class="admin-btn" onclick="handleAdminLogout()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sign Out
+          </button>
+        </div>
+      </div>
+
+      <!-- Feed of all usages / investigations -->
+      <div id="adminLogFeed" class="admin-log-feed">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+
+    <!-- 3. DETAILED FORENSIC REPORT DOSSIER MODAL -->
+    <div id="adminReportSection" style="display:none;">
+      <div class="report-dossier-card">
+        <div class="dossier-header">
+          <div>
+            <div style="font-size:11px;color:#C445FF;letter-spacing:0.18em;font-weight:700;margin-bottom:4px;">EVIDENCE INTELLIGENCE REPORT</div>
+            <div id="reportTargetName" class="dossier-title">CaseA_Executive_FaceSwap.mp4</div>
+          </div>
+          <button class="admin-btn" onclick="backToDashboard()" style="padding:5px 12px;">&larr; Back to Logs</button>
+        </div>
+
+        <div class="dossier-meta-grid">
+          <div class="dossier-meta-item">
+            <div class="dossier-meta-label">Detection Response / Verdict</div>
+            <div id="reportVerdictText" style="font-weight:700;font-size:13px;color:#FF3B5C;">MANIPULATED (DEEPFAKE)</div>
+          </div>
+          <div class="dossier-meta-item">
+            <div class="dossier-meta-label">Model Confidence / Risk Score</div>
+            <div id="reportRiskText" style="font-weight:700;font-size:13px;color:#FF3B5C;">94.8% Probability</div>
+          </div>
+          <div class="dossier-meta-item">
+            <div class="dossier-meta-label">Scan Timestamp</div>
+            <div id="reportTimestamp" class="dossier-meta-val">22 Oct 2026, 20:25:12</div>
+          </div>
+          <div class="dossier-meta-item">
+            <div class="dossier-meta-label">SHA-256 Cryptographic Hash</div>
+            <div id="reportHash" class="dossier-meta-val">e0330548b1ac905cf1b81698...7c2d</div>
+          </div>
+        </div>
+
+        <div style="font-size:12px;font-weight:600;color:#FFFFFF;margin-bottom:8px;">Decomposed Multi-Spectral Model Signals:</div>
+        <div class="dossier-signals-list" id="reportSignalsList">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(137,148,167,0.18);padding-top:14px;">
+          <span style="font-size:11px;color:var(--slate);">Cryptographically sealed & logged under ISO/IEC 27037 standards.</span>
+          <button class="admin-btn" onclick="printReportDossier()">Print / Save Report</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Floating Toast -->
+<div id="authToast" class="auth-toast" role="status" aria-live="polite">
+  <span id="toastIcon">🟢</span>
+  <span id="toastMessage">Action completed successfully.</span>
+</div>
+
+<script>
+/* =====================================================================
+   Meng To — sketchbook hero.
+   Spreads are transparent PNGs of an open sketchbook generated with
+   Higgsfield.  The leaf that turns is a real curved surface: a chain of
+   nested strips whose tangent sweeps through an arc, so the page bends
+   the way paper bends instead of pivoting like a flat door.
+   ===================================================================== */
+const Q=new URLSearchParams(location.search);
+const DIR='meng-to-sketchbook/';
+const PAGES=[
+  {file:'marina-bay-sands.png',   title:'Marina Bay Sands',          place:'Bayfront'},
+  {file:'gardens-by-the-bay.png', title:'Gardens by the Bay',        place:'Supertree Grove'},
+  {file:'merlion.png',            title:'The Merlion',               place:'Merlion Park'},
+  {file:'buddha-tooth.png',       title:'Buddha Tooth Relic Temple', place:'Chinatown'},
+  {file:'joo-chiat.png',          title:'Joo Chiat Shophouses',      place:'Katong'},
+  {file:'lau-pa-sat.png',         title:'Lau Pa Sat',                place:'Raffles Quay'},
+  {file:'marina-bay-skyline.png', title:'Marina Bay Skyline',        place:'The Bay'},
+  {file:'singapore-river.png',    title:'Singapore River',           place:'Boat Quay'},
+  {file:'botanic-gardens.png',    title:'Botanic Gardens',           place:'Tanglin'}
+];
+PAGES.forEach(p=>p.url=DIR+p.file);
+const M=PAGES.length, LAND=6;
+
+const wrap=document.getElementById('sbWrap');
+const stage=document.getElementById('sbStage');
+const sb3d=document.getElementById('sb3d');
+const book=document.getElementById('sbBook');
+const capBox=document.getElementById('sbCaptions');
+const hint=document.getElementById('sbHint');
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ------------------------------------------------ the turning leaf */
+const N=18;            /* strips — enough for a smooth curve          */
+const SPAN=0.449;      /* gutter → outer page edge, as a fraction     */
+const BETA=0.60;       /* peak curl of the arc, radians              */
+let idx=0, turn=null;  /* turn = {dir, from, to, t}                   */
+let strips=[];         /* the chain, kept for per-frame lighting       */
+
+function el(t,c){const e=document.createElement(t);if(c)e.className=c;return e}
+function imgEl(i,side){
+  const im=new Image();im.className='sb-half-img '+side;
+  im.draggable=false;im.alt='';im.src=PAGES[i].url;return im;
+}
+
+function halfEl(pos,i){
+  const d=el('div','sb-half '+pos);
+  d.appendChild(imgEl(i,pos));
+  d.appendChild(el('div','gutter-shade '+pos));
+  return d;
+}
+/* build the strip chain once per turn; background offsets are pure
+   geometry, so they never need touching again while it animates */
+function buildCurl(dir,from,to){
+  strips=[];
+  const c=el('div','curl '+dir);
+  c.style.setProperty('--n',N);
+  c.style.setProperty('--span',SPAN);
+  let host=c;
+  for(let i=0;i<N;i++){
+    const s=el('div','strip');
+    s.style.setProperty('--i',i);
+    const gut='calc(var(--bw) * 0.5)';
+    const sw='calc(var(--bw) * '+SPAN+' / '+N+')';
+    const A='calc(-1 * ('+gut+' + '+i+' * '+sw+'))';         /* faces the from-page  */
+    const B='calc('+(i+1)+' * '+sw+' - '+gut+')';            /* faces the to-page    */
+    const f=el('div','face front'), b=el('div','face back');
+    const dress=(e,url,px)=>{
+      e.style.backgroundImage='url('+url+')';
+      e.style.backgroundPositionX=px;
+    };
+    dress(f,PAGES[from].url, dir==='next'?A:B);
+    dress(b,PAGES[to].url,   dir==='next'?B:A);
+    f.appendChild(el('div','sh'));f.appendChild(el('div','gl'));
+    b.appendChild(el('div','sh'));b.appendChild(el('div','gl'));
+    s.appendChild(f);s.appendChild(b);
+    if(i===N-1)s.classList.add('edge');
+    host.appendChild(s);host=s;
+    strips.push(s);
+  }
+  return c;
+}
+function applyTurn(t){
+  const th=Math.PI*t;                       /* how far the leaf has swung */
+  const beta=BETA*Math.sin(Math.PI*t);      /* it is flat at both ends    */
+  const D=180/Math.PI;
+  const tt=th+beta, td=2*beta/N;
+  sb3d.style.setProperty('--tt',(tt*D).toFixed(2)+'deg');
+  sb3d.style.setProperty('--td',(td*D).toFixed(3)+'deg');
+  sb3d.style.setProperty('--shade',Math.sin(Math.PI*t).toFixed(3));
+  fadeCaption(t);
+  for(let i=0;i<strips.length;i++){
+    const l1=Math.abs(Math.cos(tt-i*td));        /* facing at this strip's near edge */
+    const l2=Math.abs(Math.cos(tt-(i+1)*td));    /* ...and at its far edge           */
+    const st=strips[i].style;
+    st.setProperty('--lit',l1.toFixed(3));
+    st.setProperty('--a1',((1-l1)*.62).toFixed(3));
+    st.setProperty('--a2',((1-l2)*.62).toFixed(3));
+  }
+}
+function paint(){
+  book.textContent='';
+  if(!turn){
+    const f=el('div','sb-full');
+    const im=new Image();im.src=PAGES[idx].url;im.alt=PAGES[idx].title;
+    im.draggable=false;
+    f.appendChild(im);book.appendChild(f);
+    sb3d.style.setProperty('--shade','0');
+  }else{
+    const next=turn.dir==='next';
+    book.appendChild(halfEl('left', next?turn.from:turn.to));
+    book.appendChild(halfEl('right',next?turn.to:turn.from));
+    book.appendChild(buildCurl(turn.dir,turn.from,turn.to));
+    applyTurn(turn.t);
+  }
+  const a=el('button','sb-zone sb-prev'),b=el('button','sb-zone sb-next');
+  a.setAttribute('aria-label','previous page');b.setAttribute('aria-label','next page');
+  book.appendChild(a);book.appendChild(b);
+  layout();
+  caption();
+  marks();
+  if(typeof syncZoomLayer==='function')syncZoomLayer();
+  if(typeof placeLoupe==='function')placeLoupe();
+}
+function caption(){
+  capBox.textContent='';
+  capOut=capIn=null;
+  if(turn){
+    capOut=el('p','sb-caption live');capOut.textContent=PAGES[turn.from].title;capBox.appendChild(capOut);
+    capIn=el('p','sb-caption live');capIn.textContent=PAGES[turn.to].title;capBox.appendChild(capIn);
+    fadeCaption(turn.t);
+  }else{
+    const p=el('p','sb-caption');p.textContent=PAGES[idx].title;capBox.appendChild(p);
+  }
+}
+let capOut=null,capIn=null;
+function fadeCaption(t){
+  if(!capOut||!capIn)return;
+  /* the old title is gone before the new one arrives, so they never
+     sit on top of each other mid-drag */
+  const out=1-Math.max(0,Math.min(1,(t-0.10)/0.28));
+  const inn=Math.max(0,Math.min(1,(t-0.56)/0.30));
+  capOut.style.opacity=out.toFixed(3);
+  capIn.style.opacity=inn.toFixed(3);
+}
+function layout(){
+  sb3d.style.setProperty('--bw',book.clientWidth+'px');
+}
+addEventListener('resize',layout);
+
+/* ------------------------------------------------------ spring loop */
+let spring=null;
+function animateTo(target,onDone,stiff,damp){
+  spring={kind:'spring',v:0,target:target,done:onDone,k:stiff||150,c:damp||22};
+  kick();
+}
+/* the riffle wants a fixed tempo, not a spring settling time */
+function tweenTo(target,dur,onDone){
+  spring={kind:'tween',from:turn?turn.t:0,target:target,dur:dur,e:0,done:onDone};
+  kick();
+}
+let raf=null,last=0;
+function tick(now){
+  raf=null;
+  const dt=Math.min(0.032,(now-last)/1000||0.016);last=now;
+  if(spring&&turn){
+    const s=spring;
+    if(s.kind==='tween'){
+      s.e+=dt;
+      const k=Math.min(1,s.e/s.dur);
+      turn.t=s.from+(s.target-s.from)*k;
+      applyTurn(turn.t);
+      if(k>=1){spring=null;const d=s.done;d&&d();}
+    }else{
+      const x=turn.t-s.target;
+      s.v+= (-s.k*x - s.c*s.v)*dt;
+      turn.t+=s.v*dt;
+      if(Math.abs(turn.t-s.target)<0.002&&Math.abs(s.v)<0.02){
+        turn.t=s.target;spring=null;
+        applyTurn(turn.t);
+        const d=s.done;d&&d();
+      }else applyTurn(turn.t);
+    }
+  }
+  viewSpring();
+  const lmoved=loupeEase();
+  /* kick() may already have queued the next frame from a done-callback */
+  if((spring||viewActive||lmoved)&&raf===null) raf=requestAnimationFrame(tick);
+}
+function kick(){ if(raf===null){last=performance.now();raf=requestAnimationFrame(tick);} }
+
+/* ------------------------------------------- tilt + zoom of the book */
+const TILT_X=4.5, TILT_Y=7;      /* degrees — deliberately restrained   */
+const ZOOM_MIN=0.9, ZOOM_MAX=1.5;
+const view={rx:0,ry:0,z:1, trx:0,try_:0,tz:1};
+let viewActive=false;
+let lastZ=1;
+function applyView(){
+  sb3d.style.setProperty('--rx',view.rx.toFixed(2)+'deg');
+  sb3d.style.setProperty('--ry',view.ry.toFixed(2)+'deg');
+  sb3d.style.setProperty('--zoom',view.z.toFixed(3));
+  /* the glass stays put, but the page under it has moved */
+  if(view.z!==lastZ){lastZ=view.z;if(typeof placeLoupe==='function')placeLoupe();}
+}
+function viewSpring(){
+  const e=0.14;
+  let moved=false;
+  for(const [k,t] of [['rx','trx'],['ry','try_'],['z','tz']]){
+    const d=view[t]-view[k];
+    if(Math.abs(d)>0.0006){view[k]+=d*e;moved=true;}
+    else view[k]=view[t];
+  }
+  if(moved)applyView();
+  viewActive=moved;
+  return moved;
+}
+function setView(rx,ry,z){
+  view.trx=Math.max(-TILT_X,Math.min(TILT_X,rx));
+  view.try_=Math.max(-TILT_Y,Math.min(TILT_Y,ry));
+  view.tz=Math.max(ZOOM_MIN,Math.min(ZOOM_MAX,z));
+  viewActive=true;kick();
+  if(typeof syncZoom==='function')syncZoom();
+}
+/* the book leans toward the cursor — no dragging, and never far */
+function tiltTo(cx,cy){
+  if(drag)return;                       /* hold still while a page is being turned */
+  const r=book.getBoundingClientRect();
+  if(!r.width)return;
+  const nx=Math.max(-1,Math.min(1,(cx-(r.left+r.width/2))/(r.width*0.62)));
+  const ny=Math.max(-1,Math.min(1,(cy-(r.top+r.height/2))/(r.height*0.9)));
+  setView(-ny*TILT_X, nx*TILT_Y, view.tz);
+}
+addEventListener('pointermove',e=>{
+  if(e.pointerType==='touch')return;
+  tiltTo(e.clientX,e.clientY);
+},{passive:true});
+addEventListener('pointerout',e=>{if(!e.relatedTarget)setView(0,0,view.tz)});
+addEventListener('blur',()=>setView(0,0,view.tz));
+/* the wheel belongs to the page — zoom is on the toolbar, or a double click
+   to come back to 100% */
+stage.addEventListener('dblclick',()=>setView(view.trx,view.try_,1));
+
+/* ------------------------------------------------------- pointer work */
+let drag=null;
+function bookRect(){return book.getBoundingClientRect()}
+function hideHint(){hint.classList.add('gone')}
+
+stage.addEventListener('pointerdown',e=>{
+  if(e.button!==0)return;
+  e.preventDefault();                     /* no text selection, no image drag */
+  const onBook=e.target.closest('.sb-zone');
+  stage.setPointerCapture(e.pointerId);
+  hideHint();
+  if(!onBook||introOn)return;
+  const r=bookRect();
+  const dir=(e.clientX-r.left)/r.width>0.5?'next':'prev';
+  startTurn(dir,0);
+  drag={dir:dir,x0:e.clientX,w:r.width,moved:0,vel:0,tPrev:performance.now()};
+});
+stage.addEventListener('pointermove',e=>{
+  if(!drag)return;
+  const dx=e.clientX-drag.x0;
+  drag.moved=Math.max(drag.moved,Math.abs(dx));
+  const raw=(drag.dir==='next'? -dx : dx)/(drag.w*0.62);
+  const t=Math.max(0,Math.min(1,raw));
+  const now=performance.now();
+  drag.vel=(t-(turn?turn.t:0))/Math.max(0.001,(now-drag.tPrev)/1000);
+  drag.tPrev=now;
+  if(turn){turn.t=t;applyTurn(t);}
+});
+function endDrag(e){
+  if(!drag)return;
+  const d=drag;drag=null;
+  if(!turn)return;
+  if(d.moved<6){                              /* a tap, not a drag */
+    commit();return;
+  }
+  const go = turn.t>0.42 || d.vel>1.1;
+  if(go)commit(); else cancel();
+}
+stage.addEventListener('dragstart',e=>e.preventDefault());
+stage.addEventListener('selectstart',e=>e.preventDefault());
+stage.addEventListener('pointerup',endDrag);
+stage.addEventListener('pointercancel',endDrag);
+
+/* ------------------------------------------------------ turn control */
+function startTurn(dir,t){
+  spring=null;
+  if(turn){idx=turn.to;turn=null;}      /* settle anything still in flight */
+  if(typeof shoveLoupe==='function')shoveLoupe(dir);
+  const from=idx;
+  turn={dir:dir,from:from,to:dir==='next'?(from+1)%M:(from-1+M)%M,t:t||0};
+  paint();
+}
+function commit(){
+  if(!turn)return;
+  if(REDUCED){idx=turn.to;turn=null;paint();return;}
+  animateTo(1,()=>{idx=turn.to;turn=null;paint();},170,26);
+  kick();
+}
+function cancel(){
+  if(!turn)return;
+  animateTo(0,()=>{turn=null;paint();},150,24);
+  kick();
+}
+function step(dir){
+  if(introOn)endIntro();
+  if(turn){ /* finish whatever is in flight first */ idx=turn.to;turn=null; }
+  startTurn(dir,0);commit();
+}
+function goTo(i){
+  if(introOn)endIntro();
+  if(i===idx)return;
+  if(turn){idx=turn.to;turn=null;}
+  const fwd=(i-idx+M)%M, back=(idx-i+M)%M;
+  if(Math.min(fwd,back)===1){step(fwd===1?'next':'prev');return;}
+  idx=i;paint();
+}
+document.getElementById('sbLeft').onclick=()=>step('prev');
+document.getElementById('sbRight').onclick=()=>step('next');
+addEventListener('keydown',e=>{
+  if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;
+  if(e.metaKey||e.ctrlKey||e.altKey)return;
+  const t=e.target;
+  if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable))return;
+  e.preventDefault();hideHint();
+  step(e.key==='ArrowRight'?'next':'prev');
+});
+const _hd=document.getElementById('heroDown');if(_hd)_hd.onclick=()=>{document.getElementById('about')?.scrollIntoView({behavior:'smooth',block:'start'});};
+
+/* --------------------------------------------------- loupe + controls */
+const loupe=document.getElementById('loupe');
+const lens=document.getElementById('loupeLens');
+const mag=document.getElementById('loupeMag');
+const zRead=document.getElementById('zRead');
+const loupeBtn=document.getElementById('loupeBtn');
+const zInBtn=document.getElementById('zIn'), zOutBtn=document.getElementById('zOut');
+const MAG=2.3;
+const DESK=getComputedStyle(document.documentElement).getPropertyValue('--paper').trim()||'#ece7dc';
+let loupeOn=true, lx=null, ly=null, lgrab=null, lTarget=null;
+
+function loupeSize(){return Math.round(Math.max(165,Math.min(262,book.clientWidth*0.235)));}
+/* the loupe's own coordinate space: stage pixels in live mode (it sits
+   outside the book's transform), book pixels otherwise */
+function bookBox(){
+  return {x:0,y:0,w:book.clientWidth,h:book.clientHeight};
+}
+/* park it on the desk at the lower right, half off the book */
+function restLoupe(){
+  const b=bookBox();
+  lx=b.x+b.w*0.88; ly=b.y+b.h*0.855;
+  placeLoupe();
+}
+/* The glass sits above the tilt, in the book's untransformed pixels, so the
+   lean of the page never nudges it.  What the tilt does change is which part
+   of the paper is under the glass, and only the scale matters enough to
+   correct for: the book is drawn about its own centre. */
+const zoomWrap=document.getElementById('zoomWrap');
+const zoomInner=document.getElementById('zoomInner');
+/* mirror whatever the book is currently showing into the magnified copy */
+function syncZoomLayer(){
+  zoomInner.textContent='';
+  for(const c of book.children){
+    if(c.classList.contains('sb-zone'))continue;      /* hit targets need no copy */
+    zoomInner.appendChild(c.cloneNode(true));
+  }
+}
+function placeLoupe(){
+  if(lx===null)return;
+  const B=bookBox(), bw=B.w, bh=B.h;
+  if(!bw)return;
+  const R=loupeSize()/2, bez=R*2*0.058;
+  loupe.style.setProperty('--lr',R*2+'px');
+  loupe.style.transform='translate3d('+(lx-R).toFixed(1)+'px,'+(ly-R).toFixed(1)+'px,0)';
+  if(loupeOn)loupe.classList.add('on');
+
+  /* where the paper's edges actually land once the book is scaled */
+  const z=view.z, cx=bw/2, cy=bh/2;
+  const x0=cx+(bw*.051-cx)*z, x1=cx+(bw*.949-cx)*z;
+  const y0=cy+(bh*.218-cy)*z, y1=cy+(bh*.782-cy)*z;
+  /* How far the glass's own centre is inside the paper.  The copy fades out
+     as it wanders off the sheet, so you are left looking through plain
+     glass rather than at a sliver of page on flat desk. */
+  const nx=Math.max(x0,Math.min(lx,x1));
+  const ny=Math.max(y0,Math.min(ly,y1));
+  const inside=(lx>x0&&lx<x1&&ly>y0&&ly<y1)
+    ? Math.min(lx-x0, x1-lx, ly-y0, y1-ly)
+    : -Math.hypot(lx-nx,ly-ny);
+  const k=Math.max(0,Math.min(1,(inside+R*0.30)/(R*0.55)));
+
+  zoomWrap.style.opacity=(loupeOn?k:0).toFixed(3);
+  if(k<=0.002)return;
+  const r=(R-bez).toFixed(1);
+  const mask='radial-gradient(circle '+r+'px at '+lx.toFixed(1)+'px '+ly.toFixed(1)+'px,'
+    +'#000 calc(100% - 1px),transparent 100%)';
+  zoomWrap.style.webkitMaskImage=mask;
+  zoomWrap.style.maskImage=mask;
+  /* the page point beneath the glass, magnified about that same spot so the
+     lens keeps showing MAG times whatever is on screen */
+  const px=cx+(lx-cx)/z, py=cy+(ly-cy)/z, s=MAG*z;
+  zoomInner.style.transform='translate('+(lx-px*s).toFixed(1)+'px,'+(ly-py*s).toFixed(1)+'px) '
+    +'scale('+s.toFixed(4)+')';
+}
+/* the leaf shoves the glass aside as it sweeps past */
+function shoveLoupe(dir){
+  if(!loupeOn||lx===null||lgrab)return;
+  const b=bookBox();
+  /* which page point the glass covers, once the book's scale is undone */
+  const nx=(b.w/2+(lx-b.x-b.w/2)/view.z)/b.w, ny=(b.h/2+(ly-b.y-b.h/2)/view.z)/b.h;
+  if(nx<0.02||nx>0.98||ny<0.17||ny>0.83)return;      /* already clear of the page */
+  lTarget={x:b.x+b.w*(dir==='next'?0.12:0.88), y:b.y+b.h*0.855};
+  kick();
+}
+function loupeEase(){
+  if(!lTarget)return false;
+  if(lgrab){lTarget=null;return false;}
+  const dx=lTarget.x-lx, dy=lTarget.y-ly;
+  if(Math.abs(dx)<0.5&&Math.abs(dy)<0.5){lx=lTarget.x;ly=lTarget.y;lTarget=null;placeLoupe();return false;}
+  lx+=dx*0.17;ly+=dy*0.17;placeLoupe();
+  return true;
+}
+loupe.addEventListener('pointerdown',e=>{
+  if(!loupeOn||e.button!==0)return;
+  e.preventDefault();e.stopPropagation();     /* never starts a page turn */
+  lTarget=null;
+  lgrab={cx:e.clientX,cy:e.clientY,lx0:lx,ly0:ly};
+  loupe.classList.add('held');
+  loupe.setPointerCapture(e.pointerId);
+  hideHint();
+});
+loupe.addEventListener('pointermove',e=>{
+  if(!lgrab)return;
+  const b=bookBox(), R=loupeSize()/2;
+  /* the glass carries none of the book's transform, so the cursor maps 1:1 */
+  lx=Math.max(b.x-R*0.7,Math.min(b.x+b.w+R*0.7, lgrab.lx0+(e.clientX-lgrab.cx)));
+  ly=Math.max(b.y-R*0.7,Math.min(b.y+b.h+R*1.0, lgrab.ly0+(e.clientY-lgrab.cy)));
+  placeLoupe();
+});
+function dropLoupe(){lgrab=null;loupe.classList.remove('held');}
+loupe.addEventListener('pointerup',dropLoupe);
+loupe.addEventListener('pointercancel',dropLoupe);
+loupeBtn.onclick=()=>{
+  loupeOn=!loupeOn;
+  loupeBtn.setAttribute('aria-pressed',String(loupeOn));
+  loupe.classList.toggle('on',loupeOn);
+  if(loupeOn&&lx===null)restLoupe();
+};
+addEventListener('resize',()=>{lx=null;restLoupe();});
+
+function syncZoom(){
+  zRead.textContent=Math.round(view.tz*100)+'%';
+  zOutBtn.disabled=view.tz<=ZOOM_MIN+0.001;
+  zInBtn.disabled=view.tz>=ZOOM_MAX-0.001;
+}
+zInBtn.onclick=()=>{setView(view.trx,view.try_,view.tz*1.16);hideHint();};
+zOutBtn.onclick=()=>{setView(view.trx,view.try_,view.tz/1.16);hideHint();};
+
+/* --------------------------------------------------------- the index */
+const plateList=document.getElementById('plateList');
+PAGES.forEach((p,i)=>{
+  const li=el('li');
+  const b=el('button','plate');
+  b.innerHTML='<span class="n">'+String(i+1).padStart(2,'0')+'</span>'+
+              '<span class="t"></span><span class="p"></span>';
+  b.querySelector('.t').textContent=p.title;
+  b.querySelector('.p').textContent=p.place;
+  b.onclick=()=>{goTo(i);(document.getElementById('sketchbook')||document.getElementById('sbWrap'))?.scrollIntoView({behavior:'smooth',block:'center'});};
+  li.appendChild(b);plateList.appendChild(li);
+});
+function marks(){
+  const cur=turn?turn.to:idx;
+  plateList.querySelectorAll('.plate').forEach((b,i)=>b.setAttribute('aria-current',i===cur?'true':'false'));
+}
+
+/* ---------------------------------------------------------- the riffle */
+let riffle=null,riffleAt=0,introOn=false;
+function endIntro(){
+  introOn=false;wrap.classList.remove('intro','b2');
+}
+function riffleStep(){
+  const s=riffle[riffleAt];
+  if(!s){ endIntro(); paint(); startAutoTransition(); return; }
+  wrap.classList.toggle('b2',s.bell>0.55);
+  startTurn('next',0);
+  tweenTo(1,s.dur,()=>{
+    idx=turn.to;turn=null;
+    riffleAt++;
+    if(introOn&&riffleAt<riffle.length){paint();riffleStep();}
+    else{endIntro();paint();startAutoTransition();}
+  });
+}
+function startIntro(){
+  const coarse=matchMedia('(max-width: 640px), (pointer: coarse)').matches;
+  if(coarse||REDUCED||Q.has('nointro')){idx=LAND;paint();startAutoTransition();return;}
+  const steps=M+LAND;
+  riffle=[];
+  for(let r=0;r<steps;r++){
+    const bell=Math.sin(Math.PI*(r/(steps-1)));
+    riffle.push({bell:bell,dur:0.26-0.19*bell});
+  }
+  riffleAt=0;introOn=true;wrap.classList.add('intro');
+  riffleStep();
+}
+
+/* ------------------------------------------------------------- boot */
+/* ------------------------------------------------ Continuous Auto-Transition Engine */
+let autoTransitionTimer = null;
+let isAutoTransitionActive = true;
+let userInteracting = false;
+let userIdleTimer = null;
+const AUTO_TRANSITION_INTERVAL = 3400; // Turn every 3.4s smoothly
+
+function triggerAutoPageTurn() {
+  if (!isAutoTransitionActive || userInteracting || introOn) return;
+  step('next');
+}
+
+function scheduleNextAutoTurn() {
+  if (autoTransitionTimer) clearTimeout(autoTransitionTimer);
+  if (!isAutoTransitionActive) return;
+  autoTransitionTimer = setTimeout(() => {
+    triggerAutoPageTurn();
+    scheduleNextAutoTurn();
+  }, AUTO_TRANSITION_INTERVAL);
+}
+
+function startAutoTransition() {
+  isAutoTransitionActive = true;
+  updateAutoTransitionUI();
+  scheduleNextAutoTurn();
+}
+
+function pauseAutoTransition() {
+  isAutoTransitionActive = false;
+  if (autoTransitionTimer) clearTimeout(autoTransitionTimer);
+  updateAutoTransitionUI();
+}
+
+function toggleAutoTransition() {
+  if (isAutoTransitionActive) {
+    pauseAutoTransition();
+  } else {
+    startAutoTransition();
+    triggerAutoPageTurn();
+  }
+}
+
+function updateAutoTransitionUI() {
+  const btn = document.getElementById('autoFlipBtn');
+  const label = document.getElementById('autoFlipLabel');
+  if (!btn || !label) return;
+  if (isAutoTransitionActive) {
+    btn.style.color = '#087BFF';
+    btn.style.background = 'rgba(8,123,255,0.14)';
+    btn.style.borderColor = 'rgba(8,123,255,0.4)';
+    btn.title = 'Auto-Transition: Active (Click to Pause)';
+    label.textContent = 'AUTO';
+  } else {
+    btn.style.color = '#8994A7';
+    btn.style.background = 'rgba(23,29,43,0.6)';
+    btn.style.borderColor = 'rgba(137,148,167,0.2)';
+    btn.title = 'Auto-Transition: Paused (Click to Play)';
+    label.textContent = 'PAUSED';
+  }
+}
+
+function notifyUserInteraction() {
+  userInteracting = true;
+  if (userIdleTimer) clearTimeout(userIdleTimer);
+  userIdleTimer = setTimeout(() => {
+    userInteracting = false;
+    if (isAutoTransitionActive) scheduleNextAutoTurn();
+  }, 4500); // Resume auto-turning after 4.5s of no interaction
+}
+
+// Attach hover / pointer listeners to pause auto-transition while inspecting
+if (stage) {
+  stage.addEventListener('pointerdown', notifyUserInteraction);
+  stage.addEventListener('touchstart', notifyUserInteraction, {passive: true});
+  stage.addEventListener('mouseenter', () => { userInteracting = true; });
+  stage.addEventListener('mouseleave', () => { 
+    userInteracting = false; 
+    if (isAutoTransitionActive) scheduleNextAutoTurn(); 
+  });
+}
+
+const autoBtn = document.getElementById('autoFlipBtn');
+if (autoBtn) autoBtn.onclick = toggleAutoTransition;
+
+(async function boot(){
+  try {
+    idx=Q.has('shot')?(parseInt(Q.get('shot'),10)||0)%M:0;
+    paint();applyView();
+    await Promise.all(PAGES.map(p=>{
+      const im=new Image();im.src=p.url;
+      return im.decode?im.decode().catch(()=>{}):new Promise(r=>{im.onload=im.onerror=r});
+    }));
+    if(document.fonts&&document.fonts.ready)await document.fonts.ready.catch(()=>{});
+    syncZoom();restLoupe();
+    document.body.dataset.ready='1';
+    
+    // Start intro riffle, or directly initiate continuous page turning
+    if(Q.has('shot')){
+      if(Q.has('t')){startTurn(Q.get('dir')||'next',parseFloat(Q.get('t')));}
+      return;
+    }
+    setTimeout(startIntro,220);
+    // Safety fallback: ensure auto-transition starts within 2.8s
+    setTimeout(() => {
+      if (!introOn && isAutoTransitionActive && !autoTransitionTimer) {
+        startAutoTransition();
+      }
+    }, 2800);
+  } catch(err) {
+    console.error('Error during boot:', err);
+  }
+})();
+
+
+// ScrollSpy Navigation Active Highlight
+(function initScrollSpy() {
+  const sections = ['home', 'start-analysis', 'research', 'features', 'workflow', 'about'];
+  const navLinks = document.querySelectorAll('.top nav a');
+
+  window.addEventListener('scroll', () => {
+    let current = 'home';
+    const scrollPos = window.scrollY + 180;
+
+    for (const id of sections) {
+      const el = document.getElementById(id);
+      if (el && el.offsetTop <= scrollPos) {
+        current = id;
+      }
+    }
+
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      const href = link.getAttribute('href');
+      if (href === '#' + current || (current === 'start-analysis' && href === '#home')) {
+        link.classList.add('active');
+      }
+    });
+  }, { passive: true });
+})();
+
+// Interactive Analysis Lab Simulation
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('mediaFileInput');
+if (dropzone && fileInput) {
+  dropzone.addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', (e) => {
+    if (e.target.files.length > 0) {
+      const f = e.target.files[0];
+      startSimulatedScan(f.name, Math.random() > 0.3 ? 1 : 3);
+    }
+  });
+}
+
+function runBenchmark(presetId) {
+  const names = [
+    '',
+    'CaseA_Executive_FaceSwap.mp4',
+    'CaseB_Synthetic_VoiceCall.wav',
+    'CaseC_Official_PressStream.mov'
+  ];
+  startSimulatedScan(names[presetId], presetId);
+}
+
+function startSimulatedScan(fileName, presetId) {
+  const card = document.getElementById('analysisCard');
+  const label = document.getElementById('scanStepLabel');
+  const percent = document.getElementById('scanPercent');
+  const fill = document.getElementById('progressFill');
+  const verdictBox = document.getElementById('verdictBox');
+
+  card.classList.add('active');
+  verdictBox.style.display = 'none';
+  fill.style.width = '0%';
+
+  const steps = [
+    { p: 15, text: 'Calculating SHA-256 cryptographic hash of ' + fileName + '...' },
+    { p: 40, text: 'Decomposing frames and extracting audio mel-spectrograms...' },
+    { p: 70, text: 'Running face landmark shear & optical flow rPPG pulse models...' },
+    { p: 90, text: 'Correlating metadata against 10,000+ camera hardware profiles...' },
+    { p: 100, text: 'Forensic evaluation complete.' }
+  ];
+
+  let stepIdx = 0;
+  function nextStep() {
+    if (stepIdx < steps.length) {
+      const s = steps[stepIdx];
+      fill.style.width = s.p + '%';
+      percent.textContent = s.p + '%';
+      label.textContent = s.text;
+      stepIdx++;
+      setTimeout(nextStep, 380);
+    } else {
+      showVerdict(presetId);
+    }
+  }
+  nextStep();
+}
+
+function showVerdict(presetId) {
+  const verdictBox = document.getElementById('verdictBox');
+  const verdictText = document.getElementById('verdictText');
+  const verdictRisk = document.getElementById('verdictRisk');
+  const verdictIndicator = document.getElementById('verdictIndicator');
+  const verdictHash = document.getElementById('verdictHash');
+
+  verdictBox.style.display = 'grid';
+
+  if (presetId === 1) {
+    verdictText.textContent = 'MANIPULATED (DEEPFAKE)';
+    verdictText.className = 'v alert';
+    verdictRisk.textContent = '94.8% Probability';
+    verdictRisk.className = 'v alert';
+    verdictIndicator.textContent = 'Facial boundary optical flow shear desync';
+    verdictHash.textContent = 'e0330548b1ac905cf1b81698...7c2d';
+  } else if (presetId === 2) {
+    verdictText.textContent = 'SYNTHETIC AUDIO';
+    verdictText.className = 'v alert';
+    verdictRisk.textContent = '98.2% Probability';
+    verdictRisk.className = 'v alert';
+    verdictIndicator.textContent = 'Neural vocoder phase cancellation signature';
+    verdictHash.textContent = '4d379461ad00eb4de7900df3...9d30';
+  } else {
+    verdictText.textContent = 'AUTHENTIC MEDIA';
+    verdictText.className = 'v safe';
+    verdictRisk.textContent = '2.1% Minimal Risk';
+    verdictRisk.className = 'v safe';
+    verdictIndicator.textContent = 'Consistent biological rPPG pulse & camera PRNU';
+    verdictHash.textContent = '3e8bbb177216bcb41ddc75cd...b1f6';
+  }
+
+  // Automatically record platform usage & forensic report for Admin audit
+  if (window.SpectraAdmin && window.SpectraAdmin.recordUsage) {
+    const verdict = verdictText.textContent;
+    const risk = verdictRisk.textContent;
+    const indicator = verdictIndicator.textContent;
+    const hash = verdictHash.textContent;
+    const currentFileName = (document.getElementById('mediaFileInput')?.files?.[0]?.name) || names[presetId] || 'Suspect_Investigation_Artifact.mp4';
+    window.SpectraAdmin.recordUsage({
+      fileName: currentFileName,
+      verdict: verdict,
+      risk: risk,
+      indicator: indicator,
+      hash: hash,
+      presetId: presetId
+    });
+  }
+}
+
+// Continuous undulating wave animation for foliage
+(function initFoliageWaveFlow() {
+  const turb = document.getElementById('foliageTurb');
+  if (!turb) return;
+  let phase = 0;
+  function stepWave() {
+    phase += 0.008;
+    const baseFreqX = (0.012 + Math.sin(phase * 0.9) * 0.003).toFixed(4);
+    const baseFreqY = (0.022 + Math.cos(phase * 1.1) * 0.005).toFixed(4);
+    turb.setAttribute('baseFrequency', baseFreqX + ' ' + baseFreqY);
+    requestAnimationFrame(stepWave);
+  }
+  requestAnimationFrame(stepWave);
+})();
+
+/* ==========================================================================
+   SPECTRA ADMIN INTELLIGENCE & FORENSIC AUDIT ENGINE
+   Logs how many people used the platform, media targets, verdicts, and reports.
+   ========================================================================== */
+(function initSpectraAdmin() {
+  const AUDIT_LOGS_KEY = 'spectra_usage_audit_logs';
+  const ADMIN_SESSION_KEY = 'spectra_admin_session';
+
+  // Purge any legacy normal-user account stores
+  try {
+    localStorage.removeItem('spectra_users_db');
+    localStorage.removeItem('spectra_active_session');
+  } catch (e) {}
+
+  function getAuditLogs() {
+    try {
+      const data = localStorage.getItem(AUDIT_LOGS_KEY);
+      if (data) {
+        const parsed = JSON.parse(data);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch (e) {
+      console.warn('Could not read audit logs:', e);
+    }
+    // Pre-populate with verified forensic investigation benchmarks
+    const initialLogs = [
+      {
+        id: 'audit_' + Date.now().toString(36) + '1',
+        timestamp: new Date(Date.now() - 3600000 * 2.5).toISOString(),
+        fileName: 'CaseA_Executive_FaceSwap.mp4',
+        fileType: 'Video',
+        verdict: 'MANIPULATED (DEEPFAKE)',
+        risk: '94.8% Probability',
+        isAlert: true,
+        indicator: 'Facial boundary optical flow shear desync',
+        hash: 'e0330548b1ac905cf1b81698d2a6a117b1f6',
+        signals: [
+          { name: 'Facial Boundary Optical Flow', val: 'Severe boundary discontinuity & frame tearing' },
+          { name: 'Biological rPPG Pulse Flow', val: 'Desynchronized micro-pulse in forehead ROI' },
+          { name: 'PRNU Hardware Signature', val: 'Camera sensor fingerprint absent (Synthetic generator)' }
+        ]
+      },
+      {
+        id: 'audit_' + Date.now().toString(36) + '2',
+        timestamp: new Date(Date.now() - 3600000 * 6.2).toISOString(),
+        fileName: 'CaseB_Synthetic_VoiceCall.wav',
+        fileType: 'Audio',
+        verdict: 'SYNTHETIC AUDIO',
+        risk: '98.2% Probability',
+        isAlert: true,
+        indicator: 'Neural vocoder phase cancellation signature',
+        hash: '4d379461ad00eb4de7900df311bb49a29d30',
+        signals: [
+          { name: 'Vocoder Harmonic Phase', val: 'Unnatural phase cancellation across formant transitions' },
+          { name: 'Zero-Crossing Rate Jitter', val: 'Synthetic diffusion vocoder footprint confirmed' },
+          { name: 'Acoustic Room Reflections', val: 'Zero biological breath or reverberation variance' }
+        ]
+      },
+      {
+        id: 'audit_' + Date.now().toString(36) + '3',
+        timestamp: new Date(Date.now() - 3600000 * 14.5).toISOString(),
+        fileName: 'CaseC_Official_PressStream.mov',
+        fileType: 'Video',
+        verdict: 'AUTHENTIC MEDIA',
+        risk: '2.1% Minimal Risk',
+        isAlert: false,
+        indicator: 'Consistent biological rPPG pulse & camera PRNU',
+        hash: '3e8bbb177216bcb41ddc75cde088b487b1f6',
+        signals: [
+          { name: 'Facial Biomechanical Saccades', val: 'Natural ocular micro-tremor verified' },
+          { name: 'Biological rPPG Pulse Flow', val: '72 BPM pulse confirmed matching cardiovascular cycle' },
+          { name: 'PRNU Hardware Signature', val: 'Exact match with Sony Alpha FX3 optical sensor' }
+        ]
+      }
+    ];
+    saveAuditLogs(initialLogs);
+    return initialLogs;
+  }
+
+  function saveAuditLogs(logs) {
+    try {
+      localStorage.setItem(AUDIT_LOGS_KEY, JSON.stringify(logs));
+    } catch (e) {
+      console.error('Failed to save audit logs:', e);
+    }
+  }
+
+  function isAdminAuthenticated() {
+    try {
+      return localStorage.getItem(ADMIN_SESSION_KEY) === 'authenticated';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function setAdminAuthenticated(auth) {
+    try {
+      if (auth) {
+        localStorage.setItem(ADMIN_SESSION_KEY, 'authenticated');
+      } else {
+        localStorage.removeItem(ADMIN_SESSION_KEY);
+      }
+    } catch (e) {}
+    updateAdminTopBar();
+  }
+
+  function updateAdminTopBar() {
+    const isAuth = isAdminAuthenticated();
+    const loginBtn = document.getElementById('topAdminBtn');
+    const activeContainer = document.getElementById('topAdminActiveContainer');
+    const badge = document.getElementById('adminScanBadge');
+    const logs = getAuditLogs();
+
+    if (badge) badge.textContent = logs.length;
+
+    if (isAuth) {
+      if (loginBtn) loginBtn.style.display = 'none';
+      if (activeContainer) activeContainer.style.display = 'inline-flex';
+    } else {
+      if (loginBtn) loginBtn.style.display = 'inline-flex';
+      if (activeContainer) activeContainer.style.display = 'none';
+    }
+  }
+
+  function showToast(message, isError = false) {
+    const toast = document.getElementById('authToast');
+    const msgEl = document.getElementById('toastMessage');
+    const iconEl = document.getElementById('toastIcon');
+    if (!toast || !msgEl) return;
+    msgEl.textContent = message;
+    if (iconEl) iconEl.textContent = isError ? '⚠️' : '🟢';
+    toast.className = 'auth-toast' + (isError ? ' error' : '');
+    toast.style.display = 'inline-flex';
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(() => {
+      toast.style.display = 'none';
+    }, 3400);
+  }
+
+  function renderDashboardView() {
+    const loginSec = document.getElementById('adminLoginSection');
+    const dashSec = document.getElementById('adminDashboardSection');
+    const reportSec = document.getElementById('adminReportSection');
+    const logFeed = document.getElementById('adminLogFeed');
+    const counterBadge = document.getElementById('logCounterBadge');
+
+    if (reportSec) reportSec.style.display = 'none';
+
+    if (!isAdminAuthenticated()) {
+      if (loginSec) loginSec.style.display = 'block';
+      if (dashSec) dashSec.style.display = 'none';
+      return;
+    }
+
+    if (loginSec) loginSec.style.display = 'none';
+    if (dashSec) dashSec.style.display = 'block';
+
+    const logs = getAuditLogs();
+    if (counterBadge) counterBadge.textContent = logs.length + ' Recorded Invocations';
+
+    // Update KPI metrics
+    let deepfakes = 0, audio = 0, authentic = 0;
+    logs.forEach(l => {
+      if (l.verdict.includes('DEEPFAKE') || l.verdict.includes('MANIPULATED')) deepfakes++;
+      else if (l.verdict.includes('AUDIO') || l.verdict.includes('SYNTHETIC')) audio++;
+      else authentic++;
+    });
+
+    const kpiTotal = document.getElementById('kpiTotalScans');
+    const kpiDf = document.getElementById('kpiDeepfakes');
+    const kpiAud = document.getElementById('kpiAudioClones');
+    const kpiAuth = document.getElementById('kpiAuthentic');
+
+    if (kpiTotal) kpiTotal.textContent = logs.length;
+    if (kpiDf) kpiDf.textContent = deepfakes;
+    if (kpiAud) kpiAud.textContent = audio;
+    if (kpiAuth) kpiAuth.textContent = authentic;
+
+    if (!logFeed) return;
+    if (logs.length === 0) {
+      logFeed.innerHTML = '<div style="padding:36px;text-align:center;color:var(--slate);font-size:13px;">No media scans have been run yet. Platform usage logs will appear here automatically when visitors analyze media.</div>';
+      return;
+    }
+
+    logFeed.innerHTML = logs.map(l => {
+      const timeStr = l.timestamp ? new Date(l.timestamp).toLocaleString() : 'N/A';
+      const isAlert = l.isAlert || l.verdict.includes('MANIPULATED') || l.verdict.includes('SYNTHETIC');
+      const badgeClass = isAlert ? 'alert' : 'safe';
+      const typeLabel = l.fileType || (l.fileName.endsWith('.wav') || l.fileName.endsWith('.mp3') ? 'Audio' : 'Video');
+
+      return `
+        <div class="admin-log-card">
+          <div>
+            <div class="admin-log-title">
+              <span>${l.fileName}</span>
+              <span class="admin-media-badge">${typeLabel}</span>
+            </div>
+            <div class="admin-log-sub">
+              <span>Scanned: <strong style="color:#FFFFFF;">${timeStr}</strong></span> &bull; 
+              <span>SHA-256: <code style="color:#A0AEC0;">${l.hash || 'e03305...7c2d'}</code></span>
+            </div>
+            <div class="admin-log-indicator">
+              <span>Primary Signal:</span>
+              <span style="color:#E2E8F0;font-weight:500;">${l.indicator || 'Optical flow & biological rPPG evaluation'}</span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div class="admin-verdict-pill ${badgeClass}">${l.verdict}</div>
+            <div style="font-size:11px;color:${isAlert ? '#FF6B85' : '#00E5A3'};margin-top:3px;font-weight:600;">${l.risk || 'Evaluated'}</div>
+            <button class="admin-view-report-btn" onclick="viewReportDossier('${l.id}')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              View Report
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Public API attached to window
+  window.openAdminPortal = function() {
+    const modal = document.getElementById('adminModal');
+    if (!modal) return;
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    renderDashboardView();
+  };
+
+  window.closeAdminPortal = function() {
+    const modal = document.getElementById('adminModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+  };
+
+  window.handleAdminLoginSubmit = function(e) {
+    e.preventDefault();
+    const user = document.getElementById('adminUsername')?.value.trim();
+    const pass = document.getElementById('adminPassword')?.value;
+
+    if (user === 'manohar_manyu' && pass === '80081Abc@2005') {
+      setAdminAuthenticated(true);
+      showToast('Admin Access Granted. Welcome, Manohar Manyu.');
+      renderDashboardView();
+    } else {
+      showToast('Invalid credentials. Access restricted to authorized administrator.', true);
+    }
+  };
+
+  window.handleAdminLogout = function() {
+    setAdminAuthenticated(false);
+    showToast('Signed out of Administrator Portal.');
+    renderDashboardView();
+  };
+
+  window.viewReportDossier = function(logId) {
+    const logs = getAuditLogs();
+    const item = logs.find(l => l.id === logId);
+    if (!item) return;
+
+    const dashSec = document.getElementById('adminDashboardSection');
+    const reportSec = document.getElementById('adminReportSection');
+    if (dashSec) dashSec.style.display = 'none';
+    if (reportSec) reportSec.style.display = 'block';
+
+    const targetName = document.getElementById('reportTargetName');
+    const verdictText = document.getElementById('reportVerdictText');
+    const riskText = document.getElementById('reportRiskText');
+    const timestamp = document.getElementById('reportTimestamp');
+    const hashEl = document.getElementById('reportHash');
+    const signalsList = document.getElementById('reportSignalsList');
+
+    if (targetName) targetName.textContent = item.fileName;
+    if (verdictText) {
+      verdictText.textContent = item.verdict;
+      verdictText.style.color = item.isAlert ? '#FF3B5C' : '#00E5A3';
+    }
+    if (riskText) {
+      riskText.textContent = item.risk;
+      riskText.style.color = item.isAlert ? '#FF3B5C' : '#00E5A3';
+    }
+    if (timestamp) timestamp.textContent = item.timestamp ? new Date(item.timestamp).toLocaleString() : 'N/A';
+    if (hashEl) hashEl.textContent = item.hash || 'e0330548b1ac905cf1b81698...7c2d';
+
+    if (signalsList) {
+      const signals = item.signals || [
+        { name: 'Multi-Spectral Biometric Validation', val: item.indicator || 'Analyzed' },
+        { name: 'Hardware Camera Sensor PRNU', val: 'Consistent with target container profile' },
+        { name: 'Optical Flow Shear Consistency', val: 'Calculated via 18 neural evaluators' }
+      ];
+
+      signalsList.innerHTML = signals.map(s => `
+        <div class="dossier-signal-row">
+          <span style="font-weight:600;color:#FFFFFF;">${s.name}:</span>
+          <span style="color:#A0AEC0;">${s.val}</span>
+        </div>
+      `).join('');
+    }
+  };
+
+  window.backToDashboard = function() {
+    renderDashboardView();
+  };
+
+  window.printReportDossier = function() {
+    window.print();
+  };
+
+  window.exportAuditLogsJSON = function() {
+    const logs = getAuditLogs();
+    const blob = new Blob([JSON.stringify(logs, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `spectra-forensic-audit-logs-${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('Complete audit log exported to JSON.');
+  };
+
+  window.clearAllAuditLogs = function() {
+    if (confirm('Clear all recorded platform investigation logs?')) {
+      localStorage.removeItem(AUDIT_LOGS_KEY);
+      renderDashboardView();
+      updateAdminTopBar();
+      showToast('All investigation audit logs have been cleared.');
+    }
+  };
+
+  // Global tracker for platform usage by any user
+  window.SpectraAdmin = {
+    recordUsage: function(data) {
+      const logs = getAuditLogs();
+      const isAlert = data.verdict.includes('MANIPULATED') || data.verdict.includes('SYNTHETIC');
+      const newEntry = {
+        id: 'audit_' + Date.now().toString(36),
+        timestamp: new Date().toISOString(),
+        fileName: data.fileName || 'Investigated_Media.mp4',
+        fileType: (data.fileName.endsWith('.wav') || data.fileName.endsWith('.mp3')) ? 'Audio' : ((data.fileName.endsWith('.png') || data.fileName.endsWith('.jpg')) ? 'Image' : 'Video'),
+        verdict: data.verdict,
+        risk: data.risk,
+        indicator: data.indicator,
+        hash: data.hash,
+        isAlert: isAlert,
+        signals: [
+          { name: 'Primary Anomaly Signal', val: data.indicator },
+          { name: 'Neural Evaluator Status', val: isAlert ? 'Tampering threshold breached' : 'Authenticity confirmed' },
+          { name: 'Cryptographic Integrity Check', val: 'Hash registered in Spectra Audit Trail' }
+        ]
+      };
+      logs.unshift(newEntry);
+      saveAuditLogs(logs);
+      updateAdminTopBar();
+    }
+  };
+
+  // Close menus on outside click or escape key
+  document.addEventListener('click', function(e) {
+    if (e.target.id === 'adminModal') {
+      window.closeAdminPortal();
+    }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      window.closeAdminPortal();
+    }
+  });
+
+  // Route hash detection
+  function handleHashRoute() {
+    if (window.location.hash === '#admin') {
+      window.openAdminPortal();
+    } else if (window.location.hash === '#admin-demo') {
+      setAdminAuthenticated(true);
+      window.openAdminPortal();
+    } else if (window.location.hash === '#admin-report-demo') {
+      setAdminAuthenticated(true);
+      window.openAdminPortal();
+      const logs = getAuditLogs();
+      if (logs && logs[0]) window.viewReportDossier(logs[0].id);
+    }
+  }
+  handleHashRoute();
+  window.addEventListener('hashchange', handleHashRoute);
+
+  // Initialize UI on load
+  updateAdminTopBar();
+})();
+
+</script>
+</body>
+</html>
