@@ -36,7 +36,7 @@ echo [INFO] Launching SPECTRA Universal Setup Engine...
 echo.
 
 REM 3. Run the universal setup script
-node setup.js
+node setup.js %*
 
 if %errorlevel% neq 0 (
     echo.

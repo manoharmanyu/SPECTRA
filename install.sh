@@ -2,6 +2,7 @@
 # ==============================================================================
 # SPECTRA — Automated Environment Setup & Dependency Installer
 # Truth Beyond Appearance • Neural Media Forensics & Secure Device Pairing
+# Supported Platforms: macOS (Darwin) & Linux (Debian, Ubuntu, Arch, Fedora, Alpine)
 # ==============================================================================
 
 set -e
@@ -16,6 +17,28 @@ MAGENTA='\033[0;35m'
 BOLD='\033[1m'
 NC='\033[0m' # No Color
 
+SHOW_HELP=false
+AUTO_START=false
+
+for arg in "$@"; do
+    case "$arg" in
+        --start|-s)
+            AUTO_START=true
+            ;;
+        --help|-h)
+            SHOW_HELP=true
+            ;;
+    esac
+done
+
+if [ "$SHOW_HELP" = true ]; then
+    echo -e "${CYAN}${BOLD}SPECTRA Setup Script Usage:${NC}"
+    echo -e "  ${BOLD}./install.sh${NC}          Install dependencies, initialize database, build assets, and run tests"
+    echo -e "  ${BOLD}./install.sh --start${NC}  Run complete setup and immediately launch backend & frontend servers"
+    echo -e "  ${BOLD}./install.sh --help${NC}   Show this help message\n"
+    exit 0
+fi
+
 echo -e "${CYAN}${BOLD}"
 echo "  ███████╗██████╗ ███████╗ ██████╗████████╗██████╗  █████╗ "
 echo "  ██╔════╝██╔══██╗██╔════╝██╔════╝╚══██╔══╝██╔══██╗██╔══██╗"
@@ -29,12 +52,13 @@ echo -e "${MAGENTA}         Truth Beyond Appearance • Forensic Investigation L
 OS="$(uname -s)"
 echo -e "${BLUE}[1/5]${NC} Detecting host operating system..."
 case "${OS}" in
-    Darwin*)    PLATFORM="macOS" ;;
+    Darwin*)    PLATFORM="macOS (Darwin)" ;;
     Linux*)     PLATFORM="Linux" ;;
     CYGWIN*|MINGW*|MSYS*) PLATFORM="Windows (POSIX environment)" ;;
-    *)          PLATFORM="Unknown (${OS})" ;;
+    *)          PLATFORM="Unix-compatible (${OS})" ;;
 esac
-echo -e "      Detected platform: ${BOLD}${PLATFORM}${NC}"
+ARCH="$(uname -m)"
+echo -e "      Detected platform: ${BOLD}${PLATFORM} [${ARCH}]${NC}"
 
 # 2. Check Prerequisites (Node.js & npm)
 echo -e "\n${BLUE}[2/5]${NC} Validating runtime prerequisites..."
@@ -53,7 +77,7 @@ if [ "${NODE_MAJOR}" -lt 18 ]; then
     echo "SPECTRA requires Node.js v18.0.0 or higher. Please upgrade your Node runtime."
     exit 1
 fi
-echo -e "      ${GREEN}✓${NC} Node.js runtime: ${BOLD}v${NODE_VERSION}${NC} (Minimum requirement >= v18)"
+echo -e "      ${GREEN}✓${NC} Node.js runtime: ${BOLD}v${NODE_VERSION}${NC} (Requirement >= v18 met)"
 
 if ! command -v npm >/dev/null 2>&1; then
     echo -e "${RED}[ERROR] npm is not installed.${NC}"
@@ -62,7 +86,7 @@ fi
 NPM_VERSION=$(npm -v)
 echo -e "      ${GREEN}✓${NC} Node package manager: ${BOLD}v${NPM_VERSION}${NC}"
 
-# 3. Create Required Runtime Directories
+# 3. Create Required Runtime Directories & Database Container
 echo -e "\n${BLUE}[3/5]${NC} Initializing local storage directories..."
 mkdir -p data uploads tests/fixtures
 
@@ -95,35 +119,63 @@ fi
 
 # 4. Install Project Dependencies
 echo -e "\n${BLUE}[4/5]${NC} Installing SPECTRA package dependencies..."
-echo "      Running 'npm install' for production and development dependencies:"
-echo "      - Express, WebSocket (ws), Multer, QRCode, jsPDF, Lucide React"
-echo "      - Vite, TypeScript, React 19, and security audit tools"
+echo "      Resolving production and development packages via npm install:"
+echo "      - Web framework & networking: Express, ws, multer"
+echo "      - Cryptography & imaging: qrcode, jspdf, lucide-react"
+echo "      - Frontend architecture: React 19, TypeScript, Vite, Tailwind CSS"
 
 npm install
 
-echo -e "      ${GREEN}✓${NC} Dependencies successfully resolved and installed."
+echo -e "      ${GREEN}✓${NC} All dependencies successfully installed and verified."
 
 # 5. Build Production Bundle & Verify Installation
 echo -e "\n${BLUE}[5/5]${NC} Compiling frontend production bundle & verifying security suite..."
 
 npm run build
 
-echo -e "\n      Running cryptographic verification & security isolation test suite:"
+echo -e "\n      Running cryptographic verification & security isolation test harness:"
 npm test
+
+# Detect Local LAN IP for Mobile Device Pairing
+LAN_IP=$(node -e '
+  const os = require("os");
+  const ifaces = os.networkInterfaces();
+  let found = "localhost";
+  for (const dev in ifaces) {
+    for (const details of ifaces[dev]) {
+      if (details.family === "IPv4" && !details.internal) {
+        found = details.address;
+        break;
+      }
+    }
+    if (found !== "localhost") break;
+  }
+  console.log(found);
+' 2>/dev/null || echo "localhost")
 
 echo -e "\n${GREEN}${BOLD}======================================================================${NC}"
 echo -e "${GREEN}${BOLD}  SPECTRA INSTALLATION COMPLETED SUCCESSFULLY!${NC}"
 echo -e "${GREEN}${BOLD}======================================================================${NC}"
-echo -e "\nTo start the SPECTRA forensic platform, launch the two runtime processes:"
-echo -e "\n  ${BOLD}1. Start the Secure Backend (Port 3001 & WebSocket Hub):${NC}"
-echo -e "     ${CYAN}npm run server${NC}"
-echo -e "\n  ${BOLD}2. Start the Vite Frontend (Port 5173 & 3D Forensic Sketchbook):${NC}"
-echo -e "     ${CYAN}npm run dev${NC}"
-echo -e "\n  ${BOLD}Direct Access URLs:${NC}"
-echo -e "  - Desktop Platform:   ${BOLD}http://localhost:5173/${NC}"
-echo -e "  - Mobile Web Portal:  ${BOLD}http://<your-lan-ip>:5173/mobile.html${NC}"
-echo -e "  - Local Forensic API: ${BOLD}http://localhost:3001/api/status${NC}"
+echo -e "\n${BOLD}Access URLs:${NC}"
+echo -e "  - Desktop Platform:   ${CYAN}http://localhost:5173/${NC}"
+echo -e "  - Mobile Web Portal:  ${CYAN}http://${LAN_IP}:5173/mobile.html${NC}"
+echo -e "  - Forensic API Hub:   ${CYAN}http://localhost:3001/api/status${NC}"
+
 echo -e "\n${MAGENTA}Default Administrator Account:${NC}"
 echo -e "  - Username: ${BOLD}manohar_manyu${NC}"
-echo -e "  - Password: ${BOLD}80081Abc@2005${NC} (Change upon setup in Identity Defense modal)"
+echo -e "  - Password: ${BOLD}80081Abc@2005${NC} (Change via the Identity Defense modal)"
 echo -e "${GREEN}======================================================================${NC}\n"
+
+if [ "$AUTO_START" = true ]; then
+    echo -e "${CYAN}${BOLD}[STARTING SPECTRA PLATFORM]${NC}"
+    echo -e "Launching Backend Gateway (Port 3001) and Frontend Interface (Port 5173)...\n"
+    trap 'kill $(jobs -p) 2>/dev/null' EXIT
+    npm run server &
+    npm run dev &
+    wait
+else
+    echo -e "To start SPECTRA now, run:"
+    echo -e "  ${BOLD}npm run server${NC}  (in Terminal 1 for Backend & WebSockets)"
+    echo -e "  ${BOLD}npm run dev${NC}     (in Terminal 2 for Vite Frontend & 3D Lab)"
+    echo -e "\nOr run ${CYAN}./install.sh --start${NC} next time to launch both simultaneously.\n"
+fi

@@ -284,85 +284,84 @@ These are reported development-test results, not an independent security certifi
 
 ---
 
-### Cross-Platform Installation
+### ⚡ Automated Installation & Quickstart
 
-Clone the repository first:
+SPECTRA features an automated cross-platform setup engine that handles everything in one go:
+1. **Validates Runtime:** Checks that Node.js >= 18 and npm are present.
+2. **Initializes Storage:** Automatically scaffolds `data/`, `uploads/`, and `tests/fixtures/`.
+3. **Provisions Database:** Generates `data/spectra.json` with an initial administrator profile.
+4. **Installs Dependencies:** Downloads and verifies all required npm packages (Express, ws, multer, qrcode, jspdf, React 19, Vite, Tailwind CSS).
+5. **Compiles Assets:** Builds the production frontend bundle (`npm run build`).
+6. **Runs Security Suite:** Runs all 37 automated cryptographic and isolation tests (`npm test`).
+7. **Resolves Network Address:** Detects your local LAN IP and outputs the direct mobile pairing link.
 
+#### 1. Clone the Repository
 ```bash
 git clone https://github.com/manoharmanyu/SPECTRA.git
 cd SPECTRA
 ```
 
-Then choose the installer for your operating system:
+#### 2. Run the Installer for Your Operating System
 
-#### 🍎 macOS & 🐧 Linux (Bash / Zsh)
-```bash
-chmod +x install.sh
-./install.sh
-```
+| Operating System | Method | Command | Description |
+|---|---|---|---|
+| 🍎 **macOS & 🐧 Linux** | Shell Script | `chmod +x install.sh && ./install.sh` | Interactive installer with colored logging and verification |
+| 🍎 **macOS & 🐧 Linux (Auto-Start)** | Shell Script | `./install.sh --start` | Installs dependencies and immediately launches both servers |
+| 🪟 **Windows** | Command Prompt (`cmd.exe`) | `install.bat` *(or double-click)* | Native Windows batch setup engine |
+| 🪟 **Windows (Auto-Start)** | Command Prompt (`cmd.exe`) | `install.bat --start` | Sets up environment and launches backend + frontend |
+| 🪟 **Windows** | PowerShell | `.\install.ps1` | Native PowerShell installer script |
+| 🪟 **Windows (Auto-Start)** | PowerShell | `.\install.ps1 -start` | PowerShell installer with auto-start flag |
+| 🌐 **Universal (All OS)** | Node.js Engine | `node setup.js` *(or `npm run setup`)* | Cross-platform JavaScript installer engine |
+| 🌐 **Universal (Auto-Start)** | Node.js Engine | `node setup.js --start` | Installs and boots both servers simultaneously |
 
-#### 🪟 Windows — Command Prompt (`cmd.exe`)
-Double-click `install.bat` in File Explorer, or run:
-```cmd
-install.bat
-```
-
-#### 🪟 Windows — PowerShell
-```powershell
-.\install.ps1
-```
-*(If PowerShell script execution is restricted on your machine, run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` first).*
-
-#### 🌐 Universal (Any OS via Node.js)
-Works across Windows, macOS, Linux, and BSD:
-```bash
-node setup.js
-```
-*(or `npm run setup` after installing npm packages).*
+> [!TIP]
+> If Windows PowerShell restricts script execution, run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` before executing `.\install.ps1`.
 
 ---
 
 ### Manual Installation (All OS)
 
+If you prefer to run each step manually:
+
 ```bash
 git clone https://github.com/manoharmanyu/SPECTRA.git
 cd SPECTRA
+
+# 1. Install dependencies
 npm install
+
+# 2. Build production assets
 npm run build
+
+# 3. Verify security & cryptographic integrity
 npm test
 ```
 
-### Start the Application
+---
 
-Check the scripts available in `package.json`:
+### 🖥️ Starting the Application
 
-```bash
-npm run
-```
-
-If your project defines the following scripts, start the backend and frontend in separate terminals:
+If you did not run the installer with `--start`, launch the two runtime processes in separate terminals:
 
 ```bash
+# Terminal 1: Backend Gateway & Real-time WebSocket Hub (Port 3001)
 npm run server
 ```
 
 ```bash
+# Terminal 2: Interactive Forensic Dashboard & 3D Lab (Port 5173)
 npm run dev
 ```
 
-Open the desktop website:
+#### Application Endpoints:
+- **Desktop Dashboard:** [http://localhost:5173/](http://localhost:5173/)
+- **Mobile Web Portal:** `http://<YOUR_LAN_IP>:5173/mobile.html` *(Printed automatically by `install.sh` / `setup.js`)*
+- **Forensic API Hub:** [http://localhost:3001/api/status](http://localhost:3001/api/status)
 
-```text
-http://localhost:5173/
-```
-
-For mobile connectivity, use your computer's current local network IP address:
-
-```text
-http://<LAN_IP>:5173/mobile.html
-```
-
-Ensure that both devices are on the same reachable network and that your firewall permits the required connections.
+#### Default Administrator Credentials:
+- **Username:** `manohar_manyu`
+- **Password:** `80081Abc@2005`
+*(You can update your credentials and configure TOTP 2FA in the **Identity Defense** modal upon login).*
 
 ---
 

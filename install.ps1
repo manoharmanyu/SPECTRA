@@ -33,7 +33,7 @@ $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 Push-Location $scriptDir
 
 try {
-    node setup.js
+    node setup.js $args
     if ($LASTEXITCODE -ne 0) {
         Write-Host ""
         Write-Host "[ERROR] SPECTRA setup failed with exit code $LASTEXITCODE." -ForegroundColor Red

@@ -10,11 +10,24 @@
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import { execSync } from 'child_process';
+import { execSync, spawn } from 'child_process';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+const args = process.argv.slice(2);
+const autoStart = args.includes('--start') || args.includes('-s');
+const showHelp = args.includes('--help') || args.includes('-h');
+
+if (showHelp) {
+  console.log(`\nSPECTRA Universal Setup Engine`);
+  console.log(`Usage:`);
+  console.log(`  node setup.js          Install dependencies, prepare storage, build bundle, run tests`);
+  console.log(`  node setup.js --start  Install dependencies and immediately start backend and frontend`);
+  console.log(`  node setup.js --help   Display this help message\n`);
+  process.exit(0);
+}
 
 // Color formatting
 const isWindows = process.platform === 'win32';
@@ -168,3 +181,20 @@ log(`\n  Default Administrator Account:`, colors.magenta);
 log(`  - Username: manohar_manyu`);
 log(`  - Password: 80081Abc@2005`);
 log(`======================================================================\n`, colors.green);
+
+if (autoStart) {
+  log(`[STARTING SPECTRA PLATFORM]`, colors.bright + colors.cyan);
+  log(`Spawning Backend Server (Port 3001) & Vite Development Server (Port 5173)...\n`);
+
+  const serverProc = spawn('npm', ['run', 'server'], { stdio: 'inherit', shell: true, cwd: __dirname });
+  const devProc = spawn('npm', ['run', 'dev'], { stdio: 'inherit', shell: true, cwd: __dirname });
+
+  const cleanup = () => {
+    try { serverProc.kill(); } catch (e) {}
+    try { devProc.kill(); } catch (e) {}
+    process.exit(0);
+  };
+
+  process.on('SIGINT', cleanup);
+  process.on('SIGTERM', cleanup);
+}
