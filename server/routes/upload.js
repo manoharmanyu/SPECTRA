@@ -131,14 +131,16 @@ uploadRouter.post('/upload', requireDeviceOrSession, upload.single('image'), asy
   // Run Real Forensic Pipeline Asynchronously with incremental progress updates
   (async () => {
     try {
-      wsHub.broadcastToUser(user.id, 'sync:progress', { jobId: job.id, progress: 35, stage: 'Parsing file signatures & EXIF metadata' });
+      wsHub.broadcastToUser(user.id, 'sync:progress', { jobId: job.id, progress: 35, stage: 'Parsing file signatures & EXIF hardware metadata' });
+      await new Promise(r => setTimeout(r, 350));
+
+      wsHub.broadcastToUser(user.id, 'sync:progress', { jobId: job.id, progress: 60, stage: 'Evaluating quantization tables & spatial entropy' });
       await new Promise(r => setTimeout(r, 400));
 
-      wsHub.broadcastToUser(user.id, 'sync:progress', { jobId: job.id, progress: 65, stage: 'Evaluating quantization tables & frequency entropy' });
-      await new Promise(r => setTimeout(r, 450));
-
-      wsHub.broadcastToUser(user.id, 'sync:progress', { jobId: job.id, progress: 85, stage: 'Scanning generative AI markers & neural noise signatures' });
+      wsHub.broadcastToUser(user.id, 'sync:progress', { jobId: job.id, progress: 80, stage: 'Scanning generative AI markers & neural noise signatures' });
       await new Promise(r => setTimeout(r, 350));
+
+      wsHub.broadcastToUser(user.id, 'sync:progress', { jobId: job.id, progress: 92, stage: 'Executing Agent-Reach multi-platform dissemination scan' });
 
       const report = await analyzeImageForensics(filePath, originalFilename);
 
@@ -225,5 +227,105 @@ uploadRouter.get('/jobs', requireAuth, (req, res) => {
   return res.json({
     success: true,
     jobs: jobs
+  });
+});
+
+// POST /api/upload/simulate-paired-capture (Simulate real phone capture for testing/demo)
+uploadRouter.post('/upload/simulate-paired-capture', requireAuth, async (req, res) => {
+  const user = req.user;
+  const userDevices = db.getUserDevices(user.id).filter(d => d.trustStatus === 'active');
+  const activeDevice = userDevices[0] || { id: 'dev_iphone_active', deviceName: "Manohar's iPhone 15 Pro" };
+
+  const mode = req.body?.mode || 'camera'; // 'camera' or 'ai'
+  const isAi = mode === 'ai';
+  const originalFilename = isAi ? 'synthetic_concept_render.jpg' : 'IMG_2026_OPTICAL_CAPTURE.jpg';
+  const storedFilename = `${Date.now()}-${originalFilename}`;
+  const storedPath = path.join(config.uploadsDir, storedFilename);
+
+  // Generate valid test JPEG fixture with metadata
+  const jpegHeader = Buffer.from([
+    0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10, 0x4a, 0x46, 0x49, 0x46, 0x00, 0x01, 0x01, 0x01, 0x00, 0x48,
+    0x00, 0x48, 0x00, 0x00, 0xff, 0xdb, 0x00, 0x43, 0x00
+  ]);
+  const quantTable = Buffer.alloc(64, isAi ? 16 : 8);
+  const metadataBuffer = Buffer.from(
+    isAi
+      ? 'prompt: ultra realistic portrait of executive, stable diffusion v2.1 checkpoint comfyui node latent diffusion'
+      : 'Make\x00Apple\x00Model\x00iPhone 15 Pro\x00Software\x00iOS 17.5.1\x00LensModel\x00iPhone 15 Pro back triple camera 24mm f/1.78\x00DateTimeOriginal\x002026:10:26 15:30:00\x00GPSLatitude\x0017.3850\x00GPSLongitude\x0078.4867\x00'
+  );
+  const payload = Buffer.alloc(4096, 0x7c);
+  const jpegEoi = Buffer.from([0xff, 0xd9]);
+  const fullJpeg = Buffer.concat([jpegHeader, quantTable, metadataBuffer, payload, jpegEoi]);
+
+  fs.writeFileSync(storedPath, fullJpeg);
+
+  const job = db.createJob({
+    userId: user.id,
+    deviceId: activeDevice.id,
+    deviceName: activeDevice.deviceName,
+    originalFilename: originalFilename,
+    storedFilename: storedFilename,
+    storedPath: storedPath,
+    mimeType: 'image/jpeg',
+    sizeBytes: fullJpeg.length,
+    status: 'analyzing',
+    progressPct: 20
+  });
+
+  const imageUrl = `/uploads/${storedFilename}`;
+
+  // Broadcast immediate ingestion notification
+  wsHub.broadcastToUser(user.id, 'sync:image_received', {
+    jobId: job.id,
+    uploadId: job.uploadId,
+    deviceName: activeDevice.deviceName,
+    fileName: originalFilename,
+    fileSize: fullJpeg.length,
+    imageUrl: imageUrl,
+    timestamp: job.createdAt
+  });
+
+  // Async pipeline with progress
+  (async () => {
+    try {
+      wsHub.broadcastToUser(user.id, 'sync:progress', { jobId: job.id, progress: 35, stage: 'Parsing file signatures & EXIF hardware metadata' });
+      await new Promise(r => setTimeout(r, 350));
+
+      wsHub.broadcastToUser(user.id, 'sync:progress', { jobId: job.id, progress: 60, stage: 'Evaluating quantization tables & spatial entropy' });
+      await new Promise(r => setTimeout(r, 400));
+
+      wsHub.broadcastToUser(user.id, 'sync:progress', { jobId: job.id, progress: 80, stage: 'Scanning generative AI markers & neural noise signatures' });
+      await new Promise(r => setTimeout(r, 350));
+
+      wsHub.broadcastToUser(user.id, 'sync:progress', { jobId: job.id, progress: 92, stage: 'Executing Agent-Reach multi-platform dissemination scan' });
+
+      const report = await analyzeImageForensics(storedPath, originalFilename);
+
+      db.updateJob(job.id, {
+        status: 'completed',
+        progressPct: 100,
+        sha256: report.sha256,
+        forensicReport: report,
+        completedAt: new Date().toISOString()
+      });
+
+      wsHub.broadcastToUser(user.id, 'sync:analysis_complete', {
+        jobId: job.id,
+        uploadId: job.uploadId,
+        fileName: originalFilename,
+        imageUrl: imageUrl,
+        deviceName: activeDevice.deviceName,
+        report: report
+      });
+    } catch (err) {
+      console.error('Simulation error:', err);
+    }
+  })();
+
+  return res.json({
+    success: true,
+    message: 'Simulated capture from paired phone initiated.',
+    jobId: job.id,
+    fileName: originalFilename
   });
 });
