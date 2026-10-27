@@ -28,6 +28,70 @@ async function runAgentReachSearch(query) {
   });
 }
 
+function extractImageDimensions(buffer) {
+  try {
+    // JPEG SOF markers
+    if (buffer.length >= 4 && buffer[0] === 0xff && buffer[1] === 0xd8) {
+      let offset = 2;
+      while (offset < buffer.length - 8) {
+        if (buffer[offset] !== 0xff) {
+          offset++;
+          continue;
+        }
+        const marker = buffer[offset + 1];
+        if (marker === 0xc0 || marker === 0xc1 || marker === 0xc2) {
+          const height = buffer.readUInt16BE(offset + 5);
+          const width = buffer.readUInt16BE(offset + 7);
+          const channels = buffer[offset + 9];
+          const aspect = (width / (height || 1)).toFixed(2);
+          return {
+            width,
+            height,
+            channels: channels === 1 ? 'Grayscale (1 Channel)' : (channels === 3 ? 'RGB / YCbCr (3 Channels)' : `${channels} Channels`),
+            bitDepth: '8-bit per sample',
+            resolutionFormatted: `${width} x ${height} px (${aspect}:1)`
+          };
+        }
+        if (offset + 4 > buffer.length) break;
+        const len = buffer.readUInt16BE(offset + 2);
+        offset += 2 + len;
+      }
+    }
+    // PNG IHDR chunk
+    if (buffer.length >= 26 && buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4e && buffer[3] === 0x47) {
+      const width = buffer.readUInt32BE(16);
+      const height = buffer.readUInt32BE(20);
+      const depth = buffer[24];
+      const colorType = buffer[25];
+      const aspect = (width / (height || 1)).toFixed(2);
+      const colorDesc = colorType === 6 ? 'RGBA Truecolor with Alpha (32-bit)' : (colorType === 2 ? 'RGB Truecolor (24-bit)' : (colorType === 0 ? 'Grayscale (8-bit)' : 'Indexed Palette'));
+      return {
+        width,
+        height,
+        channels: colorDesc,
+        bitDepth: `${depth}-bit per channel`,
+        resolutionFormatted: `${width} x ${height} px (${aspect}:1)`
+      };
+    }
+    // WebP
+    if (buffer.length >= 30 && buffer.toString('ascii', 0, 4) === 'RIFF' && buffer.toString('ascii', 8, 12) === 'WEBP') {
+      if (buffer.toString('ascii', 12, 16) === 'VP8X' && buffer.length >= 30) {
+        const width = buffer.readUIntLE(24, 3) + 1;
+        const height = buffer.readUIntLE(27, 3) + 1;
+        const aspect = (width / (height || 1)).toFixed(2);
+        return {
+          width,
+          height,
+          channels: 'RGBA Extended WebP',
+          bitDepth: '8-bit per channel',
+          resolutionFormatted: `${width} x ${height} px (${aspect}:1)`
+        };
+      }
+    }
+  } catch (e) {}
+  return null;
+}
+
 /**
  * Universal Forensic Analysis Engine
  * Supports: Image, Video, and Audio media pipelines with Agent-Reach Dissemination Scan
@@ -299,6 +363,12 @@ export async function analyzeMediaForensics(filePath, originalFilename, clientMi
   }
   const entropyScore = Math.min(100, Math.max(0, (entropySum / 8.0) * 100));
 
+  // 6b. Image Specific Forensics (Dimensions, Channels, Bit Depth from binary chunks)
+  let imageSpecs = null;
+  if (mediaCategory === 'IMAGE') {
+    imageSpecs = extractImageDimensions(buffer);
+  }
+
   // 7. Video Specific Forensics (Parsed directly from binary tracks)
   let videoSpecs = null;
   if (mediaCategory === 'VIDEO') {
@@ -568,6 +638,7 @@ export async function analyzeMediaForensics(filePath, originalFilename, clientMi
     aiSource,
     extractedPrompt,
     metadataTraces,
+    imageSpecs,
     videoSpecs,
     audioSpecs,
     probability,
@@ -587,26 +658,27 @@ export async function analyzeMediaForensics(filePath, originalFilename, clientMi
             ? 'ORGANIC_ACOUSTIC_HUMAN'
             : (cameraMake ? 'OPTICAL_HARDWARE' : (mediaCategory === 'VIDEO' ? 'OPTICAL_VIDEO_STREAM' : 'AUTHENTIC_DIGITAL_MEDIA'))),
       device: {
-        make: cameraMake || (aiMarkerDetected ? 'Latent Neural Synthesizer' : (mediaCategory === 'AUDIO' ? 'Acoustic Transducer' : (mediaCategory === 'VIDEO' ? 'Digital Video Sensor' : 'Digital Optical Camera'))),
-        model: cameraModel || (aiMarkerDetected ? 'Transformer Model Cluster' : (mediaCategory === 'AUDIO' ? 'Condenser Microphone Element' : (mediaCategory === 'VIDEO' ? 'Integrated CMOS Imager' : 'Standard Optical Sensor'))),
-        lens: lensModel || (mediaCategory === 'IMAGE' ? 'Primary 24mm f/1.78 Optical Lens' : (mediaCategory === 'VIDEO' ? 'Native Optical Glass Element' : 'Acoustic Sound Field Pickup')),
-        serialNumber: 'HW-UID-' + sha256.substring(0, 10).toUpperCase(),
-        software: softwareTag || (aiMarkerDetected ? 'PyTorch TorchVision / Diffusion Pipeline' : (mediaCategory === 'AUDIO' ? 'CoreAudio / Android PCM Capture' : (mediaCategory === 'VIDEO' ? 'Apple ProRes / AVFoundation' : 'Native Capture Subsystem')))
+        make: cameraMake || (aiMarkerDetected ? (aiSource || 'Latent Neural Synthesizer') : (mediaCategory === 'AUDIO' ? 'Acoustic Sound Input' : (mediaCategory === 'VIDEO' ? (videoSpecs?.codec || 'Digital Video Stream') : 'Non-Camera / Web Media (No EXIF)'))),
+        model: cameraModel || (aiMarkerDetected ? 'Latent Diffusion / Neural Generator' : (mediaCategory === 'AUDIO' ? 'System Audio Capture / PCM' : (mediaCategory === 'VIDEO' ? 'Video Container Track' : 'Standard Web Image / Digital Raster'))),
+        lens: lensModel || (mediaCategory === 'IMAGE' ? (cameraMake ? 'Integrated Camera Lens' : 'Not Recorded in Header') : (mediaCategory === 'VIDEO' ? 'Native Optical Glass Element' : 'Acoustic Sound Field Pickup')),
+        serialNumber: (cameraMake || cameraModel) ? ('HW-UID-' + sha256.substring(0, 10).toUpperCase()) : 'Not Recorded (Privacy Protected)',
+        software: softwareTag || (aiMarkerDetected ? (aiSource || 'Neural Model / Pipeline') : (mediaCategory === 'AUDIO' ? (audioSpecs?.codec || 'System Audio Stream') : (mediaCategory === 'VIDEO' ? 'MPEG-4 Container Subsystem' : 'Standard Codec / Encoder (No Custom Software Tag)')))
       },
       captureSettings: {
-        aperture: fNumber || (cameraMake ? 'f/1.8' : 'Not Recorded (No EXIF)'),
-        shutterSpeed: exposureTime || (cameraMake ? 'Auto Shutter' : 'Not Recorded'),
-        iso: isoRating || (cameraMake ? 'Auto ISO' : 'Not Recorded'),
-        focalLength: focalLength || (cameraMake ? 'Native Optical' : 'Not Recorded'),
-        colorProfile: colorSpace || 'sRGB Standard',
-        whiteBalance: cameraMake ? 'Auto (Calibrated)' : 'N/A',
-        flashMode: cameraMake ? 'Off (Natural)' : 'N/A'
+        aperture: fNumber || 'Not Recorded (No EXIF)',
+        shutterSpeed: exposureTime || 'Not Recorded',
+        iso: isoRating || 'Not Recorded',
+        focalLength: focalLength || (imageSpecs?.resolutionFormatted ? `Res: ${imageSpecs.resolutionFormatted}` : 'Not Recorded'),
+        colorProfile: colorSpace || (imageSpecs?.channels || 'Standard Profile'),
+        whiteBalance: cameraMake ? 'Auto (Calibrated)' : 'Not Recorded',
+        flashMode: cameraMake ? 'Off (Natural)' : 'Not Recorded'
       },
+      dimensions: imageSpecs || (videoSpecs ? { resolutionFormatted: videoSpecs.resolution } : null),
       temporal: {
-        capturedAt: dateTimeOriginal || new Date().toISOString(),
+        capturedAt: dateTimeOriginal || 'Not Recorded in Header',
         digitizedAt: dateTimeOriginal || new Date().toISOString(),
         timezone: 'Local System Time',
-        clockSkewSeconds: 0.0
+        clockSkewSeconds: dateTimeOriginal ? 0.0 : null
       },
       geolocation: {
         hasGpsCoordinates: hasGps,

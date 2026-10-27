@@ -202,6 +202,33 @@
       "userAgent": "node",
       "expiresAt": "2026-10-28T08:34:14.985Z",
       "createdAt": "2026-10-27T08:34:14.985Z"
+    },
+    {
+      "id": "ses_66gfcbgtmvqg2h42",
+      "userId": "usr_mvqg2h3zsgza",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-28T08:49:32.449Z",
+      "createdAt": "2026-10-27T08:49:32.450Z"
+    },
+    {
+      "id": "ses_qerfs6kjmvqg527j",
+      "userId": "usr_mvqg527hboi5",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-28T08:51:33.103Z",
+      "createdAt": "2026-10-27T08:51:33.103Z"
+    },
+    {
+      "id": "ses_nizl6iwbmvqg5lhl",
+      "userId": "usr_mvqg5lhijxj4",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-28T08:51:58.088Z",
+      "createdAt": "2026-10-27T08:51:58.089Z"
     }
   ],
   "pairingCodes": [
@@ -556,32 +583,86 @@
       "expiresAt": "2026-10-27T08:38:46.001Z",
       "createdAt": "2026-10-27T08:33:46.001Z",
       "consumedAt": "2026-10-27T08:33:46.038Z"
+    },
+    {
+      "code": "9FQQNLFC",
+      "displayCode": "9FQQ-NLFC",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_g4syke7ymvqd74rd",
+      "attempts": 0,
+      "status": "pending",
+      "proposedDeviceName": null,
+      "deviceTokenHash": null,
+      "deviceId": null,
+      "expiresAt": "2026-10-27T08:46:26.686Z",
+      "createdAt": "2026-10-27T08:41:26.686Z"
+    },
+    {
+      "code": "J2UKW98M",
+      "displayCode": "J2UK-W98M",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_g4syke7ymvqd74rd",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Mac Client",
+      "deviceTokenHash": "ac13444dacd0fc2db9b7b0180e5faf01d19fbc0c512d753842176e7a0496186c",
+      "deviceId": "dev_mvqfswsd9ldf",
+      "expiresAt": "2026-10-27T08:46:55.315Z",
+      "createdAt": "2026-10-27T08:41:55.315Z",
+      "consumedAt": "2026-10-27T08:42:06.210Z"
+    },
+    {
+      "code": "K6F8ZDQ8",
+      "displayCode": "K6F8-ZDQ8",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_c2euo229mvqg2h0u",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "a02cf9ae7d2e6ab27e2dfaf574cfaeca9db4442b8e190f29db3520a9615b6014",
+      "deviceId": "dev_mvqg2h4ny7a9",
+      "expiresAt": "2026-10-27T08:54:32.454Z",
+      "createdAt": "2026-10-27T08:49:32.454Z",
+      "consumedAt": "2026-10-27T08:49:32.473Z"
+    },
+    {
+      "code": "MCH4A2B7",
+      "displayCode": "MCH4-A2B7",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_qn9frt5bmvqg524f",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "27b64a49027a8ffe325e0fbc7dc7c43956b1c753bb00c8f2b490b5e643f00253",
+      "deviceId": "dev_mvqg527zwaj7",
+      "expiresAt": "2026-10-27T08:56:33.107Z",
+      "createdAt": "2026-10-27T08:51:33.107Z",
+      "consumedAt": "2026-10-27T08:51:33.121Z"
+    },
+    {
+      "code": "PXWXQNXJ",
+      "displayCode": "PXWX-QNXJ",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_bbhuo2k7mvqg5leg",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "b01c100f7ec8e9309e6b0a522605e2f1d0cb4b821174cf541095f1f25f007838",
+      "deviceId": "dev_mvqg5li12579",
+      "expiresAt": "2026-10-27T08:56:58.093Z",
+      "createdAt": "2026-10-27T08:51:58.093Z",
+      "consumedAt": "2026-10-27T08:51:58.107Z"
     }
   ],
   "devices": [
     {
-      "id": "dev_mvqd4ojimm58",
+      "id": "dev_mvqfswsd9ldf",
       "userId": "usr_manohar_manyu",
-      "deviceName": "Sai Charan",
-      "tokenHash": "e726c87e1f9752afcd1cfefc9f693d1b6cd4627af9f35750cae059f1b17d5c95",
+      "deviceName": "Mac Client",
+      "tokenHash": "ac13444dacd0fc2db9b7b0180e5faf01d19fbc0c512d753842176e7a0496186c",
       "trustStatus": "active",
-      "pairingTimestamp": "2026-10-27T07:27:16.542Z",
-      "lastSeenTimestamp": "2026-10-27T08:26:38.894Z",
-      "revokedAt": null,
-      "capabilities": [
-        "capture",
-        "upload",
-        "sync"
-      ]
-    },
-    {
-      "id": "dev_mvqeizf24wc2",
-      "userId": "usr_manohar_manyu",
-      "deviceName": "Android Mobile Device",
-      "tokenHash": "459ffa284624991a649c6b9cc35b3580ad248dd65e2d7917881aa41299c4cd44",
-      "trustStatus": "active",
-      "pairingTimestamp": "2026-10-27T08:06:23.438Z",
-      "lastSeenTimestamp": "2026-10-27T08:25:02.486Z",
+      "pairingTimestamp": "2026-10-27T08:42:06.205Z",
+      "lastSeenTimestamp": "2026-10-27T08:42:12.760Z",
       "revokedAt": null,
       "capabilities": [
         "capture",
@@ -591,6 +672,543 @@
     }
   ],
   "jobs": [
+    {
+      "id": "job_mvqft1vej8k5tz",
+      "uploadId": "upl_mvqft1ve916h",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T08:42:12.794Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqfswsd9ldf",
+      "deviceName": "Mac Client",
+      "originalFilename": "ChatGPT_Image_Oct_5__2026__03_43_15_PM.png",
+      "storedFilename": "spectra_1793090532769_0d6192bca25b5b27.png",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/spectra_1793090532769_0d6192bca25b5b27.png",
+      "mimeType": "image/png",
+      "sizeBytes": 1464682,
+      "mediaCategory": "IMAGE",
+      "sha256": "41a2de3fae305744e8027bd553c94f45178128f818ec9fdffb6315aad128dd4a",
+      "forensicReport": {
+        "originalFilename": "ChatGPT_Image_Oct_5__2026__03_43_15_PM.png",
+        "detectedType": "image/png",
+        "mediaCategory": "IMAGE",
+        "formatName": "Portable Network Graphics (PNG)",
+        "fileSize": 1464682,
+        "fileSizeBytes": 1464682,
+        "fileSizeFormatted": "1.40 MB",
+        "sha256": "41a2de3fae305744e8027bd553c94f45178128f818ec9fdffb6315aad128dd4a",
+        "md5": "c98e8f8de17856cc637977f8b902c522",
+        "sha1": "4bf2eea1fb9ae9c9019c23e8f95bb0e8ac1f9717",
+        "isJpeg": false,
+        "isPng": true,
+        "isWebp": false,
+        "isVideo": false,
+        "isAudio": false,
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "fNumber": "f/6",
+        "exposureTime": "1/2",
+        "isoRating": null,
+        "focalLength": null,
+        "colorSpace": null,
+        "hasGps": false,
+        "gpsLatitude": null,
+        "gpsLongitude": null,
+        "gpsAltitude": null,
+        "estimatedLocation": null,
+        "entropyScore": 93,
+        "aiMarkerDetected": false,
+        "aiSource": null,
+        "extractedPrompt": null,
+        "metadataTraces": [],
+        "videoSpecs": null,
+        "audioSpecs": null,
+        "probability": "11.5%",
+        "verdict": "AUTHENTIC MEDIA (MINIMAL RISK / STRIPPED EXIF)",
+        "indicator": "Standard recompression profile with zero synthetic generative markers",
+        "isAlert": false,
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "status": "VERIFIED",
+            "value": "41a2de3fae305744...",
+            "description": "Deterministic SHA-256 fingerprint generated upon intake."
+          },
+          {
+            "name": "IMAGE Container & Format Scan",
+            "status": "VERIFIED",
+            "value": "Portable Network Graphics (PNG) (1.40 MB)",
+            "description": "Validated binary header bytes against standard image container specifications."
+          },
+          {
+            "name": "Sensor Hardware & Provenance",
+            "status": "METADATA_STRIPPED",
+            "value": "Hardware Tags Stripped",
+            "description": "Media analyzed for optical and temporal sensor consistency."
+          },
+          {
+            "name": "Generative AI Footprint Detection",
+            "status": "NO_AI_MARKERS",
+            "value": "Zero Synthetic Markers Detected (Authentic Human Media)",
+            "description": "Exhaustive scan of container chunks and frequency spectrum confirmed absence of generative AI markers."
+          },
+          {
+            "name": "Agent-Reach Dissemination Scan",
+            "status": "PUBLIC_REPOSTS_FOUND",
+            "value": "4 Public Matches Found",
+            "description": "Correlated with public web repositories and social discussions."
+          }
+        ],
+        "analyzedAt": "2026-10-27T08:42:16.634Z",
+        "provenance": {
+          "mediaCategory": "IMAGE",
+          "formatName": "Portable Network Graphics (PNG)",
+          "originClassification": "AUTHENTIC_DIGITAL_MEDIA",
+          "device": {
+            "make": "Digital Optical Camera",
+            "model": "Standard Optical Sensor",
+            "lens": "Primary 24mm f/1.78 Optical Lens",
+            "serialNumber": "HW-UID-41A2DE3FAE",
+            "software": "Native Capture Subsystem"
+          },
+          "captureSettings": {
+            "aperture": "f/6",
+            "shutterSpeed": "1/2",
+            "iso": "Not Recorded",
+            "focalLength": "Not Recorded",
+            "colorProfile": "sRGB Standard",
+            "whiteBalance": "N/A",
+            "flashMode": "N/A"
+          },
+          "temporal": {
+            "capturedAt": "2026-10-27T08:42:16.634Z",
+            "digitizedAt": "2026-10-27T08:42:16.634Z",
+            "timezone": "Local System Time",
+            "clockSkewSeconds": 0
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "No GPS Coordinates Recorded (Privacy Preserved)",
+            "altitude": "Not Recorded",
+            "geofenceDescription": "No Embedded Geolocation Data",
+            "source": "Privacy Preserved"
+          },
+          "generativeDetails": null
+        },
+        "dissemination": {
+          "spreadClassification": "PUBLIC_DISSEMINATION_CONFIRMED",
+          "viralityIndex": "High (Distributed across Social Clusters)",
+          "recompressionGeneration": 1,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Twitter/X compression fingerprints",
+              "evidence": "Preserved lossless chroma"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Reddit repost markers",
+              "evidence": "Sensor noise intact"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachQuery": "ChatGPT Image Oct 5  2026  03 43 15 PM",
+          "agentReachMatches": [
+            {
+              "title": "Building advertising for the way people use AI",
+              "url": "https://openai.com/index/new-chatgpt-ads-format-and-measurement",
+              "author": "Public Online Origin",
+              "snippet": "OpenAI introduces a new visual ad format in ChatGPT and expands measurement tools, attribution partnerships, and brand suitability for advertisers.  ---...",
+              "publishedAt": "2026-10-05T10:00:00.000Z",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "Elevated errors affecting multiple products including ChatGPT (conversations), Image generations, Spaces and Pages, API rehydration, and Dots. - OpenAI Status",
+              "url": "https://status.openai.com/incidents/f05dmw4y",
+              "author": "Public Online Origin",
+              "snippet": "Availability metrics are reported at an aggregate level across all tiers, models and error types. Individual customer availability may vary depending on their subscription tier as ...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "OpenAI launches visual ads that appear alongside image ...",
+              "url": "https://techcrunch.com/2026/10/05/openai-launches-visual-ads-that-appear-alongside-image-generation-results/",
+              "author": "Sarah Perez",
+              "snippet": "OpenAI launches visual ads that appear alongside image generation results | TechCrunch  Image Credits: OpenAI  # OpenAI launches visual ads that appear alongside image generation r...",
+              "publishedAt": "2026-10-05T15:14:24.000Z",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "ChatGPT Image Oct 24, 2026, 11_50_46 PM.png | DPReview Forums",
+              "url": "https://www.dpreview.com/forums/media/chatgpt-image-oct-24-2026-11_50_46-pm-png.4670241/",
+              "author": "Public Online Origin",
+              "snippet": "ChatGPT Image Oct 24, 2026, 11_50_46 PM.png | DPReview Forums   Prev       Next    Prev                        # ChatGPT Image Oct 24, 2026, 11_50_46 PM.png  - AlexiTQ - Saturday a...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 4 public web/social intelligence records correlating with \"ChatGPT Image Oct 5  2026  03 43 15 PM\"."
+        }
+      },
+      "completedAt": "2026-10-27T08:42:16.634Z"
+    },
+    {
+      "id": "job_mvqfnqwdorc59r",
+      "uploadId": "upl_mvqfnqwd7yk0",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T08:38:05.293Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqd4ojimm58",
+      "deviceName": "Sai Charan",
+      "originalFilename": "file_00000000e84481f4bf7fab59e75398b5.png",
+      "storedFilename": "spectra_1793090285133_0453234afe37c525.png",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/spectra_1793090285133_0453234afe37c525.png",
+      "mimeType": "image/png",
+      "sizeBytes": 2686095,
+      "mediaCategory": "IMAGE",
+      "sha256": "aa81a305aecd0d03af8d372b33ba012496146df81e8e6d326a37ed1f3919cf80",
+      "forensicReport": {
+        "originalFilename": "file_00000000e84481f4bf7fab59e75398b5.png",
+        "detectedType": "image/png",
+        "mediaCategory": "IMAGE",
+        "formatName": "Portable Network Graphics (PNG)",
+        "fileSize": 2686095,
+        "fileSizeBytes": 2686095,
+        "fileSizeFormatted": "2.56 MB",
+        "sha256": "aa81a305aecd0d03af8d372b33ba012496146df81e8e6d326a37ed1f3919cf80",
+        "md5": "3c105770f04d7e0f85e0611b575de6de",
+        "sha1": "e47a1b1af04e9ebd57e7d44879a660edfc6d6e8c",
+        "isJpeg": false,
+        "isPng": true,
+        "isWebp": false,
+        "isVideo": false,
+        "isAudio": false,
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "fNumber": "f/7",
+        "exposureTime": "1/1",
+        "isoRating": null,
+        "focalLength": null,
+        "colorSpace": null,
+        "hasGps": false,
+        "gpsLatitude": null,
+        "gpsLongitude": null,
+        "gpsAltitude": null,
+        "estimatedLocation": null,
+        "entropyScore": 85,
+        "aiMarkerDetected": false,
+        "aiSource": null,
+        "extractedPrompt": null,
+        "metadataTraces": [],
+        "videoSpecs": null,
+        "audioSpecs": null,
+        "probability": "11.5%",
+        "verdict": "AUTHENTIC MEDIA (MINIMAL RISK / STRIPPED EXIF)",
+        "indicator": "Standard recompression profile with zero synthetic generative markers",
+        "isAlert": false,
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "status": "VERIFIED",
+            "value": "aa81a305aecd0d03...",
+            "description": "Deterministic SHA-256 fingerprint generated upon intake."
+          },
+          {
+            "name": "IMAGE Container & Format Scan",
+            "status": "VERIFIED",
+            "value": "Portable Network Graphics (PNG) (2.56 MB)",
+            "description": "Validated binary header bytes against standard image container specifications."
+          },
+          {
+            "name": "Sensor Hardware & Provenance",
+            "status": "METADATA_STRIPPED",
+            "value": "Hardware Tags Stripped",
+            "description": "Media analyzed for optical and temporal sensor consistency."
+          },
+          {
+            "name": "Generative AI Footprint Detection",
+            "status": "NO_AI_MARKERS",
+            "value": "Zero Synthetic Markers Detected (Authentic Human Media)",
+            "description": "Exhaustive scan of container chunks and frequency spectrum confirmed absence of generative AI markers."
+          },
+          {
+            "name": "Agent-Reach Dissemination Scan",
+            "status": "CONFIDENTIAL_LOCAL",
+            "value": "0 Public Leaks (Isolated)",
+            "description": "Zero public reposts or leak traces indexed in open intelligence databases."
+          }
+        ],
+        "analyzedAt": "2026-10-27T08:38:06.659Z",
+        "provenance": {
+          "mediaCategory": "IMAGE",
+          "formatName": "Portable Network Graphics (PNG)",
+          "originClassification": "AUTHENTIC_DIGITAL_MEDIA",
+          "device": {
+            "make": "Digital Optical Camera",
+            "model": "Standard Optical Sensor",
+            "lens": "Primary 24mm f/1.78 Optical Lens",
+            "serialNumber": "HW-UID-AA81A305AE",
+            "software": "Native Capture Subsystem"
+          },
+          "captureSettings": {
+            "aperture": "f/7",
+            "shutterSpeed": "1/1",
+            "iso": "Not Recorded",
+            "focalLength": "Not Recorded",
+            "colorProfile": "sRGB Standard",
+            "whiteBalance": "N/A",
+            "flashMode": "N/A"
+          },
+          "temporal": {
+            "capturedAt": "2026-10-27T08:38:06.659Z",
+            "digitizedAt": "2026-10-27T08:38:06.659Z",
+            "timezone": "Local System Time",
+            "clockSkewSeconds": 0
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "No GPS Coordinates Recorded (Privacy Preserved)",
+            "altitude": "Not Recorded",
+            "geofenceDescription": "No Embedded Geolocation Data",
+            "source": "Privacy Preserved"
+          },
+          "generativeDetails": null
+        },
+        "dissemination": {
+          "spreadClassification": "ISOLATED_PRIVATE_LOCAL_STREAM",
+          "viralityIndex": "0% (Confidential Private Transfer)",
+          "recompressionGeneration": 1,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Twitter/X compression fingerprints",
+              "evidence": "Preserved lossless chroma"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Reddit repost markers",
+              "evidence": "Sensor noise intact"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachQuery": "file 00000000e84481f4bf7fab59e75398b5",
+          "agentReachMatches": [],
+          "agentReachSummary": "Agent-Reach multi-channel search confirmed: Zero public leaks or external social reposts found for \"file 00000000e84481f4bf7fab59e75398b5\". Media is strictly contained in local private perimeter."
+        }
+      },
+      "completedAt": "2026-10-27T08:38:06.660Z"
+    },
+    {
+      "id": "job_mvqfmfxwgqj6ql",
+      "uploadId": "upl_mvqfmfxx0e1g",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T08:37:04.437Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqd4ojimm58",
+      "deviceName": "Sai Charan",
+      "originalFilename": "1793067206580.png",
+      "storedFilename": "spectra_1793090223939_fbdb2bb8754d9058.png",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/spectra_1793090223939_fbdb2bb8754d9058.png",
+      "mimeType": "image/png",
+      "sizeBytes": 6477678,
+      "mediaCategory": "IMAGE",
+      "sha256": "a5d3f1036a5cb570c3657503205382d46b1787fb5e25ede1f5fbe1ec44d6f1c1",
+      "forensicReport": {
+        "originalFilename": "1793067206580.png",
+        "detectedType": "image/png",
+        "mediaCategory": "IMAGE",
+        "formatName": "Portable Network Graphics (PNG)",
+        "fileSize": 6477678,
+        "fileSizeBytes": 6477678,
+        "fileSizeFormatted": "6.18 MB",
+        "sha256": "a5d3f1036a5cb570c3657503205382d46b1787fb5e25ede1f5fbe1ec44d6f1c1",
+        "md5": "6f66ea334fee536c3e3ed05b079a7146",
+        "sha1": "5ab8962e42eac3eeb5c2c6540b6ffd5fb83184ca",
+        "isJpeg": false,
+        "isPng": true,
+        "isWebp": false,
+        "isVideo": false,
+        "isAudio": false,
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "fNumber": "f/9",
+        "exposureTime": "1/0",
+        "isoRating": null,
+        "focalLength": null,
+        "colorSpace": null,
+        "hasGps": false,
+        "gpsLatitude": null,
+        "gpsLongitude": null,
+        "gpsAltitude": null,
+        "estimatedLocation": null,
+        "entropyScore": 90,
+        "aiMarkerDetected": false,
+        "aiSource": null,
+        "extractedPrompt": null,
+        "metadataTraces": [],
+        "videoSpecs": null,
+        "audioSpecs": null,
+        "probability": "11.5%",
+        "verdict": "AUTHENTIC MEDIA (MINIMAL RISK / STRIPPED EXIF)",
+        "indicator": "Standard recompression profile with zero synthetic generative markers",
+        "isAlert": false,
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "status": "VERIFIED",
+            "value": "a5d3f1036a5cb570...",
+            "description": "Deterministic SHA-256 fingerprint generated upon intake."
+          },
+          {
+            "name": "IMAGE Container & Format Scan",
+            "status": "VERIFIED",
+            "value": "Portable Network Graphics (PNG) (6.18 MB)",
+            "description": "Validated binary header bytes against standard image container specifications."
+          },
+          {
+            "name": "Sensor Hardware & Provenance",
+            "status": "METADATA_STRIPPED",
+            "value": "Hardware Tags Stripped",
+            "description": "Media analyzed for optical and temporal sensor consistency."
+          },
+          {
+            "name": "Generative AI Footprint Detection",
+            "status": "NO_AI_MARKERS",
+            "value": "Zero Synthetic Markers Detected (Authentic Human Media)",
+            "description": "Exhaustive scan of container chunks and frequency spectrum confirmed absence of generative AI markers."
+          },
+          {
+            "name": "Agent-Reach Dissemination Scan",
+            "status": "CONFIDENTIAL_LOCAL",
+            "value": "0 Public Leaks (Isolated)",
+            "description": "Zero public reposts or leak traces indexed in open intelligence databases."
+          }
+        ],
+        "analyzedAt": "2026-10-27T08:37:06.371Z",
+        "provenance": {
+          "mediaCategory": "IMAGE",
+          "formatName": "Portable Network Graphics (PNG)",
+          "originClassification": "AUTHENTIC_DIGITAL_MEDIA",
+          "device": {
+            "make": "Digital Optical Camera",
+            "model": "Standard Optical Sensor",
+            "lens": "Primary 24mm f/1.78 Optical Lens",
+            "serialNumber": "HW-UID-A5D3F1036A",
+            "software": "Native Capture Subsystem"
+          },
+          "captureSettings": {
+            "aperture": "f/9",
+            "shutterSpeed": "1/0",
+            "iso": "Not Recorded",
+            "focalLength": "Not Recorded",
+            "colorProfile": "sRGB Standard",
+            "whiteBalance": "N/A",
+            "flashMode": "N/A"
+          },
+          "temporal": {
+            "capturedAt": "2026-10-27T08:37:06.371Z",
+            "digitizedAt": "2026-10-27T08:37:06.371Z",
+            "timezone": "Local System Time",
+            "clockSkewSeconds": 0
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "No GPS Coordinates Recorded (Privacy Preserved)",
+            "altitude": "Not Recorded",
+            "geofenceDescription": "No Embedded Geolocation Data",
+            "source": "Privacy Preserved"
+          },
+          "generativeDetails": null
+        },
+        "dissemination": {
+          "spreadClassification": "ISOLATED_PRIVATE_LOCAL_STREAM",
+          "viralityIndex": "0% (Confidential Private Transfer)",
+          "recompressionGeneration": 1,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Twitter/X compression fingerprints",
+              "evidence": "Preserved lossless chroma"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Reddit repost markers",
+              "evidence": "Sensor noise intact"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachQuery": "1793067206580",
+          "agentReachMatches": [],
+          "agentReachSummary": "Agent-Reach multi-channel search confirmed: Zero public leaks or external social reposts found for \"1793067206580\". Media is strictly contained in local private perimeter."
+        }
+      },
+      "completedAt": "2026-10-27T08:37:06.371Z"
+    },
     {
       "id": "job_mvqfiwpgq0s29c",
       "uploadId": "upl_mvqfiwpg7fvs",

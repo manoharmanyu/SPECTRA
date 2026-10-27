@@ -227,6 +227,25 @@ async function runAllSecurityTests() {
   const aiReport = await analyzeImageForensics(aiJpegPath, 'sample_ai_diffusion.jpg');
   assert(aiReport.isAlert && aiReport.verdict.includes('MANIPULATED'), 'Flagged Generative AI metadata marker (Stable Diffusion / ComfyUI)');
 
+  // Genuine Provenance & Privacy Test (No GPS Fabricated)
+  assert(report.provenance.geolocation.hasGpsCoordinates === false, 'Maintains privacy when no GPS coordinates exist in EXIF');
+  assert(report.provenance.geolocation.coordinates.includes('No GPS Coordinates Recorded'), 'Does not fabricate fake GPS coordinates');
+
+  // Genuine Audio Forensic Analysis Test (Zero Fake AI False Positives)
+  const testWavPath = path.resolve('tests/fixtures/sample_human_voice.wav');
+  const wavRiff = Buffer.from([
+    0x52, 0x49, 0x46, 0x46, 0x24, 0x08, 0x00, 0x00, 0x57, 0x41, 0x56, 0x45,
+    0x66, 0x6d, 0x74, 0x20, 0x10, 0x00, 0x00, 0x00, 0x01, 0x00, 0x02, 0x00, // Stereo
+    0x44, 0xac, 0x00, 0x00, 0x10, 0xb1, 0x02, 0x00, 0x04, 0x00, 0x10, 0x00, // 44,100 Hz, 16-bit
+    0x64, 0x61, 0x74, 0x61, 0x00, 0x08, 0x00, 0x00
+  ]);
+  const audioData = Buffer.alloc(2048, 0x20);
+  fs.writeFileSync(testWavPath, Buffer.concat([wavRiff, audioData]));
+  const wavReport = await analyzeImageForensics(testWavPath, 'sample_human_voice.wav', 'audio/wav');
+  assert(wavReport.mediaCategory === 'AUDIO', 'Identifies audio media container correctly');
+  assert(wavReport.audioSpecs && wavReport.audioSpecs.sampleRate.includes('44,100 Hz'), 'Parses genuine audio sample rate from binary fmt chunk');
+  assert(!wavReport.isAlert && wavReport.verdict.includes('AUTHENTIC'), 'Correctly classifies natural human audio as Authentic without AI false positives');
+
   // -------------------------------------------------------------------------
   // TEST GROUP 7: USER ISOLATION & DEVICE REVOCATION
   // -------------------------------------------------------------------------
