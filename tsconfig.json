@@ -14,13 +14,6 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
-    /* Paths */
-    "baseUrl": ".",
-    "paths": {
-      "@designcodeio/threeui": ["./src/threeui.ts"],
-      "@designcodeio/threeui/*": ["./src/*"]
-    },
-
     /* Linting */
     "strict": false,
     "noUnusedLocals": false,

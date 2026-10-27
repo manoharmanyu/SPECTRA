@@ -83,7 +83,8 @@
       "ip": "127.0.0.1",
       "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
       "expiresAt": "2026-10-28T07:29:10.873Z",
-      "createdAt": "2026-10-27T07:29:10.873Z"
+      "createdAt": "2026-10-27T07:29:10.873Z",
+      "pendingTotpSecret": "NHVPCCF3CC7PPWJLLRQJZEO4HPIE4ATI"
     },
     {
       "id": "ses_7zhssvvumvqdpx92",
@@ -147,6 +148,24 @@
       "userAgent": "",
       "expiresAt": "2026-10-28T07:49:02.139Z",
       "createdAt": "2026-10-27T07:49:02.139Z"
+    },
+    {
+      "id": "ses_e4w05h58mvqe6u3s",
+      "userId": "usr_mvqe6u3r292e",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-28T07:56:56.680Z",
+      "createdAt": "2026-10-27T07:56:56.680Z"
+    },
+    {
+      "id": "ses_08arsr00mvqe7pq4",
+      "userId": "usr_mvqe7pq3y1sz",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-28T07:57:37.660Z",
+      "createdAt": "2026-10-27T07:57:37.660Z"
     }
   ],
   "pairingCodes": [
@@ -327,6 +346,34 @@
       "expiresAt": "2026-10-27T07:54:02.142Z",
       "createdAt": "2026-10-27T07:49:02.142Z",
       "consumedAt": "2026-10-27T07:49:02.176Z"
+    },
+    {
+      "code": "HET9LA33",
+      "displayCode": "HET9-LA33",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_738bpfd9mvqe6tz7",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "fb7670fbb02ecb608e7a14d4b93fcd871737282f8aaeb6790b5dcd1e2fd17420",
+      "deviceId": "dev_mvqe6u45cd3l",
+      "expiresAt": "2026-10-27T08:01:56.682Z",
+      "createdAt": "2026-10-27T07:56:56.682Z",
+      "consumedAt": "2026-10-27T07:56:56.694Z"
+    },
+    {
+      "code": "SH3UDQS4",
+      "displayCode": "SH3U-DQS4",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_l5yoorusmvqe7pn2",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "0b2423c2f17ebe958d28e446ca9c0db4297c7c02889f6ee9d905193f10241125",
+      "deviceId": "dev_mvqe7pqh1rio",
+      "expiresAt": "2026-10-27T08:02:37.663Z",
+      "createdAt": "2026-10-27T07:57:37.663Z",
+      "consumedAt": "2026-10-27T07:57:37.675Z"
     }
   ],
   "devices": [
