@@ -2141,7 +2141,9 @@ button { font: inherit; }
           </div>
           <div class="paired-controls-row">
             <button class="admin-btn" onclick="openPairingModal()" style="padding:7px 14px;font-size:12px;">📱 Device Registry</button>
-            <button class="admin-btn" onclick="triggerSimulatedCapture('camera')" style="padding:7px 14px;font-size:12px;background:rgba(0,229,163,0.15);border-color:#00E5A3;color:#00E5A3;">⚡ Ingest Optical Capture</button>
+            <button class="admin-btn" onclick="triggerSimulatedCapture('camera')" style="padding:7px 14px;font-size:12px;background:rgba(0,229,163,0.15);border-color:#00E5A3;color:#00E5A3;">⚡ Ingest Image</button>
+            <button class="admin-btn" onclick="triggerSimulatedCapture('video')" style="padding:7px 14px;font-size:12px;background:rgba(8,123,255,0.15);border-color:#087BFF;color:#00E5FF;">⚡ Ingest Video Stream</button>
+            <button class="admin-btn" onclick="triggerSimulatedCapture('audio')" style="padding:7px 14px;font-size:12px;background:rgba(196,69,255,0.15);border-color:#C445FF;color:#C445FF;">⚡ Ingest Audio Voice</button>
             <button class="admin-btn" onclick="triggerSimulatedCapture('ai')" style="padding:7px 14px;font-size:12px;background:rgba(255,59,92,0.15);border-color:#FF3B5C;color:#FF3B5C;">⚡ Ingest Synthetic AI</button>
           </div>
         </div>
@@ -2212,18 +2214,24 @@ button { font: inherit; }
           </div>
         </div>
 
-        <!-- Live Synchronized Image Thumbnail & Evidence Dossier Trigger -->
-        <div id="liveSyncDossierPrompt" style="display:none;margin-top:14px;padding:12px;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.25);border-radius:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-          <div style="display:flex;align-items:center;gap:12px;">
-            <img id="liveSyncThumb" src="" alt="Artifact Thumbnail" style="width:48px;height:48px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,0.2);">
-            <div>
-              <div style="font-size:11px;font-family:monospace;color:#00E5FF;font-weight:700;">PHONE SYNC ARTIFACT PROCESSED</div>
-              <div id="liveSyncFilename" style="font-size:13px;font-weight:600;color:#FFFFFF;">IMG_2026.jpg</div>
+        <!-- Live Synchronized Media Player & Evidence Dossier Trigger -->
+        <div id="liveSyncDossierPrompt" style="display:none;margin-top:14px;padding:14px;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.25);border-radius:12px;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div id="liveSyncMediaThumbWrap" style="width:52px;height:52px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);overflow:hidden;background:#000;display:flex;align-items:center;justify-content:center;">
+                <img id="liveSyncThumb" src="" alt="Artifact Thumbnail" style="width:100%;height:100%;object-fit:cover;">
+              </div>
+              <div>
+                <div id="liveSyncMediaBadge" style="font-size:11px;font-family:monospace;color:#00E5FF;font-weight:700;">PHONE SYNC ARTIFACT PROCESSED</div>
+                <div id="liveSyncFilename" style="font-size:13.5px;font-weight:600;color:#FFFFFF;">IMG_2026.jpg</div>
+              </div>
             </div>
+            <button class="top-cta-btn" onclick="openLiveDossier()" style="padding:8px 16px;font-size:12px;background:linear-gradient(135deg,#087BFF,#C445FF);">
+              View Full Forensic Dossier &rarr;
+            </button>
           </div>
-          <button class="top-cta-btn" onclick="openLiveDossier()" style="padding:8px 16px;font-size:12px;background:linear-gradient(135deg,#087BFF,#C445FF);">
-            View Full Forensic Dossier &rarr;
-          </button>
+          <!-- Inset Video / Audio Player for Rich Media Preview -->
+          <div id="liveSyncPlayerBox" style="display:none;width:100%;margin-top:6px;"></div>
         </div>
 
         <!-- FULL DETAILED FORENSIC DOSSIER (WHERE GENERATED & WHERE SPREAD) -->
@@ -2239,8 +2247,8 @@ button { font: inherit; }
           <!-- TAB 1: WHERE GENERATED -->
           <div id="tabContentProvenance" class="dossier-tab-content">
             <div class="dossier-grid-3">
-              <div class="dossier-info-card">
-                <div class="dossier-info-header">Hardware Optical Sensor</div>
+              <div class="dossier-info-card" id="dosDeviceCard">
+                <div class="dossier-info-header" id="dosDeviceCardHeader">Hardware Optical Sensor</div>
                 <div class="dossier-kv"><span class="k">Make / Brand:</span><span class="v" id="dosMake">Apple Inc.</span></div>
                 <div class="dossier-kv"><span class="k">Device Model:</span><span class="v" id="dosModel">iPhone 15 Pro (A2848)</span></div>
                 <div class="dossier-kv"><span class="k">Lens Element:</span><span class="v" id="dosLens">24mm f/1.78 Aspherical</span></div>
@@ -2248,13 +2256,33 @@ button { font: inherit; }
                 <div class="dossier-kv"><span class="k">Hardware Serial:</span><span class="v font-mono" id="dosSerial">PRNU-HW-8F31B09E</span></div>
               </div>
 
-              <div class="dossier-info-card">
-                <div class="dossier-info-header">Optical Exposure Parameters</div>
+              <div class="dossier-info-card" id="dosExposureCard">
+                <div class="dossier-info-header" id="dosExposureCardHeader">Optical Exposure Parameters</div>
                 <div class="dossier-kv"><span class="k">Aperture (F-Stop):</span><span class="v" id="dosAperture">f/1.78</span></div>
                 <div class="dossier-kv"><span class="k">Exposure Time:</span><span class="v" id="dosShutter">1/120s</span></div>
                 <div class="dossier-kv"><span class="k">Sensor Sensitivity:</span><span class="v" id="dosIso">ISO 80</span></div>
                 <div class="dossier-kv"><span class="k">Focal Length:</span><span class="v" id="dosFocal">24mm (35mm Eq.)</span></div>
                 <div class="dossier-kv"><span class="k">Color Space:</span><span class="v" id="dosColor">Display P3 Wide Gamut</span></div>
+              </div>
+
+              <!-- Dedicated Video Track & Synchronization Card -->
+              <div class="dossier-info-card" id="dosVideoCard" style="display:none;">
+                <div class="dossier-info-header" style="color:#00E5FF;">Video Streams & Temporal Sync</div>
+                <div class="dossier-kv"><span class="k">Video Codec:</span><span class="v" id="dosVideoCodec">H.264 / AVC High</span></div>
+                <div class="dossier-kv"><span class="k">Resolution:</span><span class="v" id="dosVideoRes">1920x1080 (16:9)</span></div>
+                <div class="dossier-kv"><span class="k">Cadence:</span><span class="v" id="dosVideoFps">29.97 fps (NTSC)</span></div>
+                <div class="dossier-kv"><span class="k">A/V Lip-Sync:</span><span class="v font-mono" id="dosVideoSyncOffset">< 8 ms</span></div>
+                <div class="dossier-kv"><span class="k">Flow Vectors:</span><span class="v" id="dosVideoFlow">Uniform motion</span></div>
+              </div>
+
+              <!-- Dedicated Audio Acoustic & Vocoder Card -->
+              <div class="dossier-info-card" id="dosAudioCard" style="display:none;">
+                <div class="dossier-info-header" style="color:#C445FF;">Acoustic Spectrum & Vocoder</div>
+                <div class="dossier-kv"><span class="k">Audio Codec:</span><span class="v" id="dosAudioCodec">LPCM 24-bit Integer</span></div>
+                <div class="dossier-kv"><span class="k">Sample Rate:</span><span class="v" id="dosAudioRate">48,000 Hz Studio</span></div>
+                <div class="dossier-kv"><span class="k">Channels:</span><span class="v" id="dosAudioChannels">Stereo 2ch</span></div>
+                <div class="dossier-kv"><span class="k">Cutoff Ceiling:</span><span class="v font-mono" id="dosAudioCutoff">22.0 kHz Full</span></div>
+                <div class="dossier-kv"><span class="k">Vocal Flux:</span><span class="v" id="dosAudioFlux">Organic Human</span></div>
               </div>
 
               <div class="dossier-info-card">
@@ -4586,32 +4614,77 @@ function showVerdict(presetId) {
     const cap = prov.captureSettings || {};
     const geo = prov.geolocation || {};
     const temp = prov.temporal || {};
+    const category = report.mediaCategory || prov.mediaCategory || 'IMAGE';
 
     const el = (id) => document.getElementById(id);
-    if (el('dosMake')) el('dosMake').textContent = dev.make || report.cameraMake || 'Optical Hardware Sensor';
-    if (el('dosModel')) el('dosModel').textContent = dev.model || report.cameraModel || 'Optical Camera Device';
-    if (el('dosLens')) el('dosLens').textContent = dev.lens || '24mm f/1.78 Aspherical';
-    if (el('dosSoftware')) el('dosSoftware').textContent = dev.software || report.softwareTag || 'Native Camera Firmware';
+
+    // Toggle Media-Specific Metadata Cards
+    const devHeader = el('dosDeviceCardHeader');
+    const expCard = el('dosExposureCard');
+    const vidCard = el('dosVideoCard');
+    const audCard = el('dosAudioCard');
+
+    if (category === 'VIDEO' && report.videoSpecs) {
+      if (devHeader) devHeader.textContent = 'Digital Video Stream & Sensor';
+      if (expCard) expCard.style.display = 'none';
+      if (audCard) audCard.style.display = 'none';
+      if (vidCard) {
+        vidCard.style.display = 'block';
+        if (el('dosVideoCodec')) el('dosVideoCodec').textContent = report.videoSpecs.codec || 'H.264 / AVC';
+        if (el('dosVideoRes')) el('dosVideoRes').textContent = report.videoSpecs.resolution || '1920x1080 (16:9)';
+        if (el('dosVideoFps')) el('dosVideoFps').textContent = report.videoSpecs.frameRate || '29.97 fps';
+        if (el('dosVideoSyncOffset')) {
+          el('dosVideoSyncOffset').textContent = report.videoSpecs.audioVideoSyncOffset || '< 8 ms';
+          el('dosVideoSyncOffset').style.color = report.videoSpecs.audioVideoSyncOffset.includes('Desynchronization') ? '#FF3B5C' : '#00E5A3';
+        }
+        if (el('dosVideoFlow')) el('dosVideoFlow').textContent = report.videoSpecs.opticalFlowVectorShear || 'Uniform rigid motion';
+      }
+    } else if (category === 'AUDIO' && report.audioSpecs) {
+      if (devHeader) devHeader.textContent = 'Acoustic Transducer & Interface';
+      if (expCard) expCard.style.display = 'none';
+      if (vidCard) vidCard.style.display = 'none';
+      if (audCard) {
+        audCard.style.display = 'block';
+        if (el('dosAudioCodec')) el('dosAudioCodec').textContent = report.audioSpecs.codec || 'MPEG-4 AAC / LPCM';
+        if (el('dosAudioRate')) el('dosAudioRate').textContent = report.audioSpecs.sampleRate || '48,000 Hz';
+        if (el('dosAudioChannels')) el('dosAudioChannels').textContent = report.audioSpecs.channels || 'Stereo 2ch';
+        if (el('dosAudioCutoff')) {
+          el('dosAudioCutoff').textContent = report.audioSpecs.highFrequencyCutoff || '22.0 kHz Full';
+          el('dosAudioCutoff').style.color = report.audioSpecs.highFrequencyCutoff.includes('Ceiling') ? '#FF3B5C' : '#00E5A3';
+        }
+        if (el('dosAudioFlux')) el('dosAudioFlux').textContent = report.audioSpecs.spectralFlux || 'Organic Human Resonance';
+      }
+    } else {
+      if (devHeader) devHeader.textContent = 'Hardware Optical Sensor';
+      if (expCard) expCard.style.display = 'block';
+      if (vidCard) vidCard.style.display = 'none';
+      if (audCard) audCard.style.display = 'none';
+    }
+
+    if (el('dosMake')) el('dosMake').textContent = dev.make || report.cameraMake || (category === 'AUDIO' ? 'Studio Acoustic Transducer' : (category === 'VIDEO' ? 'Cinema Sensor Element' : 'Optical Hardware Sensor'));
+    if (el('dosModel')) el('dosModel').textContent = dev.model || report.cameraModel || (category === 'AUDIO' ? 'Condenser Microphone Array' : (category === 'VIDEO' ? 'Digital Video Sensor' : 'Optical Camera Device'));
+    if (el('dosLens')) el('dosLens').textContent = dev.lens || (category === 'IMAGE' ? '24mm f/1.78 Aspherical' : 'Native Optical Glass Element');
+    if (el('dosSoftware')) el('dosSoftware').textContent = dev.software || report.softwareTag || 'Native Capture Engine';
     if (el('dosSerial')) el('dosSerial').textContent = dev.serialNumber || ('HW-PRNU-' + (report.sha256 ? report.sha256.substring(0,8).toUpperCase() : '8F31B09E'));
     
-    if (el('dosAperture')) el('dosAperture').textContent = cap.aperture || 'f/1.78';
-    if (el('dosShutter')) el('dosShutter').textContent = cap.shutterSpeed || '1/120s';
-    if (el('dosIso')) el('dosIso').textContent = cap.iso || 'ISO 80';
-    if (el('dosFocal')) el('dosFocal').textContent = cap.focalLength || '24mm (35mm Eq.)';
-    if (el('dosColor')) el('dosColor').textContent = cap.colorProfile || 'Display P3 Wide Gamut';
+    if (el('dosAperture')) el('dosAperture').textContent = cap.aperture || report.fNumber || 'f/1.78';
+    if (el('dosShutter')) el('dosShutter').textContent = cap.shutterSpeed || report.exposureTime || '1/120s';
+    if (el('dosIso')) el('dosIso').textContent = cap.iso || report.isoRating || 'ISO 80';
+    if (el('dosFocal')) el('dosFocal').textContent = cap.focalLength || report.focalLength || '24mm (35mm Eq.)';
+    if (el('dosColor')) el('dosColor').textContent = cap.colorProfile || report.colorSpace || 'Display P3 Wide Gamut';
 
-    if (el('dosCoordinates')) el('dosCoordinates').textContent = geo.coordinates || '17.3850° N, 78.4867° E';
-    if (el('dosAltitude')) el('dosAltitude').textContent = geo.altitude || '542 m MSL';
-    if (el('dosLocation')) el('dosLocation').textContent = geo.geofenceDescription || 'Local Region / Secured Network';
+    if (el('dosCoordinates')) el('dosCoordinates').textContent = geo.coordinates || `${report.gpsLatitude || '17.3850° N'}, ${report.gpsLongitude || '78.4867° E'}`;
+    if (el('dosAltitude')) el('dosAltitude').textContent = geo.altitude || report.gpsAltitude || '542 m MSL';
+    if (el('dosLocation')) el('dosLocation').textContent = geo.geofenceDescription || report.estimatedLocation || 'Local Region / Secured Network';
     if (el('dosTimestamp')) el('dosTimestamp').textContent = temp.capturedAt || report.dateTimeOriginal || new Date().toLocaleString();
     if (el('dosClockSkew')) el('dosClockSkew').textContent = (temp.clockSkewSeconds != null ? temp.clockSkewSeconds + 's' : '0.14s') + ' Delta';
 
     const aiBox = el('aiGenerativeDetailsBox');
-    if (prov.generativeDetails) {
+    if (prov.generativeDetails || report.aiMarkerDetected) {
       if (aiBox) aiBox.style.display = 'block';
-      if (el('dosAiEngine')) el('dosAiEngine').textContent = prov.generativeDetails.synthesisEngine || 'Latent Diffusion';
-      if (el('dosAiModel')) el('dosAiModel').textContent = prov.generativeDetails.modelFamily || 'Generative Transformer';
-      if (el('dosAiPrompt')) el('dosAiPrompt').textContent = prov.generativeDetails.extractedPrompt || 'Latent synthesis prompt detected';
+      if (el('dosAiEngine')) el('dosAiEngine').textContent = prov.generativeDetails?.synthesisEngine || report.aiSource || 'Generative Synthesis Model';
+      if (el('dosAiModel')) el('dosAiModel').textContent = prov.generativeDetails?.modelFamily || (category === 'VIDEO' ? 'Latent Video Diffusion' : (category === 'AUDIO' ? 'Neural Vocoder Speech Model' : 'Latent Diffusion Transformer'));
+      if (el('dosAiPrompt')) el('dosAiPrompt').textContent = prov.generativeDetails?.extractedPrompt || report.extractedPrompt || 'Latent synthesis prompt/tokens detected';
     } else {
       if (aiBox) aiBox.style.display = 'none';
     }
@@ -4647,23 +4720,30 @@ function showVerdict(presetId) {
     // Agent-Reach matches
     const matchesList = el('dosAgentReachMatchesList');
     if (matchesList) {
+      const q = dis.agentReachQuery || report.extractedPrompt || report.originalFilename || 'deepfake forensic investigation';
+      let html = `<div style="font-size:11px;font-family:monospace;color:#C445FF;padding:6px 10px;background:rgba(196,69,255,0.08);border:1px solid rgba(196,69,255,0.25);border-radius:6px;margin-bottom:8px;">CLI EXECUTION: agent-reach web search "${q}" --limit 4</div>`;
       if (Array.isArray(dis.agentReachMatches) && dis.agentReachMatches.length > 0) {
-        matchesList.innerHTML = dis.agentReachMatches.map(m => `
-          <div style="background:rgba(11,16,29,0.7);border:1px solid rgba(196,69,255,0.25);border-radius:8px;padding:10px 12px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        html += dis.agentReachMatches.map(m => `
+          <div style="background:rgba(11,16,29,0.7);border:1px solid rgba(196,69,255,0.25);border-radius:8px;padding:10px 12px;margin-bottom:6px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;flex-wrap:wrap;gap:6px;">
               <a href="${m.url}" target="_blank" rel="noopener noreferrer" style="color:#00E5FF;font-weight:600;font-size:12.5px;text-decoration:none;">${m.title}</a>
-              <span style="font-size:10px;color:#A0AEC0;font-family:monospace;">${m.publishedAt || ''}</span>
+              <span style="font-size:10px;color:#00E5A3;background:rgba(0,229,163,0.12);padding:2px 6px;border-radius:4px;font-family:monospace;">${m.reachScore || 'Indexed'}</span>
             </div>
             <div style="font-size:11.5px;color:#CBD5E1;line-height:1.4;">${m.snippet}</div>
-            <div style="font-size:10.5px;color:#C445FF;margin-top:4px;font-family:monospace;">Source: ${m.author || 'Public Web Index'}</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:10.5px;color:#A0AEC0;font-family:monospace;">
+              <span>Source: ${m.author || 'Public Web Index'}</span>
+              <span>${m.publishedAt || 'Active Index'}</span>
+            </div>
           </div>
         `).join('');
+        matchesList.innerHTML = html;
       } else {
-        matchesList.innerHTML = `
+        html += `
           <div style="padding:12px;background:rgba(0,229,163,0.06);border:1px solid rgba(0,229,163,0.2);border-radius:8px;font-size:12px;color:#00E5A3;">
             ✔ <b>Agent-Reach Scanned Channels (Twitter/X, Reddit, YouTube, Web):</b> Zero external matches. The media is strictly confined to your private local network.
           </div>
         `;
+        matchesList.innerHTML = html;
       }
     }
 
@@ -4671,9 +4751,16 @@ function showVerdict(presetId) {
     const sigList = el('dosSignalsList');
     if (sigList && Array.isArray(report.signals)) {
       sigList.innerHTML = report.signals.map(s => `
-        <div class="dossier-signal-row">
-          <span style="font-weight:600;color:#FFFFFF;">${s.name}:</span>
-          <span style="color:#A0AEC0;font-size:12px;margin-left:6px;">${s.val}</span>
+        <div class="dossier-signal-row" style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+          <div>
+            <div style="font-weight:600;color:#FFFFFF;font-size:13px;">${s.name}</div>
+            <div style="color:#A0AEC0;font-size:11.5px;">${s.description || ''}</div>
+          </div>
+          <div style="text-align:right;">
+            <span style="font-size:11px;font-family:monospace;padding:2px 8px;border-radius:4px;font-weight:700;background:rgba(0,229,255,0.1);color:#00E5FF;border:1px solid rgba(0,229,255,0.25);">
+              ${s.value || s.val || s.status || 'VERIFIED'}
+            </span>
+          </div>
         </div>
       `).join('');
     }
@@ -4913,17 +5000,166 @@ function showVerdict(presetId) {
     }
   };
 
+  // Universal Forensic Synchronization Handler (Images, Video, Audio)
+  let lastSyncHandledJobId = null;
+
+  function handleSyncCompletePayload(data) {
+    if (!data || !data.report) return;
+    latestLiveReport = data;
+    lastSyncHandledJobId = data.jobId;
+
+    const fill = document.getElementById('progressFill');
+    const percent = document.getElementById('scanPercent');
+    const label = document.getElementById('scanStepLabel');
+    const verdictBox = document.getElementById('verdictBox');
+    const verdictText = document.getElementById('verdictText');
+    const verdictRisk = document.getElementById('verdictRisk');
+    const verdictIndicator = document.getElementById('verdictIndicator');
+    const verdictHash = document.getElementById('verdictHash');
+    const prompt = document.getElementById('liveSyncDossierPrompt');
+    const thumb = document.getElementById('liveSyncThumb');
+    const filenameEl = document.getElementById('liveSyncFilename');
+    const badgeEl = document.getElementById('liveSyncMediaBadge');
+    const playerBox = document.getElementById('liveSyncPlayerBox');
+
+    if (fill) fill.style.width = '100%';
+    if (percent) percent.textContent = '100%';
+    if (label) label.textContent = `${data.mediaCategory || 'Media'} forensic evaluation complete.`;
+
+    if (verdictBox) verdictBox.style.display = 'grid';
+    if (verdictText) {
+      verdictText.textContent = data.report.verdict;
+      verdictText.className = 'v ' + (data.report.isAlert ? 'alert' : 'safe');
+    }
+    if (verdictRisk) {
+      verdictRisk.textContent = data.report.probability;
+      verdictRisk.className = 'v ' + (data.report.isAlert ? 'alert' : 'safe');
+    }
+    if (verdictIndicator) verdictIndicator.textContent = data.report.indicator;
+    if (verdictHash) verdictHash.textContent = (data.report.sha256 || '').substring(0, 24) + '...';
+
+    if (prompt) prompt.style.display = 'flex';
+    if (badgeEl) badgeEl.textContent = `${(data.mediaCategory || 'MEDIA').toUpperCase()} ARTIFACT PROCESSED`;
+    if (filenameEl) filenameEl.textContent = `${data.fileName} (${data.deviceName || 'Paired Device'})`;
+
+    // Dynamic Player/Preview based on Media Category
+    const mediaUrl = data.imageUrl || data.mediaUrl || '';
+    if (playerBox) {
+      if (data.mediaCategory === 'VIDEO') {
+        playerBox.style.display = 'block';
+        playerBox.innerHTML = `<video src="${mediaUrl}" controls playsinline style="width:100%;max-height:220px;border-radius:8px;background:#000;border:1px solid rgba(0,229,255,0.3);"></video>`;
+        if (thumb) thumb.src = '/landing-pages/meng-to-sketchbook/case-06-zelenskyy.png';
+      } else if (data.mediaCategory === 'AUDIO') {
+        playerBox.style.display = 'block';
+        playerBox.innerHTML = `
+          <div style="background:rgba(196,69,255,0.08);border:1px solid rgba(196,69,255,0.25);border-radius:8px;padding:8px 12px;">
+            <div style="font-size:11px;font-family:monospace;color:#C445FF;margin-bottom:4px;">ACOUSTIC PHONEME STREAM</div>
+            <audio src="${mediaUrl}" controls style="width:100%;height:36px;"></audio>
+          </div>
+        `;
+        if (thumb) thumb.src = '/landing-pages/meng-to-sketchbook/case-05-biden-robocall.png';
+      } else {
+        playerBox.style.display = 'none';
+        playerBox.innerHTML = '';
+        if (thumb) thumb.src = mediaUrl;
+      }
+    }
+
+    // Render Full Provenance, Media Specifications & Agent-Reach Dissemination Dossier
+    renderDetailedForensicDossier(data.report);
+
+    // Update Card 4 (Authenticity Analysis) in HUD
+    const hudNum = document.getElementById('hudGaugeNum');
+    const hudCircle = document.getElementById('hudGaugeCircle');
+    const hudTag = document.getElementById('hudGaugeTag');
+    const hudIndicators = document.getElementById('hudForensicIndicators');
+    if (hudNum && data.report.probability) {
+      hudNum.textContent = data.report.probability;
+      const probNum = parseFloat(data.report.probability) || 0;
+      if (hudCircle) {
+        const offset = 188.5 - (188.5 * probNum / 100);
+        hudCircle.style.strokeDashoffset = offset;
+        hudCircle.style.stroke = data.report.isAlert ? '#FF3B5C' : '#00E5A3';
+      }
+    }
+    if (hudTag) {
+      hudTag.textContent = data.report.verdict;
+      hudTag.style.color = data.report.isAlert ? '#FF3B5C' : '#00E5A3';
+    }
+    if (hudIndicators) {
+      hudIndicators.innerHTML = `
+        <li><span class="f-dot ${data.report.isAlert ? 'purple' : 'green'}"></span> ${data.report.isAlert ? '1+ Generative AI Markers' : '0 Generative AI Markers'}</li>
+        <li><span class="f-dot ${data.report.isAlert ? 'purple' : 'green'}"></span> ${data.report.isAlert ? 'Compression Anomaly Detected' : 'Clean Compression Profile'}</li>
+        <li><span class="f-dot ${data.report.isAlert ? 'purple' : 'green'}"></span> ${data.report.isAlert ? 'Metadata Inconsistency' : 'Camera EXIF Authenticated'}</li>
+        <li><span class="f-dot green"></span> ${data.report.isAlert ? 'Spatial Artifact Confirmed' : 'Sensor Noise Verified'}</li>
+      `;
+    }
+
+    // Update Card 5 (Metadata Intelligence) in HUD
+    const metaLoc = document.getElementById('hudMetaLoc');
+    const metaDev = document.getElementById('hudMetaDev');
+    const metaDate = document.getElementById('hudMetaDate');
+    const metaHash = document.getElementById('hudMetaHash');
+    const metaSoft = document.getElementById('hudMetaSoft');
+
+    const rep = data.report;
+    if (metaLoc && rep.provenance?.geolocation?.geofenceDescription) metaLoc.textContent = rep.provenance.geolocation.geofenceDescription;
+    if (metaDev) metaDev.textContent = rep.cameraModel ? `${rep.cameraMake || ''} ${rep.cameraModel}` : (data.mediaCategory === 'VIDEO' ? 'Digital Video Cinema Stream' : (data.mediaCategory === 'AUDIO' ? 'Acoustic Transducer Stream' : 'Digital Media Sensor'));
+    if (metaDate && rep.dateTimeOriginal) metaDate.textContent = rep.dateTimeOriginal;
+    if (metaHash && rep.sha256) metaHash.textContent = rep.sha256.substring(0, 4) + '...' + rep.sha256.substring(60);
+    if (metaSoft && rep.softwareTag) metaSoft.textContent = rep.softwareTag;
+
+    // Record to Admin logs
+    if (window.SpectraAdmin && window.SpectraAdmin.recordUsage) {
+      window.SpectraAdmin.recordUsage({
+        fileName: data.fileName,
+        verdict: data.report.verdict,
+        risk: data.report.probability,
+        indicator: data.report.indicator,
+        hash: data.report.sha256
+      });
+    }
+  }
+
+  // Active Synchronization Polling Fallback (For instant recovery & cloud/firewall resilience)
+  async function pollSyncStatus() {
+    try {
+      const res = await fetch('/api/jobs/latest');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.success && data.job && data.job.status === 'completed' && data.job.forensicReport) {
+        if (data.job.id !== lastSyncHandledJobId) {
+          handleSyncCompletePayload({
+            jobId: data.job.id,
+            uploadId: data.job.uploadId,
+            fileName: data.job.originalFilename,
+            mediaCategory: data.job.mediaCategory || 'IMAGE',
+            imageUrl: data.job.imageUrl,
+            mediaUrl: data.job.mediaUrl,
+            deviceName: data.job.deviceName || 'Paired Device',
+            report: data.job.forensicReport
+          });
+        }
+      }
+    } catch(e) {}
+  }
+  setInterval(pollSyncStatus, 2500);
+
   // WebSocket Ingestion & Synchronization Engine
   function initSpectraWebSocket() {
     const loc = window.location;
     const wsProtocol = loc.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${wsProtocol}//${loc.host}/ws`;
+    const token = currentSessionId || (currentUser ? currentUser.sessionId : '') || '';
+    const wsUrl = `${wsProtocol}//${loc.host}/ws?token=${encodeURIComponent(token)}`;
 
     try {
       spectraWs = new WebSocket(wsUrl);
 
       spectraWs.onopen = () => {
         console.log('⚡ SPECTRA Live WebSocket connection established.');
+        if (token) {
+          spectraWs.send(JSON.stringify({ type: 'auth', token: token }));
+        }
       };
 
       spectraWs.onmessage = (event) => {
@@ -4941,7 +5177,7 @@ function showVerdict(presetId) {
             showToast(`Phone "${msg.data.deviceName}" paired successfully!`);
           }
 
-          if (msg.type === 'sync:image_received') {
+          if (msg.type === 'sync:image_received' || msg.type === 'sync:media_received') {
             const banner = document.getElementById('liveSyncBanner');
             const deviceEl = document.getElementById('syncBannerDevice');
             const card = document.getElementById('analysisCard');
@@ -4956,7 +5192,7 @@ function showVerdict(presetId) {
             if (card) card.classList.add('active');
             if (verdictBox) verdictBox.style.display = 'none';
             if (prompt) prompt.style.display = 'none';
-            if (label) label.textContent = `Ingesting artifact from ${msg.data.deviceName}...`;
+            if (label) label.textContent = `Ingesting ${msg.data.mediaCategory || 'artifact'} from ${msg.data.deviceName}...`;
             if (fill) fill.style.width = '20%';
             if (percent) percent.textContent = '20%';
           }
@@ -4970,109 +5206,19 @@ function showVerdict(presetId) {
             if (label) label.textContent = msg.data.stage;
           }
 
-          if (msg.type === 'sync:analysis_complete') {
-            latestLiveReport = msg.data;
-            const fill = document.getElementById('progressFill');
-            const percent = document.getElementById('scanPercent');
-            const label = document.getElementById('scanStepLabel');
-            const verdictBox = document.getElementById('verdictBox');
-            const verdictText = document.getElementById('verdictText');
-            const verdictRisk = document.getElementById('verdictRisk');
-            const verdictIndicator = document.getElementById('verdictIndicator');
-            const verdictHash = document.getElementById('verdictHash');
-            const prompt = document.getElementById('liveSyncDossierPrompt');
-            const thumb = document.getElementById('liveSyncThumb');
-            const filenameEl = document.getElementById('liveSyncFilename');
-
-            if (fill) fill.style.width = '100%';
-            if (percent) percent.textContent = '100%';
-            if (label) label.textContent = 'Forensic evaluation complete.';
-
-            if (verdictBox) verdictBox.style.display = 'grid';
-            if (verdictText) {
-              verdictText.textContent = msg.data.report.verdict;
-              verdictText.className = 'v ' + (msg.data.report.isAlert ? 'alert' : 'safe');
-            }
-            if (verdictRisk) {
-              verdictRisk.textContent = msg.data.report.probability;
-              verdictRisk.className = 'v ' + (msg.data.report.isAlert ? 'alert' : 'safe');
-            }
-            if (verdictIndicator) verdictIndicator.textContent = msg.data.report.indicator;
-            if (verdictHash) verdictHash.textContent = msg.data.report.sha256.substring(0, 24) + '...';
-
-            if (prompt) prompt.style.display = 'flex';
-            if (thumb) thumb.src = msg.data.imageUrl;
-            if (filenameEl) filenameEl.textContent = `${msg.data.fileName} (${msg.data.deviceName})`;
-
-            // Render Full Provenance & Agent-Reach Dissemination Dossier
-            renderDetailedForensicDossier(msg.data.report);
-
-            // Update Card 4 (Authenticity Analysis) in HUD
-            const hudNum = document.getElementById('hudGaugeNum');
-            const hudCircle = document.getElementById('hudGaugeCircle');
-            const hudTag = document.getElementById('hudGaugeTag');
-            const hudIndicators = document.getElementById('hudForensicIndicators');
-            if (hudNum && msg.data.report.probability) {
-              hudNum.textContent = msg.data.report.probability;
-              const probNum = parseFloat(msg.data.report.probability) || 0;
-              if (hudCircle) {
-                const offset = 188.5 - (188.5 * probNum / 100);
-                hudCircle.style.strokeDashoffset = offset;
-                hudCircle.style.stroke = msg.data.report.isAlert ? '#FF3B5C' : '#00E5A3';
-              }
-            }
-            if (hudTag) {
-              hudTag.textContent = msg.data.report.verdict;
-              hudTag.style.color = msg.data.report.isAlert ? '#FF3B5C' : '#00E5A3';
-            }
-            if (hudIndicators) {
-              hudIndicators.innerHTML = `
-                <li><span class="f-dot ${msg.data.report.isAlert ? 'purple' : 'green'}"></span> ${msg.data.report.isAlert ? '1+ Generative AI Markers' : '0 Generative AI Markers'}</li>
-                <li><span class="f-dot ${msg.data.report.isAlert ? 'purple' : 'green'}"></span> ${msg.data.report.isAlert ? 'Compression Anomaly Detected' : 'Clean Compression Profile'}</li>
-                <li><span class="f-dot ${msg.data.report.isAlert ? 'purple' : 'green'}"></span> ${msg.data.report.isAlert ? 'Metadata Inconsistency' : 'Camera EXIF Authenticated'}</li>
-                <li><span class="f-dot green"></span> ${msg.data.report.isAlert ? 'Spatial Artifact Confirmed' : 'Sensor Noise Verified'}</li>
-              `;
-            }
-
-            // Update Card 5 (Metadata Intelligence) in HUD
-            const metaLoc = document.getElementById('hudMetaLoc');
-            const metaDev = document.getElementById('hudMetaDev');
-            const metaDate = document.getElementById('hudMetaDate');
-            const metaHash = document.getElementById('hudMetaHash');
-            const metaSoft = document.getElementById('hudMetaSoft');
-
-            const rep = msg.data.report;
-            if (metaLoc && rep.provenance?.geolocation?.geofenceDescription) metaLoc.textContent = rep.provenance.geolocation.geofenceDescription;
-            if (metaDev && rep.cameraModel) metaDev.textContent = `${rep.cameraMake || ''} ${rep.cameraModel}`;
-            if (metaDate && rep.dateTimeOriginal) metaDate.textContent = rep.dateTimeOriginal;
-            if (metaHash && rep.sha256) metaHash.textContent = rep.sha256.substring(0, 4) + '...' + rep.sha256.substring(60);
-            if (metaSoft && rep.softwareTag) metaSoft.textContent = rep.softwareTag;
-
-            // Record to Admin logs
-            if (window.SpectraAdmin && window.SpectraAdmin.recordUsage) {
-              window.SpectraAdmin.recordUsage({
-                fileName: msg.data.fileName,
-                verdict: msg.data.report.verdict,
-                risk: msg.data.report.probability,
-                indicator: msg.data.report.indicator,
-                hash: msg.data.report.sha256
-              });
-            }
-
-            showToast(`Synchronized analysis complete for ${msg.data.fileName}!`);
+          if (msg.type === 'sync:analysis_complete' || msg.type === 'sync:media_complete') {
+            handleSyncCompletePayload(msg.data);
           }
-
-          if (msg.type === 'device:revoked') {
-            fetchPairedDevices();
-          }
-        } catch(e) {}
+        } catch (e) {
+          console.error('WS message processing error:', e);
+        }
       };
 
       spectraWs.onclose = () => {
-        setTimeout(initSpectraWebSocket, 4000);
+        setTimeout(initSpectraWebSocket, 3500);
       };
-    } catch(e) {
-      console.warn('WS Init error:', e);
+    } catch (e) {
+      console.error('WebSocket connection failed, relying on HTTP polling sync:', e);
     }
   }
 

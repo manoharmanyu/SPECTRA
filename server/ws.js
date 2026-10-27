@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { WebSocketServer, WebSocket } from 'ws';
 import { db } from './db.js';
 
@@ -13,13 +14,13 @@ class WebSocketHub {
 
     this.wss.on('connection', (ws, req) => {
       const url = new URL(req.url, 'http://localhost');
-      const token = url.searchParams.get('token') || '';
+      const token = url.searchParams.get('token') || url.searchParams.get('sessionId') || '';
       const deviceToken = url.searchParams.get('deviceToken') || '';
 
       let authenticatedUser = null;
       let authenticatedDevice = null;
 
-      // 1. Check Session Token
+      // 1. Check User Session Token
       if (token) {
         const session = db.findSession(token);
         if (session) {
@@ -27,26 +28,22 @@ class WebSocketHub {
         }
       }
 
-      // 2. Check Device Token
+      // 2. Check Device Token (Hash with SHA-256 for secure registry match)
       if (!authenticatedUser && deviceToken) {
-        const crypto = req.socket.server._crypto;
-        // Search device by token hash
-        const devices = db.data.devices.filter(d => d.trustStatus === 'active');
-        for (const dev of devices) {
-          // If token matches
-          if (dev.tokenHash === deviceToken || dev.id === deviceToken) {
-            authenticatedDevice = dev;
-            authenticatedUser = db.findUserById(dev.userId);
-            break;
-          }
+        const tokenHash = crypto.createHash('sha256').update(deviceToken).digest('hex');
+        const device = db.findDeviceByTokenHash(tokenHash) || db.data.devices.find(d => d.id === deviceToken || d.tokenHash === deviceToken);
+        if (device && device.trustStatus === 'active') {
+          authenticatedDevice = device;
+          authenticatedUser = db.findUserById(device.userId);
         }
       }
 
-      // If neither is valid, allow connection initially for pairing handshake if token='pairing'
+      // If pairing channel listener
       const isPairingChannel = url.searchParams.get('channel') === 'pairing';
       const pairingCode = url.searchParams.get('code') || '';
 
       ws.userId = authenticatedUser ? authenticatedUser.id : null;
+      ws.deviceId = authenticatedDevice ? authenticatedDevice.id : null;
       ws.isAlive = true;
       ws.pairingCode = pairingCode;
 
@@ -55,7 +52,12 @@ class WebSocketHub {
           this.userSockets.set(ws.userId, new Set());
         }
         this.userSockets.get(ws.userId).add(ws);
-        ws.send(JSON.stringify({ type: 'connected', userId: ws.userId, timestamp: Date.now() }));
+        ws.send(JSON.stringify({
+          type: 'connected',
+          userId: ws.userId,
+          deviceId: ws.deviceId,
+          timestamp: Date.now()
+        }));
       } else if (isPairingChannel && pairingCode) {
         ws.send(JSON.stringify({ type: 'pairing_listener_ready', code: pairingCode }));
       }
@@ -96,17 +98,40 @@ class WebSocketHub {
 
   handleClientMessage(ws, msg) {
     if (msg.type === 'auth') {
-      const session = db.findSession(msg.token);
-      if (session) {
-        const user = db.findUserById(session.userId);
-        if (user) {
-          ws.userId = user.id;
-          if (!this.userSockets.has(ws.userId)) {
-            this.userSockets.set(ws.userId, new Set());
-          }
-          this.userSockets.get(ws.userId).add(ws);
-          ws.send(JSON.stringify({ type: 'authenticated', userId: user.id }));
+      const token = msg.token || msg.sessionId;
+      const deviceToken = msg.deviceToken;
+
+      let authenticatedUser = null;
+      let authenticatedDevice = null;
+
+      if (token) {
+        const session = db.findSession(token);
+        if (session) {
+          authenticatedUser = db.findUserById(session.userId);
         }
+      }
+
+      if (!authenticatedUser && deviceToken) {
+        const tokenHash = crypto.createHash('sha256').update(deviceToken).digest('hex');
+        const device = db.findDeviceByTokenHash(tokenHash) || db.data.devices.find(d => d.id === deviceToken || d.tokenHash === deviceToken);
+        if (device && device.trustStatus === 'active') {
+          authenticatedDevice = device;
+          authenticatedUser = db.findUserById(device.userId);
+        }
+      }
+
+      if (authenticatedUser) {
+        ws.userId = authenticatedUser.id;
+        ws.deviceId = authenticatedDevice ? authenticatedDevice.id : null;
+        if (!this.userSockets.has(ws.userId)) {
+          this.userSockets.set(ws.userId, new Set());
+        }
+        this.userSockets.get(ws.userId).add(ws);
+        ws.send(JSON.stringify({
+          type: 'authenticated',
+          userId: authenticatedUser.id,
+          deviceId: ws.deviceId
+        }));
       }
     }
   }

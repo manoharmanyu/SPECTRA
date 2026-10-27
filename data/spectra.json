@@ -75,6 +75,78 @@
       "userAgent": "",
       "expiresAt": "2026-10-27T16:56:23.081Z",
       "createdAt": "2026-10-26T16:56:23.081Z"
+    },
+    {
+      "id": "ses_g4syke7ymvqd74rd",
+      "userId": "usr_manohar_manyu",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "expiresAt": "2026-10-28T07:29:10.873Z",
+      "createdAt": "2026-10-27T07:29:10.873Z"
+    },
+    {
+      "id": "ses_7zhssvvumvqdpx92",
+      "userId": "usr_mvqdpx91vkxy",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-28T07:43:47.606Z",
+      "createdAt": "2026-10-27T07:43:47.606Z"
+    },
+    {
+      "id": "ses_h46ihotkmvqdrwl5",
+      "userId": "usr_manohar_manyu",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "node",
+      "expiresAt": "2026-10-28T07:45:20.057Z",
+      "createdAt": "2026-10-27T07:45:20.057Z"
+    },
+    {
+      "id": "ses_b536rtpbmvqdsonc",
+      "userId": "usr_manohar_manyu",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "node",
+      "expiresAt": "2026-10-28T07:45:56.422Z",
+      "createdAt": "2026-10-27T07:45:56.424Z"
+    },
+    {
+      "id": "ses_gvej3v5jmvqduq1o",
+      "userId": "usr_manohar_manyu",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "node",
+      "expiresAt": "2026-10-28T07:47:31.547Z",
+      "createdAt": "2026-10-27T07:47:31.548Z"
+    },
+    {
+      "id": "ses_g0myon8imvqdv2ai",
+      "userId": "usr_manohar_manyu",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "node",
+      "expiresAt": "2026-10-28T07:47:47.418Z",
+      "createdAt": "2026-10-27T07:47:47.418Z"
+    },
+    {
+      "id": "ses_10h2hok2mvqdv98t",
+      "userId": "usr_manohar_manyu",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "node",
+      "expiresAt": "2026-10-28T07:47:56.429Z",
+      "createdAt": "2026-10-27T07:47:56.429Z"
+    },
+    {
+      "id": "ses_eejf1p12mvqdwny3",
+      "userId": "usr_mvqdwny2tqzr",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-28T07:49:02.139Z",
+      "createdAt": "2026-10-27T07:49:02.139Z"
     }
   ],
   "pairingCodes": [
@@ -187,10 +259,1594 @@
       "expiresAt": "2026-10-26T17:01:23.084Z",
       "createdAt": "2026-10-26T16:56:23.084Z",
       "consumedAt": "2026-10-26T16:56:23.095Z"
+    },
+    {
+      "code": "742CYEHK",
+      "displayCode": "742C-YEHK",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_bxqm66knmvpeijar",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Sai Charan",
+      "deviceTokenHash": "e726c87e1f9752afcd1cfefc9f693d1b6cd4627af9f35750cae059f1b17d5c95",
+      "deviceId": "dev_mvqd4ojimm58",
+      "expiresAt": "2026-10-27T07:31:52.647Z",
+      "createdAt": "2026-10-27T07:26:52.647Z",
+      "consumedAt": "2026-10-27T07:27:16.543Z"
+    },
+    {
+      "code": "DX98NL34",
+      "displayCode": "DX98-NL34",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_bxqm66knmvpeijar",
+      "attempts": 0,
+      "status": "pending",
+      "proposedDeviceName": null,
+      "deviceTokenHash": null,
+      "deviceId": null,
+      "expiresAt": "2026-10-27T07:32:44.579Z",
+      "createdAt": "2026-10-27T07:27:44.579Z"
+    },
+    {
+      "code": "PQDBF92P",
+      "displayCode": "PQDB-F92P",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_g4syke7ymvqd74rd",
+      "attempts": 0,
+      "status": "pending",
+      "proposedDeviceName": null,
+      "deviceTokenHash": null,
+      "deviceId": null,
+      "expiresAt": "2026-10-27T07:34:31.121Z",
+      "createdAt": "2026-10-27T07:29:31.121Z"
+    },
+    {
+      "code": "WTEZFYUE",
+      "displayCode": "WTEZ-FYUE",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_u9dj87ggmvqdpx60",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "8a1dac63a58891b5f8ed20581e81c8982b2f37b6882d44674ce641613f7f5eb4",
+      "deviceId": "dev_mvqdpx9qrz28",
+      "expiresAt": "2026-10-27T07:48:47.608Z",
+      "createdAt": "2026-10-27T07:43:47.608Z",
+      "consumedAt": "2026-10-27T07:43:47.631Z"
+    },
+    {
+      "code": "SZGG7J3Q",
+      "displayCode": "SZGG-7J3Q",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_2ut676zumvqdwnux",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "06f907e16cf67816d159c125fcd2c2091fb4ae06aee77cae963405f6b4424d8b",
+      "deviceId": "dev_mvqdwnz25gs9",
+      "expiresAt": "2026-10-27T07:54:02.142Z",
+      "createdAt": "2026-10-27T07:49:02.142Z",
+      "consumedAt": "2026-10-27T07:49:02.176Z"
     }
   ],
-  "devices": [],
+  "devices": [
+    {
+      "id": "dev_mvqd4ojimm58",
+      "userId": "usr_manohar_manyu",
+      "deviceName": "Sai Charan",
+      "tokenHash": "e726c87e1f9752afcd1cfefc9f693d1b6cd4627af9f35750cae059f1b17d5c95",
+      "trustStatus": "active",
+      "pairingTimestamp": "2026-10-27T07:27:16.542Z",
+      "lastSeenTimestamp": "2026-10-27T07:29:41.662Z",
+      "revokedAt": null,
+      "capabilities": [
+        "capture",
+        "upload",
+        "sync"
+      ]
+    }
+  ],
   "jobs": [
+    {
+      "id": "job_mvqdv99c8edgo2",
+      "uploadId": "upl_mvqdv99cpt1v",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T07:47:56.448Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqd4ojimm58",
+      "deviceName": "Sai Charan",
+      "originalFilename": "ELECTION_SPEECH_VOICEMAIL.wav",
+      "storedFilename": "1793087276448-ELECTION_SPEECH_VOICEMAIL.wav",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/1793087276448-ELECTION_SPEECH_VOICEMAIL.wav",
+      "mimeType": "audio/wav",
+      "mediaCategory": "AUDIO",
+      "sizeBytes": 4216,
+      "sha256": "d4c7c208a52cd57bfe9d4997eeda50feb072f0554158e796c7d558f7ffecd826",
+      "forensicReport": {
+        "originalFilename": "ELECTION_SPEECH_VOICEMAIL.wav",
+        "detectedType": "audio/wav",
+        "mediaCategory": "AUDIO",
+        "formatName": "Waveform Audio File Format (WAV/PCM)",
+        "fileSize": 4216,
+        "fileSizeBytes": 4216,
+        "fileSizeFormatted": "0.00 MB",
+        "sha256": "d4c7c208a52cd57bfe9d4997eeda50feb072f0554158e796c7d558f7ffecd826",
+        "md5": "c22c418ad8b588fbb289b4e86286a182",
+        "sha1": "3e974a4a542c6f1c374b4857473e5acb4b5755bd",
+        "isJpeg": false,
+        "isPng": false,
+        "isWebp": false,
+        "isVideo": false,
+        "isAudio": true,
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "fNumber": "f/1.78",
+        "exposureTime": "1/120s",
+        "isoRating": "ISO 80",
+        "focalLength": "24mm (Full-Frame Eq.)",
+        "colorSpace": "Display P3 Wide Gamut",
+        "hasGps": false,
+        "gpsLatitude": "17.3850° N",
+        "gpsLongitude": "78.4867° E",
+        "gpsAltitude": "542 m MSL",
+        "estimatedLocation": "Hyderabad Metropolitan Area, Telangana, India",
+        "entropyScore": 4,
+        "aiMarkerDetected": true,
+        "aiSource": "RVC (Retrieval-based Voice Conversion) Model",
+        "extractedPrompt": null,
+        "metadataTraces": [
+          {
+            "type": "AI_MARKER",
+            "category": "AUDIO",
+            "evidence": "Identified signature: ElevenLabs Neural Speech Synthesis Header"
+          },
+          {
+            "type": "AI_MARKER",
+            "category": "AUDIO",
+            "evidence": "Identified signature: Tortoise-TTS Autoregressive Voice Vocoder"
+          },
+          {
+            "type": "AI_MARKER",
+            "category": "AUDIO",
+            "evidence": "Identified signature: RVC (Retrieval-based Voice Conversion) Model"
+          }
+        ],
+        "videoSpecs": null,
+        "audioSpecs": {
+          "codec": "LPCM 24-bit Integer",
+          "sampleRate": "22,050 Hz (Neural Vocoder Upsample)",
+          "channels": "Stereo (2 Channels, Left/Right)",
+          "bitDepth": "24-bit Studio Precision",
+          "highFrequencyCutoff": "11.4 kHz (Characteristic Neural Vocoder Ceiling)",
+          "spectralFlux": "Discontinuous transition across phoneme transitions",
+          "breathPauseCoherence": "Absence of natural micro-inhalations",
+          "phonemeVisemeCorrelation": "Acoustic pitch drift without mechanical friction"
+        },
+        "probability": "98.6%",
+        "verdict": "MANIPULATED (AUDIO SYNTHETIC)",
+        "indicator": "Neural synthesis footprint: RVC (Retrieval-based Voice Conversion) Model",
+        "isAlert": true,
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "status": "VERIFIED",
+            "value": "d4c7c208a52cd57b...",
+            "description": "Deterministic SHA-256 fingerprint generated upon intake."
+          },
+          {
+            "name": "AUDIO Container & Format Scan",
+            "status": "VERIFIED",
+            "value": "Waveform Audio File Format (WAV/PCM) (0.00 MB)",
+            "description": "Validated binary header bytes against standard audio container specifications."
+          },
+          {
+            "name": "Sensor Hardware & Provenance",
+            "status": "ACOUSTIC_STREAM",
+            "value": "LPCM 24-bit Integer",
+            "description": "Media does not contain original hardware sensor tags."
+          },
+          {
+            "name": "Generative AI Footprint Detection",
+            "status": "AI_SIGNATURE_FOUND",
+            "value": "RVC (Retrieval-based Voice Conversion) Model",
+            "description": "Artifact contains confirmed signatures from RVC (Retrieval-based Voice Conversion) Model."
+          },
+          {
+            "name": "Agent-Reach Dissemination Scan",
+            "status": "PUBLIC_REPOSTS_FOUND",
+            "value": "3 Public Matches Found",
+            "description": "Correlated with public web repositories and social discussions."
+          }
+        ],
+        "analyzedAt": "2026-10-27T07:47:57.957Z",
+        "provenance": {
+          "mediaCategory": "AUDIO",
+          "formatName": "Waveform Audio File Format (WAV/PCM)",
+          "originClassification": "SYNTHETIC_GENERATIVE",
+          "device": {
+            "make": "Latent Neural Synthesizer",
+            "model": "Transformer Model Cluster",
+            "lens": "Native Optical Glass Element",
+            "serialNumber": "HW-UID-D4C7C208A5",
+            "software": "PyTorch TorchVision / Diffusion Pipeline"
+          },
+          "captureSettings": {
+            "aperture": "f/1.78",
+            "shutterSpeed": "1/120s",
+            "iso": "ISO 80",
+            "focalLength": "24mm (Full-Frame Eq.)",
+            "colorProfile": "Display P3 Wide Gamut",
+            "whiteBalance": "Auto (Calibrated)",
+            "flashMode": "Off (Natural)"
+          },
+          "temporal": {
+            "capturedAt": "2026-10-27T07:47:57.957Z",
+            "digitizedAt": "2026-10-27T07:47:57.957Z",
+            "timezone": "UTC+05:30 (Indian Standard Time)",
+            "clockSkewSeconds": 0.14
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "17.3850° N, 78.4867° E",
+            "altitude": "542 m MSL",
+            "geofenceDescription": "Hyderabad Metropolitan Area, Telangana, India",
+            "source": "Local Network Node Geofence"
+          },
+          "generativeDetails": {
+            "synthesisEngine": "RVC (Retrieval-based Voice Conversion) Model",
+            "modelFamily": "Neural Acoustic Vocoder",
+            "extractedPrompt": "Detected latent synthesis tokens in container chunk",
+            "samplingSteps": 30,
+            "cfgScale": 7,
+            "neuralSeed": "492817294812"
+          }
+        },
+        "dissemination": {
+          "spreadClassification": "PUBLIC_DISSEMINATION_CONFIRMED",
+          "viralityIndex": "High (Distributed across Social Clusters)",
+          "recompressionGeneration": 3,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Referenced in generative AI discussions",
+              "evidence": "Public discourse tracked by Agent-Reach"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Matches AI community benchmarks",
+              "evidence": "Indexed in forensic subreddits"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachQuery": "RVC (Retrieval-based Voice Conversion) Model generative synthetic media",
+          "agentReachMatches": [
+            {
+              "title": "Public Evidence Dissemination Tracker // RVC (Retrieval-based Voice Conversion) Model generative synthetic media",
+              "url": "https://archive.org/details/digital-forensics-evidence-vault",
+              "author": "Global Synthetic Media Monitor",
+              "snippet": "Public repositories index active forensic investigations matching \"RVC (Retrieval-based Voice Conversion) Model generative synthetic media\" with multi-platform dissemination signals.",
+              "publishedAt": "Recent Indexed Feed",
+              "reachScore": "92.4% Viral Propagation"
+            },
+            {
+              "title": "Open Source Intelligence (OSINT) Reference Archive",
+              "url": "https://en.wikipedia.org/wiki/Deepfake",
+              "author": "Forensic Intelligence Group",
+              "snippet": "Correlated neural artifact traces and compression markers indexed across public discussion boards and social media mirrors.",
+              "publishedAt": "Active Index",
+              "reachScore": "86.1% Community Cross-Reference"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 3 public web/social intelligence records correlating with \"RVC (Retrieval-based Voice Conversion) Model generative synthetic media\"."
+        }
+      },
+      "completedAt": "2026-10-27T07:47:57.957Z"
+    },
+    {
+      "id": "job_mvqduq2e4omjhw",
+      "uploadId": "upl_mvqduq2ejxz4",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T07:47:31.574Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqd4ojimm58",
+      "deviceName": "Sai Charan",
+      "originalFilename": "INTERVIEW_LIVESTREAM_SURVEILLANCE.mp4",
+      "storedFilename": "1793087251573-INTERVIEW_LIVESTREAM_SURVEILLANCE.mp4",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/1793087251573-INTERVIEW_LIVESTREAM_SURVEILLANCE.mp4",
+      "mimeType": "video/mp4",
+      "mediaCategory": "VIDEO",
+      "sizeBytes": 8308,
+      "sha256": "aa9226c1a4358448fea0221c45a08f35af75841ba5a72de12cd44d9542d71d9c",
+      "forensicReport": {
+        "originalFilename": "INTERVIEW_LIVESTREAM_SURVEILLANCE.mp4",
+        "detectedType": "video/mp4",
+        "mediaCategory": "VIDEO",
+        "formatName": "MPEG-4 Base Media Video (MP4)",
+        "fileSize": 8308,
+        "fileSizeBytes": 8308,
+        "fileSizeFormatted": "0.01 MB",
+        "sha256": "aa9226c1a4358448fea0221c45a08f35af75841ba5a72de12cd44d9542d71d9c",
+        "md5": "92bbc92a22fe49c7f214084d63dbd985",
+        "sha1": "428977230deb94e8caa676921c3781efb1093702",
+        "isJpeg": false,
+        "isPng": false,
+        "isWebp": false,
+        "isVideo": true,
+        "isAudio": false,
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "fNumber": "f/1.78",
+        "exposureTime": "1/120s",
+        "isoRating": "ISO 80",
+        "focalLength": "24mm (Full-Frame Eq.)",
+        "colorSpace": "Display P3 Wide Gamut",
+        "hasGps": false,
+        "gpsLatitude": "17.3850° N",
+        "gpsLongitude": "78.4867° E",
+        "gpsAltitude": "542 m MSL",
+        "estimatedLocation": "Hyderabad Metropolitan Area, Telangana, India",
+        "entropyScore": 2,
+        "aiMarkerDetected": true,
+        "aiSource": "LivePortrait Expression Animation Stream",
+        "extractedPrompt": null,
+        "metadataTraces": [
+          {
+            "type": "AI_MARKER",
+            "category": "VIDEO",
+            "evidence": "Identified signature: DeepFaceLab Latent Swap Model Tag"
+          },
+          {
+            "type": "AI_MARKER",
+            "category": "VIDEO",
+            "evidence": "Identified signature: FaceFusion Realtime Swapper Node"
+          },
+          {
+            "type": "AI_MARKER",
+            "category": "VIDEO",
+            "evidence": "Identified signature: LivePortrait Expression Animation Stream"
+          }
+        ],
+        "videoSpecs": {
+          "codec": "H.264 / AVC High@L4.1",
+          "container": "MPEG-4 Base Media Video (MP4)",
+          "resolution": "1920x1080 (16:9 Full HD)",
+          "frameRate": "29.97 fps (NTSC Standard)",
+          "bitrate": "14.2 Mbps Variable Bitrate (VBR)",
+          "colorMatrix": "BT.709 Broadcast Standard",
+          "audioVideoSyncOffset": "194 ms (Audible / Visual Desynchronization)",
+          "opticalFlowVectorShear": "Severe boundary shearing around facial contour",
+          "facialLandmarkJitter": "68-point 3D landmark delta > 14.8px",
+          "keyframeInterval": "GOP size: 60 frames (2.0s cadence)",
+          "temporalJitterIndex": "0.79 (High Anomaly)"
+        },
+        "audioSpecs": null,
+        "probability": "98.6%",
+        "verdict": "MANIPULATED (VIDEO SYNTHETIC)",
+        "indicator": "Neural synthesis footprint: LivePortrait Expression Animation Stream",
+        "isAlert": true,
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "status": "VERIFIED",
+            "value": "aa9226c1a4358448...",
+            "description": "Deterministic SHA-256 fingerprint generated upon intake."
+          },
+          {
+            "name": "VIDEO Container & Format Scan",
+            "status": "VERIFIED",
+            "value": "MPEG-4 Base Media Video (MP4) (0.01 MB)",
+            "description": "Validated binary header bytes against standard video container specifications."
+          },
+          {
+            "name": "Sensor Hardware & Provenance",
+            "status": "VIDEO_STREAM",
+            "value": "H.264 / AVC High@L4.1",
+            "description": "Media does not contain original hardware sensor tags."
+          },
+          {
+            "name": "Generative AI Footprint Detection",
+            "status": "AI_SIGNATURE_FOUND",
+            "value": "LivePortrait Expression Animation Stream",
+            "description": "Artifact contains confirmed signatures from LivePortrait Expression Animation Stream."
+          },
+          {
+            "name": "Agent-Reach Dissemination Scan",
+            "status": "PUBLIC_REPOSTS_FOUND",
+            "value": "4 Public Matches Found",
+            "description": "Correlated with public web repositories and social discussions."
+          }
+        ],
+        "analyzedAt": "2026-10-27T07:47:33.537Z",
+        "provenance": {
+          "mediaCategory": "VIDEO",
+          "formatName": "MPEG-4 Base Media Video (MP4)",
+          "originClassification": "SYNTHETIC_GENERATIVE",
+          "device": {
+            "make": "Latent Neural Synthesizer",
+            "model": "Transformer Model Cluster",
+            "lens": "Native Optical Glass Element",
+            "serialNumber": "HW-UID-AA9226C1A4",
+            "software": "PyTorch TorchVision / Diffusion Pipeline"
+          },
+          "captureSettings": {
+            "aperture": "f/1.78",
+            "shutterSpeed": "1/120s",
+            "iso": "ISO 80",
+            "focalLength": "24mm (Full-Frame Eq.)",
+            "colorProfile": "Display P3 Wide Gamut",
+            "whiteBalance": "Auto (Calibrated)",
+            "flashMode": "Off (Natural)"
+          },
+          "temporal": {
+            "capturedAt": "2026-10-27T07:47:33.537Z",
+            "digitizedAt": "2026-10-27T07:47:33.537Z",
+            "timezone": "UTC+05:30 (Indian Standard Time)",
+            "clockSkewSeconds": 0.14
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "17.3850° N, 78.4867° E",
+            "altitude": "542 m MSL",
+            "geofenceDescription": "Hyderabad Metropolitan Area, Telangana, India",
+            "source": "Local Network Node Geofence"
+          },
+          "generativeDetails": {
+            "synthesisEngine": "LivePortrait Expression Animation Stream",
+            "modelFamily": "Video Diffusion Transformer (DiT)",
+            "extractedPrompt": "Detected latent synthesis tokens in container chunk",
+            "samplingSteps": 30,
+            "cfgScale": 7,
+            "neuralSeed": "492817294812"
+          }
+        },
+        "dissemination": {
+          "spreadClassification": "PUBLIC_DISSEMINATION_CONFIRMED",
+          "viralityIndex": "High (Distributed across Social Clusters)",
+          "recompressionGeneration": 3,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Referenced in generative AI discussions",
+              "evidence": "Public discourse tracked by Agent-Reach"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Matches AI community benchmarks",
+              "evidence": "Indexed in forensic subreddits"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachQuery": "LivePortrait Expression Animation Stream generative synthetic media",
+          "agentReachMatches": [
+            {
+              "title": "KlingAIResearch/LivePortrait",
+              "url": "https://github.com/KlingAIResearch/LivePortrait/",
+              "author": "Public Online Origin",
+              "snippet": "## 🔥 Updates - **`2025/06/01`**: 🌍 Over the past year, **LivePortrait** has 🚀 become an efficient portrait-animation (humans, cats and dogs) solution adopted by major video plat...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "Efficient Portrait Animation with Stitching and Retargeting Control",
+              "url": "https://liveportrait.github.io/",
+              "author": "Public Online Origin",
+              "snippet": "## Abstract   Portrait Animation aims to synthesize a lifelike video from a single source image, using it as an appearance reference, with motion (i.e., facial expressions and head...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "LivePortrait: Efficient Portrait Animation with Stitching and Retargeting Control",
+              "url": "https://doi.org/10.48550/arxiv.2407.03168",
+              "author": "Guo, Jianzhu, Zhang, Dingyun, Liu, Xiaoqiang, Zhong, Zhizhou, Yuan Zhang, Pengfei Wan, et al.",
+              "snippet": "# LivePortrait: Efficient Portrait Animation with Stitching and Retargeting Control  arXiv (Cornell University). Published: 2024-07-03. Preprint. 11 citations.  ## Abstract  Portra...",
+              "publishedAt": "2024-07-03T00:00:00.000Z",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "CVPR 2026 Open Access Repository",
+              "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Li_PersonaLive_Expressive_Portrait_Image_Animation_for_Live_Streaming_CVPR_2026_paper.html",
+              "author": "Li, Zhiyuan, Pun, Chi-Man, Fang, Chen, Wang, Jue, Cun, Xiaodong",
+              "snippet": "CVPR 2026 Open Access Repository   PersonaLive! Expressive Portrait Image Animation for Live Streaming    Zhiyuan Li, Chi-Man Pun, Chen Fang, Jue Wang, Xiaodong Cun; Proceedings of...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 4 public web/social intelligence records correlating with \"LivePortrait Expression Animation Stream generative synthetic media\"."
+        }
+      },
+      "completedAt": "2026-10-27T07:47:33.537Z"
+    },
+    {
+      "id": "job_mvqdsoo1n7r1vw",
+      "uploadId": "upl_mvqdsoo1o3hb",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T07:45:56.449Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqd4ojimm58",
+      "deviceName": "Sai Charan",
+      "originalFilename": "INTERVIEW_LIVESTREAM_SURVEILLANCE.mp4",
+      "storedFilename": "1793087156449-INTERVIEW_LIVESTREAM_SURVEILLANCE.mp4",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/1793087156449-INTERVIEW_LIVESTREAM_SURVEILLANCE.mp4",
+      "mimeType": "video/mp4",
+      "mediaCategory": "VIDEO",
+      "sizeBytes": 8308,
+      "sha256": "aa9226c1a4358448fea0221c45a08f35af75841ba5a72de12cd44d9542d71d9c",
+      "forensicReport": {
+        "originalFilename": "INTERVIEW_LIVESTREAM_SURVEILLANCE.mp4",
+        "detectedType": "video/mp4",
+        "mediaCategory": "VIDEO",
+        "formatName": "MPEG-4 Base Media Video (MP4)",
+        "fileSize": 8308,
+        "fileSizeBytes": 8308,
+        "fileSizeFormatted": "0.01 MB",
+        "sha256": "aa9226c1a4358448fea0221c45a08f35af75841ba5a72de12cd44d9542d71d9c",
+        "md5": "92bbc92a22fe49c7f214084d63dbd985",
+        "sha1": "428977230deb94e8caa676921c3781efb1093702",
+        "isJpeg": false,
+        "isPng": false,
+        "isWebp": false,
+        "isVideo": true,
+        "isAudio": false,
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "fNumber": "f/1.78",
+        "exposureTime": "1/120s",
+        "isoRating": "ISO 80",
+        "focalLength": "24mm (Full-Frame Eq.)",
+        "colorSpace": "Display P3 Wide Gamut",
+        "hasGps": false,
+        "gpsLatitude": "17.3850° N",
+        "gpsLongitude": "78.4867° E",
+        "gpsAltitude": "542 m MSL",
+        "estimatedLocation": "Hyderabad Metropolitan Area, Telangana, India",
+        "entropyScore": 2,
+        "aiMarkerDetected": true,
+        "aiSource": "LivePortrait Expression Animation Stream",
+        "extractedPrompt": null,
+        "metadataTraces": [
+          {
+            "type": "AI_MARKER",
+            "category": "VIDEO",
+            "evidence": "Identified signature: DeepFaceLab Latent Swap Model Tag"
+          },
+          {
+            "type": "AI_MARKER",
+            "category": "VIDEO",
+            "evidence": "Identified signature: FaceFusion Realtime Swapper Node"
+          },
+          {
+            "type": "AI_MARKER",
+            "category": "VIDEO",
+            "evidence": "Identified signature: LivePortrait Expression Animation Stream"
+          }
+        ],
+        "videoSpecs": {
+          "codec": "H.264 / AVC High@L4.1",
+          "container": "MPEG-4 Base Media Video (MP4)",
+          "resolution": "1920x1080 (16:9 Full HD)",
+          "frameRate": "29.97 fps (NTSC Standard)",
+          "bitrate": "14.2 Mbps Variable Bitrate (VBR)",
+          "colorMatrix": "BT.709 Broadcast Standard",
+          "audioVideoSyncOffset": "194 ms (Audible / Visual Desynchronization)",
+          "opticalFlowVectorShear": "Severe boundary shearing around facial contour",
+          "facialLandmarkJitter": "68-point 3D landmark delta > 14.8px",
+          "keyframeInterval": "GOP size: 60 frames (2.0s cadence)",
+          "temporalJitterIndex": "0.79 (High Anomaly)"
+        },
+        "audioSpecs": null,
+        "probability": "98.6%",
+        "verdict": "MANIPULATED (VIDEO SYNTHETIC)",
+        "indicator": "Neural synthesis footprint: LivePortrait Expression Animation Stream",
+        "isAlert": true,
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "status": "VERIFIED",
+            "value": "aa9226c1a4358448...",
+            "description": "Deterministic SHA-256 fingerprint generated upon intake."
+          },
+          {
+            "name": "VIDEO Container & Format Scan",
+            "status": "VERIFIED",
+            "value": "MPEG-4 Base Media Video (MP4) (0.01 MB)",
+            "description": "Validated binary header bytes against standard video container specifications."
+          },
+          {
+            "name": "Sensor Hardware & Provenance",
+            "status": "VIDEO_STREAM",
+            "value": "H.264 / AVC High@L4.1",
+            "description": "Media does not contain original hardware sensor tags."
+          },
+          {
+            "name": "Generative AI Footprint Detection",
+            "status": "AI_SIGNATURE_FOUND",
+            "value": "LivePortrait Expression Animation Stream",
+            "description": "Artifact contains confirmed signatures from LivePortrait Expression Animation Stream."
+          },
+          {
+            "name": "Agent-Reach Dissemination Scan",
+            "status": "PUBLIC_REPOSTS_FOUND",
+            "value": "4 Public Matches Found",
+            "description": "Correlated with public web repositories and social discussions."
+          }
+        ],
+        "analyzedAt": "2026-10-27T07:45:59.282Z",
+        "provenance": {
+          "mediaCategory": "VIDEO",
+          "formatName": "MPEG-4 Base Media Video (MP4)",
+          "originClassification": "SYNTHETIC_GENERATIVE",
+          "device": {
+            "make": "Latent Neural Synthesizer",
+            "model": "Transformer Model Cluster",
+            "lens": "Native Optical Glass Element",
+            "serialNumber": "HW-UID-AA9226C1A4",
+            "software": "PyTorch TorchVision / Diffusion Pipeline"
+          },
+          "captureSettings": {
+            "aperture": "f/1.78",
+            "shutterSpeed": "1/120s",
+            "iso": "ISO 80",
+            "focalLength": "24mm (Full-Frame Eq.)",
+            "colorProfile": "Display P3 Wide Gamut",
+            "whiteBalance": "Auto (Calibrated)",
+            "flashMode": "Off (Natural)"
+          },
+          "temporal": {
+            "capturedAt": "2026-10-27T07:45:59.282Z",
+            "digitizedAt": "2026-10-27T07:45:59.282Z",
+            "timezone": "UTC+05:30 (Indian Standard Time)",
+            "clockSkewSeconds": 0.14
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "17.3850° N, 78.4867° E",
+            "altitude": "542 m MSL",
+            "geofenceDescription": "Hyderabad Metropolitan Area, Telangana, India",
+            "source": "Local Network Node Geofence"
+          },
+          "generativeDetails": {
+            "synthesisEngine": "LivePortrait Expression Animation Stream",
+            "modelFamily": "Video Diffusion Transformer (DiT)",
+            "extractedPrompt": "Detected latent synthesis tokens in container chunk",
+            "samplingSteps": 30,
+            "cfgScale": 7,
+            "neuralSeed": "492817294812"
+          }
+        },
+        "dissemination": {
+          "spreadClassification": "PUBLIC_DISSEMINATION_CONFIRMED",
+          "viralityIndex": "High (Distributed across Social Clusters)",
+          "recompressionGeneration": 3,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Referenced in generative AI discussions",
+              "evidence": "Public discourse tracked by Agent-Reach"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Matches AI community benchmarks",
+              "evidence": "Indexed in forensic subreddits"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachQuery": "LivePortrait Expression Animation Stream generative synthetic media",
+          "agentReachMatches": [
+            {
+              "title": "KlingAIResearch/LivePortrait",
+              "url": "https://github.com/KlingAIResearch/LivePortrait/",
+              "author": "Public Online Origin",
+              "snippet": "## 🔥 Updates - **`2025/06/01`**: 🌍 Over the past year, **LivePortrait** has 🚀 become an efficient portrait-animation (humans, cats and dogs) solution adopted by major video plat...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "Efficient Portrait Animation with Stitching and Retargeting Control",
+              "url": "https://liveportrait.github.io/",
+              "author": "Public Online Origin",
+              "snippet": "## Abstract   Portrait Animation aims to synthesize a lifelike video from a single source image, using it as an appearance reference, with motion (i.e., facial expressions and head...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "LivePortrait: Efficient Portrait Animation with Stitching and Retargeting Control",
+              "url": "https://doi.org/10.48550/arxiv.2407.03168",
+              "author": "Guo, Jianzhu, Zhang, Dingyun, Liu, Xiaoqiang, Zhong, Zhizhou, Yuan Zhang, Pengfei Wan, et al.",
+              "snippet": "# LivePortrait: Efficient Portrait Animation with Stitching and Retargeting Control  arXiv (Cornell University). Published: 2024-07-03. Preprint. 11 citations.  ## Abstract  Portra...",
+              "publishedAt": "2024-07-03T00:00:00.000Z",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "CVPR 2026 Open Access Repository",
+              "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Li_PersonaLive_Expressive_Portrait_Image_Animation_for_Live_Streaming_CVPR_2026_paper.html",
+              "author": "Li, Zhiyuan, Pun, Chi-Man, Fang, Chen, Wang, Jue, Cun, Xiaodong",
+              "snippet": "CVPR 2026 Open Access Repository   PersonaLive! Expressive Portrait Image Animation for Live Streaming    Zhiyuan Li, Chi-Man Pun, Chen Fang, Jue Wang, Xiaodong Cun; Proceedings of...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 4 public web/social intelligence records correlating with \"LivePortrait Expression Animation Stream generative synthetic media\"."
+        }
+      },
+      "completedAt": "2026-10-27T07:45:59.282Z"
+    },
+    {
+      "id": "job_mvqdrwlukpwxqh",
+      "uploadId": "upl_mvqdrwluoj9o",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T07:45:20.082Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqd4ojimm58",
+      "deviceName": "Sai Charan",
+      "originalFilename": "IMG_2026_OPTICAL_CAPTURE.jpg",
+      "storedFilename": "1793087120081-IMG_2026_OPTICAL_CAPTURE.jpg",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/1793087120081-IMG_2026_OPTICAL_CAPTURE.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 4371,
+      "sha256": "b9723c3c423732a18157e1a973f70899e80a3596d03c7d8cac9f67fc410e5500",
+      "forensicReport": {
+        "sha256": "b9723c3c423732a18157e1a973f70899e80a3596d03c7d8cac9f67fc410e5500",
+        "md5": "753cfd70e7f998857fbe38f4de937ed9",
+        "fileSize": 4371,
+        "detectedType": "image/jpeg",
+        "cameraMake": "Apple",
+        "cameraModel": "iPhone 15 Pro",
+        "softwareTag": "iOS 17.5.1",
+        "dateTimeOriginal": "2026:10:26 15:30:00",
+        "verdict": "AUTHENTIC MEDIA (MINIMAL RISK)",
+        "probability": "4.8% Probability",
+        "isAlert": false,
+        "indicator": "Verified optical sensor signature: Apple iPhone 15 Pro",
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "val": "SHA-256 confirmed (b9723c3c423732a1...410e5500)",
+            "status": "VERIFIED"
+          },
+          {
+            "name": "Container & File Signature",
+            "val": "Magic bytes verified: IMAGE/JPEG (4.3 KB)",
+            "status": "VERIFIED"
+          },
+          {
+            "name": "Hardware Sensor Fingerprint (PRNU)",
+            "val": "Hardware Camera: Apple iPhone 15 Pro (Optical Sensor Tag)",
+            "status": "VERIFIED"
+          },
+          {
+            "name": "Generative AI & Model Watermark Scan",
+            "val": "Zero latent diffusion or GAN generator headers found",
+            "status": "CLEAN"
+          },
+          {
+            "name": "Quantization & Spatial Noise Distribution",
+            "val": "Entropy Index: 8.0% · DQT tables parsed: 1",
+            "status": "EVALUATED"
+          },
+          {
+            "name": "Agent-Reach Dissemination Intelligence",
+            "val": "Private Capture: Zero external leaks detected across Agent-Reach channels",
+            "status": "VERIFIED"
+          }
+        ],
+        "analyzedAt": "2026-10-27T07:45:23.010Z",
+        "provenance": {
+          "originClassification": "OPTICAL_HARDWARE",
+          "device": {
+            "make": "Apple",
+            "model": "iPhone 15 Pro",
+            "lens": "iPhone 15 Pro back triple camera 24mm f/",
+            "serialNumber": "HW-UID-B9723C3C42",
+            "software": "iOS 17.5.1"
+          },
+          "captureSettings": {
+            "aperture": "f/1.78",
+            "shutterSpeed": "1/120s",
+            "iso": "ISO 80",
+            "focalLength": "24mm (Full-Frame Eq.)",
+            "colorProfile": "Display P3 Wide Gamut",
+            "whiteBalance": "Auto (Daylight Calibrated)",
+            "flashMode": "Off (Natural Illumination)"
+          },
+          "temporal": {
+            "capturedAt": "2026:10:26 15:30:00",
+            "digitizedAt": "2026:10:26 15:30:00",
+            "timezone": "UTC+05:30 (Indian Standard Time)",
+            "clockSkewSeconds": 0.14
+          },
+          "geolocation": {
+            "hasGpsCoordinates": true,
+            "coordinates": "17.3850° N, 78.4867° E",
+            "altitude": "542 m MSL",
+            "geofenceDescription": "Hyderabad Metropolitan Area, Telangana, India",
+            "source": "Embedded EXIF GPS IFD0"
+          },
+          "generativeDetails": null
+        },
+        "dissemination": {
+          "spreadClassification": "ISOLATED_PRIVATE_LOCAL_STREAM",
+          "viralityIndex": "0% (Confidential Private Transfer)",
+          "recompressionGeneration": 1,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Twitter/X compression fingerprints",
+              "evidence": "Preserved lossless chroma"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Reddit repost markers",
+              "evidence": "Sensor noise intact"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachMatches": [
+            {
+              "title": "Orion's Optical Navigation Camera Captures Earth | NASA Image and Video Library",
+              "url": "https://images.nasa.gov/details-FD2%20OpNav%20art001e000009",
+              "author": "Public Origin",
+              "snippet": "Orion's Optical Navigation Camera Captures Earth | NASA Image and Video Library  1. FD2 OpNav art001e000009 2. Home  Image unavailable  Show EXIF Data  ### Shar...",
+              "publishedAt": "Recent"
+            },
+            {
+              "title": "Optical_Properties",
+              "url": "https://pds.nasa.gov/datastandards/documents/dd/all/current/ch40s64.html",
+              "author": "Public Origin",
+              "snippet": "Optical_Properties  ## Optical_Properties  | Name: Optical_Properties | | LDD Version: 1.9.3.0 | IM Version: 1.25.0.0 | | --- | --- | --- | --- | | Description:...",
+              "publishedAt": "Recent"
+            },
+            {
+              "title": "Using the Image Capture Command",
+              "url": "https://nexus.hexagon.com/documentationcenter/en-US/bundle/pcdmis-2026.2-vision/page/Using_the_Image_Capture_Command.htm",
+              "author": "Public Origin",
+              "snippet": "Using the Image Capture Command  # Using the Image Capture Command  Updated: Oct 21, 2026  The Vision | Image Capture menu item inserts an IMAGECAPTURE command ...",
+              "publishedAt": "Recent"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 3 public web/social intelligence records correlating with this media signature."
+        }
+      },
+      "completedAt": "2026-10-27T07:45:23.010Z"
+    },
+    {
+      "id": "job_mvqd7smg6jxg4f",
+      "uploadId": "upl_mvqd7smgqou0",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T07:29:41.800Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqd4ojimm58",
+      "deviceName": "Sai Charan",
+      "originalFilename": "1000243398.png",
+      "storedFilename": "spectra_1793086181665_1b0d031f6aad9c55.png",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/spectra_1793086181665_1b0d031f6aad9c55.png",
+      "mimeType": "image/png",
+      "sizeBytes": 6463491,
+      "sha256": "47149b5b741746b4e72a7a609cd113e14b52fb169c8b33074de40e1e2937d059",
+      "forensicReport": {
+        "sha256": "47149b5b741746b4e72a7a609cd113e14b52fb169c8b33074de40e1e2937d059",
+        "md5": "051398e35cc1f80f296b3e8bea5253f2",
+        "fileSize": 6463491,
+        "detectedType": "image/png",
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "verdict": "MANIPULATED (AI GENERATED)",
+        "probability": "98.6% Probability",
+        "isAlert": true,
+        "indicator": "Neural synthesis footprint: C2PA Content Credentials Manifest",
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "val": "SHA-256 confirmed (47149b5b741746b4...2937d059)",
+            "status": "VERIFIED"
+          },
+          {
+            "name": "Container & File Signature",
+            "val": "Magic bytes verified: IMAGE/PNG (6312.0 KB)",
+            "status": "VERIFIED"
+          },
+          {
+            "name": "Hardware Sensor Fingerprint (PRNU)",
+            "val": "EXIF sensor profile not preserved in container",
+            "status": "ANOMALY"
+          },
+          {
+            "name": "Generative AI & Model Watermark Scan",
+            "val": "DETECTED: C2PA Content Credentials Manifest",
+            "status": "ALERT"
+          },
+          {
+            "name": "Quantization & Spatial Noise Distribution",
+            "val": "Entropy Index: 98.0% · DQT tables parsed: 0",
+            "status": "EVALUATED"
+          },
+          {
+            "name": "Agent-Reach Dissemination Intelligence",
+            "val": "Spread Identified: Public discussion threads indexed across social web",
+            "status": "ALERT"
+          }
+        ],
+        "analyzedAt": "2026-10-27T07:29:44.511Z",
+        "provenance": {
+          "originClassification": "SYNTHETIC_GENERATIVE",
+          "device": {
+            "make": "Latent Diffusion Cluster",
+            "model": "Transformer Neural Generator",
+            "lens": "Primary 24mm f/1.78 Optical Lens Element",
+            "serialNumber": "HW-UID-47149B5B74",
+            "software": "ComfyUI / PyTorch TorchVision"
+          },
+          "captureSettings": {
+            "aperture": "f/1.78",
+            "shutterSpeed": "1/120s",
+            "iso": "ISO 80",
+            "focalLength": "24mm (Full-Frame Eq.)",
+            "colorProfile": "Display P3 Wide Gamut",
+            "whiteBalance": "Auto (Daylight Calibrated)",
+            "flashMode": "Off (Natural Illumination)"
+          },
+          "temporal": {
+            "capturedAt": "2026-10-27T07:29:44.511Z",
+            "digitizedAt": "2026-10-27T07:29:44.511Z",
+            "timezone": "UTC+05:30 (Indian Standard Time)",
+            "clockSkewSeconds": 0.14
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "17.3850° N, 78.4867° E",
+            "altitude": "542 m MSL",
+            "geofenceDescription": "Hyderabad Metropolitan Area, Telangana, India",
+            "source": "Local Network Node Geofence"
+          },
+          "generativeDetails": {
+            "synthesisEngine": "C2PA Content Credentials Manifest",
+            "modelFamily": "Latent Diffusion (SDXL / Flux / Midjourney)",
+            "extractedPrompt": "Detected latent prompt tokens in container chunk",
+            "samplingSteps": 30,
+            "cfgScale": 7,
+            "neuralSeed": "492817294812"
+          }
+        },
+        "dissemination": {
+          "spreadClassification": "PUBLIC_DISSEMINATION_CONFIRMED",
+          "viralityIndex": "High (Distributed across Social Clusters)",
+          "recompressionGeneration": 3,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Referenced in generative AI discussions",
+              "evidence": "Public discourse tracked by Agent-Reach"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Matches AI community benchmarks",
+              "evidence": "Indexed in forensic subreddits"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachMatches": [
+            {
+              "title": "Synthetic media",
+              "url": "https://en.wikipedia.org/wiki/Synthetic_media",
+              "author": "Contributors to Wikimedia projects",
+              "snippet": "# Synthetic media   Synthetic media is digital content in various media formats, including text, image, and video, which has been automatically and artificially...",
+              "publishedAt": "2019-10-08T17:11:25.000Z"
+            },
+            {
+              "title": "Synthetically Generated Media, types, detection, and the ...",
+              "url": "https://dl.acm.org/doi/10.1145/3716554.3716835",
+              "author": "Authors : Fotios Roumpies, Georgios Spathoulas, Athanasios Kakarountas",
+              "snippet": "## 1 Introduction  The term synthetic media refers to all forms of media that have been created or modified using artificial intelligence (AI) and machine learn...",
+              "publishedAt": "2025-05-28T00:00:00.000Z"
+            },
+            {
+              "title": "Synthetic Media: Deepfakes, AI-Generated Content, and ...",
+              "url": "https://www.mdpi.com/2673-8392/6/8/175",
+              "author": "Dan Valeriu Voinea",
+              "snippet": "## Definition  Synthetic media are digital artifacts (image, video, audio, text, or multimodal content) that are wholly or partly generated or materially manipu...",
+              "publishedAt": "2026-08-17T13:26:38.000Z"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 3 public web/social intelligence records correlating with this media signature."
+        }
+      },
+      "completedAt": "2026-10-27T07:29:44.511Z"
+    },
+    {
+      "id": "job_mvqd7ghpytmvlb",
+      "uploadId": "upl_mvqd7ghpkmds",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T07:29:26.077Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqd4ojimm58",
+      "deviceName": "Sai Charan",
+      "originalFilename": "synthetic_concept_render.jpg",
+      "storedFilename": "1793086166077-synthetic_concept_render.jpg",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/1793086166077-synthetic_concept_render.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 4296,
+      "sha256": "c5d1dae94f75e6c3bbc7dd846e86c64fe552634b804c644a573066cbefe75119",
+      "forensicReport": {
+        "sha256": "c5d1dae94f75e6c3bbc7dd846e86c64fe552634b804c644a573066cbefe75119",
+        "md5": "0d640f22f35e4bc3ea32a27cb6a10355",
+        "fileSize": 4296,
+        "detectedType": "image/jpeg",
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "verdict": "MANIPULATED (AI GENERATED)",
+        "probability": "98.6% Probability",
+        "isAlert": true,
+        "indicator": "Neural synthesis footprint: ComfyUI Generative Workflow Node Tree",
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "val": "SHA-256 confirmed (c5d1dae94f75e6c3...efe75119)",
+            "status": "VERIFIED"
+          },
+          {
+            "name": "Container & File Signature",
+            "val": "Magic bytes verified: IMAGE/JPEG (4.2 KB)",
+            "status": "VERIFIED"
+          },
+          {
+            "name": "Hardware Sensor Fingerprint (PRNU)",
+            "val": "EXIF sensor profile not preserved in container",
+            "status": "ANOMALY"
+          },
+          {
+            "name": "Generative AI & Model Watermark Scan",
+            "val": "DETECTED: ComfyUI Generative Workflow Node Tree",
+            "status": "ALERT"
+          },
+          {
+            "name": "Quantization & Spatial Noise Distribution",
+            "val": "Entropy Index: 5.8% · DQT tables parsed: 1",
+            "status": "EVALUATED"
+          },
+          {
+            "name": "Agent-Reach Dissemination Intelligence",
+            "val": "Spread Identified: Public discussion threads indexed across social web",
+            "status": "ALERT"
+          }
+        ],
+        "analyzedAt": "2026-10-27T07:29:29.089Z",
+        "provenance": {
+          "originClassification": "SYNTHETIC_GENERATIVE",
+          "device": {
+            "make": "Latent Diffusion Cluster",
+            "model": "Transformer Neural Generator",
+            "lens": "Primary 24mm f/1.78 Optical Lens Element",
+            "serialNumber": "HW-UID-C5D1DAE94F",
+            "software": "ComfyUI / PyTorch TorchVision"
+          },
+          "captureSettings": {
+            "aperture": "f/1.78",
+            "shutterSpeed": "1/120s",
+            "iso": "ISO 80",
+            "focalLength": "24mm (Full-Frame Eq.)",
+            "colorProfile": "Display P3 Wide Gamut",
+            "whiteBalance": "Auto (Daylight Calibrated)",
+            "flashMode": "Off (Natural Illumination)"
+          },
+          "temporal": {
+            "capturedAt": "2026-10-27T07:29:29.089Z",
+            "digitizedAt": "2026-10-27T07:29:29.089Z",
+            "timezone": "UTC+05:30 (Indian Standard Time)",
+            "clockSkewSeconds": 0.14
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "17.3850° N, 78.4867° E",
+            "altitude": "542 m MSL",
+            "geofenceDescription": "Hyderabad Metropolitan Area, Telangana, India",
+            "source": "Local Network Node Geofence"
+          },
+          "generativeDetails": {
+            "synthesisEngine": "ComfyUI Generative Workflow Node Tree",
+            "modelFamily": "Latent Diffusion (SDXL / Flux / Midjourney)",
+            "extractedPrompt": "ultra realistic portrait of executive, stable diffusion v2.1 checkpoint comfyui node latent diffusion|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||",
+            "samplingSteps": 30,
+            "cfgScale": 7,
+            "neuralSeed": "492817294812"
+          }
+        },
+        "dissemination": {
+          "spreadClassification": "PUBLIC_DISSEMINATION_CONFIRMED",
+          "viralityIndex": "High (Distributed across Social Clusters)",
+          "recompressionGeneration": 3,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Referenced in generative AI discussions",
+              "evidence": "Public discourse tracked by Agent-Reach"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Matches AI community benchmarks",
+              "evidence": "Indexed in forensic subreddits"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachMatches": [
+            {
+              "title": "friedrichor/stable-diffusion-2-1-realistic · Hugging Face",
+              "url": "https://huggingface.co/friedrichor/stable-diffusion-2-1-realistic",
+              "author": "Public Origin",
+              "snippet": "This `friedrichor/stable-diffusion-2-1-realistic` model fine-tuned from stable-diffusion-2-1 with friedrichor/PhotoChat_120_square_HQ   This model is not traine...",
+              "publishedAt": "Recent"
+            },
+            {
+              "title": "djz Ascendents Portrait - v21 | Stable Diffusion 2.x Checkpoint | Civitai",
+              "url": "https://civitai.com/models/23339/djz-ascendents-portrait",
+              "author": "Public Origin",
+              "snippet": "djz Ascendents Portrait - v21 | Stable Diffusion 2.x Checkpoint | Civitai  # djz Ascendents Portrait  Updated: Oct 5, 2024  v21   1 variant available  fp16 Safe...",
+              "publishedAt": "2023-03-23T14:00:39.000Z"
+            },
+            {
+              "title": "Liselotte Cretia (Seirei Gensouki) - v2.1",
+              "url": "https://stablediffusionapi.com/models/liselotte-cretia-seirei-gensouki-v2-1",
+              "author": "Public Origin",
+              "snippet": "Liselotte Cretia (Seirei Gensouki) - v2.1  # Liselotte Cretia (Seirei Gensouki) - v2.1  Author   model_id: liselotte-cretia-seirei-gensouki-v2-1 Model Type: Sta...",
+              "publishedAt": "Recent"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 3 public web/social intelligence records correlating with this media signature."
+        }
+      },
+      "completedAt": "2026-10-27T07:29:29.089Z"
+    },
+    {
+      "id": "job_mvqd6itzmuqrq2",
+      "uploadId": "upl_mvqd6itz0v6l",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T07:28:42.455Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqd4ojimm58",
+      "deviceName": "Sai Charan",
+      "originalFilename": "IMG_2026_OPTICAL_CAPTURE.jpg",
+      "storedFilename": "1793086122454-IMG_2026_OPTICAL_CAPTURE.jpg",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/1793086122454-IMG_2026_OPTICAL_CAPTURE.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 4371,
+      "sha256": "b9723c3c423732a18157e1a973f70899e80a3596d03c7d8cac9f67fc410e5500",
+      "forensicReport": {
+        "sha256": "b9723c3c423732a18157e1a973f70899e80a3596d03c7d8cac9f67fc410e5500",
+        "md5": "753cfd70e7f998857fbe38f4de937ed9",
+        "fileSize": 4371,
+        "detectedType": "image/jpeg",
+        "cameraMake": "Apple",
+        "cameraModel": "iPhone 15 Pro",
+        "softwareTag": "iOS 17.5.1",
+        "dateTimeOriginal": "2026:10:26 15:30:00",
+        "verdict": "AUTHENTIC MEDIA (MINIMAL RISK)",
+        "probability": "4.8% Probability",
+        "isAlert": false,
+        "indicator": "Verified optical sensor signature: Apple iPhone 15 Pro",
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "val": "SHA-256 confirmed (b9723c3c423732a1...410e5500)",
+            "status": "VERIFIED"
+          },
+          {
+            "name": "Container & File Signature",
+            "val": "Magic bytes verified: IMAGE/JPEG (4.3 KB)",
+            "status": "VERIFIED"
+          },
+          {
+            "name": "Hardware Sensor Fingerprint (PRNU)",
+            "val": "Hardware Camera: Apple iPhone 15 Pro (Optical Sensor Tag)",
+            "status": "VERIFIED"
+          },
+          {
+            "name": "Generative AI & Model Watermark Scan",
+            "val": "Zero latent diffusion or GAN generator headers found",
+            "status": "CLEAN"
+          },
+          {
+            "name": "Quantization & Spatial Noise Distribution",
+            "val": "Entropy Index: 8.0% · DQT tables parsed: 1",
+            "status": "EVALUATED"
+          },
+          {
+            "name": "Agent-Reach Dissemination Intelligence",
+            "val": "Private Capture: Zero external leaks detected across Agent-Reach channels",
+            "status": "VERIFIED"
+          }
+        ],
+        "analyzedAt": "2026-10-27T07:28:45.292Z",
+        "provenance": {
+          "originClassification": "OPTICAL_HARDWARE",
+          "device": {
+            "make": "Apple",
+            "model": "iPhone 15 Pro",
+            "lens": "iPhone 15 Pro back triple camera 24mm f/",
+            "serialNumber": "HW-UID-B9723C3C42",
+            "software": "iOS 17.5.1"
+          },
+          "captureSettings": {
+            "aperture": "f/1.78",
+            "shutterSpeed": "1/120s",
+            "iso": "ISO 80",
+            "focalLength": "24mm (Full-Frame Eq.)",
+            "colorProfile": "Display P3 Wide Gamut",
+            "whiteBalance": "Auto (Daylight Calibrated)",
+            "flashMode": "Off (Natural Illumination)"
+          },
+          "temporal": {
+            "capturedAt": "2026:10:26 15:30:00",
+            "digitizedAt": "2026:10:26 15:30:00",
+            "timezone": "UTC+05:30 (Indian Standard Time)",
+            "clockSkewSeconds": 0.14
+          },
+          "geolocation": {
+            "hasGpsCoordinates": true,
+            "coordinates": "17.3850° N, 78.4867° E",
+            "altitude": "542 m MSL",
+            "geofenceDescription": "Hyderabad Metropolitan Area, Telangana, India",
+            "source": "Embedded EXIF GPS IFD0"
+          },
+          "generativeDetails": null
+        },
+        "dissemination": {
+          "spreadClassification": "ISOLATED_PRIVATE_LOCAL_STREAM",
+          "viralityIndex": "0% (Confidential Private Transfer)",
+          "recompressionGeneration": 1,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Twitter/X compression fingerprints",
+              "evidence": "Preserved lossless chroma"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Reddit repost markers",
+              "evidence": "Sensor noise intact"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachMatches": [
+            {
+              "title": "Orion's Optical Navigation Camera Captures Earth | NASA Image and Video Library",
+              "url": "https://images.nasa.gov/details-FD2%20OpNav%20art001e000009",
+              "author": "Public Origin",
+              "snippet": "Orion's Optical Navigation Camera Captures Earth | NASA Image and Video Library  1. FD2 OpNav art001e000009 2. Home  Image unavailable  Show EXIF Data  ### Shar...",
+              "publishedAt": "Recent"
+            },
+            {
+              "title": "Optical_Properties",
+              "url": "https://pds.nasa.gov/datastandards/documents/dd/all/current/ch40s64.html",
+              "author": "Public Origin",
+              "snippet": "Optical_Properties  ## Optical_Properties  | Name: Optical_Properties | | LDD Version: 1.9.3.0 | IM Version: 1.25.0.0 | | --- | --- | --- | --- | | Description:...",
+              "publishedAt": "Recent"
+            },
+            {
+              "title": "Using the Image Capture Command",
+              "url": "https://nexus.hexagon.com/documentationcenter/en-US/bundle/pcdmis-2026.2-vision/page/Using_the_Image_Capture_Command.htm",
+              "author": "Public Origin",
+              "snippet": "Using the Image Capture Command  # Using the Image Capture Command  Updated: Oct 21, 2026  The Vision | Image Capture menu item inserts an IMAGECAPTURE command ...",
+              "publishedAt": "Recent"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 3 public web/social intelligence records correlating with this media signature."
+        }
+      },
+      "completedAt": "2026-10-27T07:28:45.292Z"
+    },
+    {
+      "id": "job_mvqd6a4yiqcxak",
+      "uploadId": "upl_mvqd6a4ymv6q",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T07:28:31.186Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqd4ojimm58",
+      "deviceName": "Sai Charan",
+      "originalFilename": "1000243398.png",
+      "storedFilename": "spectra_1793086111064_da1c27edf5b3199d.png",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/spectra_1793086111064_da1c27edf5b3199d.png",
+      "mimeType": "image/png",
+      "sizeBytes": 6463491,
+      "sha256": "47149b5b741746b4e72a7a609cd113e14b52fb169c8b33074de40e1e2937d059",
+      "forensicReport": {
+        "sha256": "47149b5b741746b4e72a7a609cd113e14b52fb169c8b33074de40e1e2937d059",
+        "md5": "051398e35cc1f80f296b3e8bea5253f2",
+        "fileSize": 6463491,
+        "detectedType": "image/png",
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "verdict": "MANIPULATED (AI GENERATED)",
+        "probability": "98.6% Probability",
+        "isAlert": true,
+        "indicator": "Neural synthesis footprint: C2PA Content Credentials Manifest",
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "val": "SHA-256 confirmed (47149b5b741746b4...2937d059)",
+            "status": "VERIFIED"
+          },
+          {
+            "name": "Container & File Signature",
+            "val": "Magic bytes verified: IMAGE/PNG (6312.0 KB)",
+            "status": "VERIFIED"
+          },
+          {
+            "name": "Hardware Sensor Fingerprint (PRNU)",
+            "val": "EXIF sensor profile not preserved in container",
+            "status": "ANOMALY"
+          },
+          {
+            "name": "Generative AI & Model Watermark Scan",
+            "val": "DETECTED: C2PA Content Credentials Manifest",
+            "status": "ALERT"
+          },
+          {
+            "name": "Quantization & Spatial Noise Distribution",
+            "val": "Entropy Index: 98.0% · DQT tables parsed: 0",
+            "status": "EVALUATED"
+          },
+          {
+            "name": "Agent-Reach Dissemination Intelligence",
+            "val": "Spread Identified: Public discussion threads indexed across social web",
+            "status": "ALERT"
+          }
+        ],
+        "analyzedAt": "2026-10-27T07:28:36.154Z",
+        "provenance": {
+          "originClassification": "SYNTHETIC_GENERATIVE",
+          "device": {
+            "make": "Latent Diffusion Cluster",
+            "model": "Transformer Neural Generator",
+            "lens": "Primary 24mm f/1.78 Optical Lens Element",
+            "serialNumber": "HW-UID-47149B5B74",
+            "software": "ComfyUI / PyTorch TorchVision"
+          },
+          "captureSettings": {
+            "aperture": "f/1.78",
+            "shutterSpeed": "1/120s",
+            "iso": "ISO 80",
+            "focalLength": "24mm (Full-Frame Eq.)",
+            "colorProfile": "Display P3 Wide Gamut",
+            "whiteBalance": "Auto (Daylight Calibrated)",
+            "flashMode": "Off (Natural Illumination)"
+          },
+          "temporal": {
+            "capturedAt": "2026-10-27T07:28:36.154Z",
+            "digitizedAt": "2026-10-27T07:28:36.154Z",
+            "timezone": "UTC+05:30 (Indian Standard Time)",
+            "clockSkewSeconds": 0.14
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "17.3850° N, 78.4867° E",
+            "altitude": "542 m MSL",
+            "geofenceDescription": "Hyderabad Metropolitan Area, Telangana, India",
+            "source": "Local Network Node Geofence"
+          },
+          "generativeDetails": {
+            "synthesisEngine": "C2PA Content Credentials Manifest",
+            "modelFamily": "Latent Diffusion (SDXL / Flux / Midjourney)",
+            "extractedPrompt": "Detected latent prompt tokens in container chunk",
+            "samplingSteps": 30,
+            "cfgScale": 7,
+            "neuralSeed": "492817294812"
+          }
+        },
+        "dissemination": {
+          "spreadClassification": "PUBLIC_DISSEMINATION_CONFIRMED",
+          "viralityIndex": "High (Distributed across Social Clusters)",
+          "recompressionGeneration": 3,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Referenced in generative AI discussions",
+              "evidence": "Public discourse tracked by Agent-Reach"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Matches AI community benchmarks",
+              "evidence": "Indexed in forensic subreddits"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachMatches": [
+            {
+              "title": "Synthetic media",
+              "url": "https://en.wikipedia.org/wiki/Synthetic_media",
+              "author": "Contributors to Wikimedia projects",
+              "snippet": "# Synthetic media   Synthetic media is digital content in various media formats, including text, image, and video, which has been automatically and artificially...",
+              "publishedAt": "2019-10-08T17:11:25.000Z"
+            },
+            {
+              "title": "Synthetically Generated Media, types, detection, and the ...",
+              "url": "https://dl.acm.org/doi/10.1145/3716554.3716835",
+              "author": "Authors : Fotios Roumpies, Georgios Spathoulas, Athanasios Kakarountas",
+              "snippet": "## 1 Introduction  The term synthetic media refers to all forms of media that have been created or modified using artificial intelligence (AI) and machine learn...",
+              "publishedAt": "2025-05-28T00:00:00.000Z"
+            },
+            {
+              "title": "Synthetic Media: Deepfakes, AI-Generated Content, and ...",
+              "url": "https://www.mdpi.com/2673-8392/6/8/175",
+              "author": "Dan Valeriu Voinea",
+              "snippet": "## Definition  Synthetic media are digital artifacts (image, video, audio, text, or multimodal content) that are wholly or partly generated or materially manipu...",
+              "publishedAt": "2026-08-17T13:26:38.000Z"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 3 public web/social intelligence records correlating with this media signature."
+        }
+      },
+      "completedAt": "2026-10-27T07:28:36.154Z"
+    },
     {
       "id": "job_mvpejr169rgzr5",
       "uploadId": "upl_mvpejr1695x1",
