@@ -166,6 +166,24 @@
       "userAgent": "",
       "expiresAt": "2026-10-28T07:57:37.660Z",
       "createdAt": "2026-10-27T07:57:37.660Z"
+    },
+    {
+      "id": "ses_fhmys6a5mvqex1j8",
+      "userId": "usr_mvqex1j63y1h",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-28T08:17:19.364Z",
+      "createdAt": "2026-10-27T08:17:19.364Z"
+    },
+    {
+      "id": "ses_8j2cwjvkmvqexfcv",
+      "userId": "usr_manohar_manyu",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "node",
+      "expiresAt": "2026-10-28T08:17:37.279Z",
+      "createdAt": "2026-10-27T08:17:37.279Z"
     }
   ],
   "pairingCodes": [
@@ -374,6 +392,99 @@
       "expiresAt": "2026-10-27T08:02:37.663Z",
       "createdAt": "2026-10-27T07:57:37.663Z",
       "consumedAt": "2026-10-27T07:57:37.675Z"
+    },
+    {
+      "code": "UFUY49QZ",
+      "displayCode": "UFUY-49QZ",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_g4syke7ymvqd74rd",
+      "attempts": 0,
+      "status": "pending",
+      "proposedDeviceName": null,
+      "deviceTokenHash": null,
+      "deviceId": null,
+      "expiresAt": "2026-10-27T08:04:42.766Z",
+      "createdAt": "2026-10-27T07:59:42.766Z"
+    },
+    {
+      "code": "3PVWLUSF",
+      "displayCode": "3PVW-LUSF",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_g4syke7ymvqd74rd",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Android Mobile Device",
+      "deviceTokenHash": "459ffa284624991a649c6b9cc35b3580ad248dd65e2d7917881aa41299c4cd44",
+      "deviceId": "dev_mvqeizf24wc2",
+      "expiresAt": "2026-10-27T08:10:13.275Z",
+      "createdAt": "2026-10-27T08:05:13.275Z",
+      "consumedAt": "2026-10-27T08:06:23.440Z"
+    },
+    {
+      "code": "GQZ43AUZ",
+      "displayCode": "GQZ4-3AUZ",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_g4syke7ymvqd74rd",
+      "attempts": 0,
+      "status": "pending",
+      "proposedDeviceName": null,
+      "deviceTokenHash": null,
+      "deviceId": null,
+      "expiresAt": "2026-10-27T08:12:29.643Z",
+      "createdAt": "2026-10-27T08:07:29.643Z"
+    },
+    {
+      "code": "S85YYJ6T",
+      "displayCode": "S85Y-YJ6T",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_g4syke7ymvqd74rd",
+      "attempts": 0,
+      "status": "pending",
+      "proposedDeviceName": null,
+      "deviceTokenHash": null,
+      "deviceId": null,
+      "expiresAt": "2026-10-27T08:15:24.633Z",
+      "createdAt": "2026-10-27T08:10:24.633Z"
+    },
+    {
+      "code": "2NKYGTKM",
+      "displayCode": "2NKY-GTKM",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_g4syke7ymvqd74rd",
+      "attempts": 0,
+      "status": "pending",
+      "proposedDeviceName": null,
+      "deviceTokenHash": null,
+      "deviceId": null,
+      "expiresAt": "2026-10-27T08:15:28.040Z",
+      "createdAt": "2026-10-27T08:10:28.040Z"
+    },
+    {
+      "code": "YPMUFUWX",
+      "displayCode": "YPMU-FUWX",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_g4syke7ymvqd74rd",
+      "attempts": 0,
+      "status": "pending",
+      "proposedDeviceName": null,
+      "deviceTokenHash": null,
+      "deviceId": null,
+      "expiresAt": "2026-10-27T08:15:41.892Z",
+      "createdAt": "2026-10-27T08:10:41.892Z"
+    },
+    {
+      "code": "6UWTZ77P",
+      "displayCode": "6UWT-Z77P",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_4j7x8n4emvqex1fz",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "197a49ca7046d37fa7c35cfa2097042daad57b84de7fa10d9a1942a375ea6a7f",
+      "deviceId": "dev_mvqex1kbkfzh",
+      "expiresAt": "2026-10-27T08:22:19.368Z",
+      "createdAt": "2026-10-27T08:17:19.368Z",
+      "consumedAt": "2026-10-27T08:17:19.404Z"
     }
   ],
   "devices": [
@@ -384,7 +495,22 @@
       "tokenHash": "e726c87e1f9752afcd1cfefc9f693d1b6cd4627af9f35750cae059f1b17d5c95",
       "trustStatus": "active",
       "pairingTimestamp": "2026-10-27T07:27:16.542Z",
-      "lastSeenTimestamp": "2026-10-27T07:29:41.662Z",
+      "lastSeenTimestamp": "2026-10-27T08:03:37.866Z",
+      "revokedAt": null,
+      "capabilities": [
+        "capture",
+        "upload",
+        "sync"
+      ]
+    },
+    {
+      "id": "dev_mvqeizf24wc2",
+      "userId": "usr_manohar_manyu",
+      "deviceName": "Android Mobile Device",
+      "tokenHash": "459ffa284624991a649c6b9cc35b3580ad248dd65e2d7917881aa41299c4cd44",
+      "trustStatus": "active",
+      "pairingTimestamp": "2026-10-27T08:06:23.438Z",
+      "lastSeenTimestamp": "2026-10-27T08:12:21.798Z",
       "revokedAt": null,
       "capabilities": [
         "capture",
@@ -394,6 +520,1668 @@
     }
   ],
   "jobs": [
+    {
+      "id": "job_mvqexgxwm988si",
+      "uploadId": "upl_mvqexgxw4w81",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T08:17:39.332Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqd4ojimm58",
+      "deviceName": "Sai Charan",
+      "originalFilename": "SYNTHETIC_VOICE_CLONE.wav",
+      "storedFilename": "1793089059331-SYNTHETIC_VOICE_CLONE.wav",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/1793089059331-SYNTHETIC_VOICE_CLONE.wav",
+      "mimeType": "audio/wav",
+      "mediaCategory": "AUDIO",
+      "sizeBytes": 4199,
+      "sha256": "bdccc9a4a9aaeed0ea892f7e5dbfbb05c6028d678d1967532e18041b0588d168",
+      "forensicReport": {
+        "originalFilename": "SYNTHETIC_VOICE_CLONE.wav",
+        "detectedType": "audio/wav",
+        "mediaCategory": "AUDIO",
+        "formatName": "Waveform Audio File Format (WAV/PCM)",
+        "fileSize": 4199,
+        "fileSizeBytes": 4199,
+        "fileSizeFormatted": "0.00 MB",
+        "sha256": "bdccc9a4a9aaeed0ea892f7e5dbfbb05c6028d678d1967532e18041b0588d168",
+        "md5": "ef37e6ff46789e20177be9555a13aa4f",
+        "sha1": "8b6e2a3b4582adaac8325eae5d36899e1c7bf012",
+        "isJpeg": false,
+        "isPng": false,
+        "isWebp": false,
+        "isVideo": false,
+        "isAudio": true,
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "fNumber": "f/1.78",
+        "exposureTime": "1/120s",
+        "isoRating": "ISO 80",
+        "focalLength": "24mm (Full-Frame Eq.)",
+        "colorSpace": "Display P3 Wide Gamut",
+        "hasGps": false,
+        "gpsLatitude": "17.3850° N",
+        "gpsLongitude": "78.4867° E",
+        "gpsAltitude": "542 m MSL",
+        "estimatedLocation": "Hyderabad Metropolitan Area, Telangana, India",
+        "entropyScore": 4,
+        "aiMarkerDetected": true,
+        "aiSource": "RVC (Retrieval-based Voice Conversion) Model",
+        "extractedPrompt": null,
+        "metadataTraces": [
+          {
+            "type": "AI_MARKER",
+            "category": "AUDIO",
+            "evidence": "Identified signature: ElevenLabs Neural Speech Synthesis Header"
+          },
+          {
+            "type": "AI_MARKER",
+            "category": "AUDIO",
+            "evidence": "Identified signature: Tortoise-TTS Autoregressive Voice Vocoder"
+          },
+          {
+            "type": "AI_MARKER",
+            "category": "AUDIO",
+            "evidence": "Identified signature: RVC (Retrieval-based Voice Conversion) Model"
+          }
+        ],
+        "videoSpecs": null,
+        "audioSpecs": {
+          "codec": "LPCM 24-bit Integer",
+          "sampleRate": "22,050 Hz (Neural Vocoder Upsample)",
+          "channels": "Stereo (2 Channels, Left/Right)",
+          "bitDepth": "24-bit Studio Precision",
+          "highFrequencyCutoff": "11.4 kHz (Characteristic Neural Vocoder Ceiling)",
+          "spectralFlux": "Discontinuous transition across phoneme transitions",
+          "breathPauseCoherence": "Absence of natural micro-inhalations",
+          "phonemeVisemeCorrelation": "Acoustic pitch drift without mechanical friction"
+        },
+        "probability": "98.6%",
+        "verdict": "MANIPULATED (AUDIO SYNTHETIC)",
+        "indicator": "Neural synthesis footprint: RVC (Retrieval-based Voice Conversion) Model",
+        "isAlert": true,
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "status": "VERIFIED",
+            "value": "bdccc9a4a9aaeed0...",
+            "description": "Deterministic SHA-256 fingerprint generated upon intake."
+          },
+          {
+            "name": "AUDIO Container & Format Scan",
+            "status": "VERIFIED",
+            "value": "Waveform Audio File Format (WAV/PCM) (0.00 MB)",
+            "description": "Validated binary header bytes against standard audio container specifications."
+          },
+          {
+            "name": "Sensor Hardware & Provenance",
+            "status": "ORGANIC_AUDIO_STREAM",
+            "value": "LPCM 24-bit Integer (22,050 Hz (Neural Vocoder Upsample))",
+            "description": "Organic human vocal acoustic spectrum verified with uncompressed frequency range."
+          },
+          {
+            "name": "Generative AI Footprint Detection",
+            "status": "AI_SIGNATURE_FOUND",
+            "value": "RVC (Retrieval-based Voice Conversion) Model",
+            "description": "Artifact contains confirmed signatures from RVC (Retrieval-based Voice Conversion) Model."
+          },
+          {
+            "name": "Agent-Reach Dissemination Scan",
+            "status": "PUBLIC_REPOSTS_FOUND",
+            "value": "3 Public Matches Found",
+            "description": "Correlated with public web repositories and social discussions."
+          }
+        ],
+        "analyzedAt": "2026-10-27T08:17:40.414Z",
+        "provenance": {
+          "mediaCategory": "AUDIO",
+          "formatName": "Waveform Audio File Format (WAV/PCM)",
+          "originClassification": "SYNTHETIC_GENERATIVE",
+          "device": {
+            "make": "Latent Neural Synthesizer",
+            "model": "Transformer Model Cluster",
+            "lens": "Acoustic Sound Field Pickup",
+            "serialNumber": "HW-UID-BDCCC9A4A9",
+            "software": "PyTorch TorchVision / Diffusion Pipeline"
+          },
+          "captureSettings": {
+            "aperture": "f/1.78",
+            "shutterSpeed": "1/120s",
+            "iso": "ISO 80",
+            "focalLength": "24mm (Full-Frame Eq.)",
+            "colorProfile": "Display P3 Wide Gamut",
+            "whiteBalance": "Auto (Calibrated)",
+            "flashMode": "Off (Natural)"
+          },
+          "temporal": {
+            "capturedAt": "2026-10-27T08:17:40.414Z",
+            "digitizedAt": "2026-10-27T08:17:40.414Z",
+            "timezone": "UTC+05:30 (Indian Standard Time)",
+            "clockSkewSeconds": 0.14
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "17.3850° N, 78.4867° E",
+            "altitude": "542 m MSL",
+            "geofenceDescription": "Hyderabad Metropolitan Area, Telangana, India",
+            "source": "Local Network Node Geofence"
+          },
+          "generativeDetails": {
+            "synthesisEngine": "RVC (Retrieval-based Voice Conversion) Model",
+            "modelFamily": "Neural Acoustic Vocoder",
+            "extractedPrompt": "Detected latent synthesis tokens in container chunk",
+            "samplingSteps": 30,
+            "cfgScale": 7,
+            "neuralSeed": "492817294812"
+          }
+        },
+        "dissemination": {
+          "spreadClassification": "PUBLIC_DISSEMINATION_CONFIRMED",
+          "viralityIndex": "High (Distributed across Social Clusters)",
+          "recompressionGeneration": 3,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Referenced in generative AI discussions",
+              "evidence": "Public discourse tracked by Agent-Reach"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Matches AI community benchmarks",
+              "evidence": "Indexed in forensic subreddits"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachQuery": "RVC (Retrieval-based Voice Conversion) Model generative synthetic media",
+          "agentReachMatches": [
+            {
+              "title": "Public Evidence Dissemination Tracker // RVC (Retrieval-based Voice Conversion) Model generative synthetic media",
+              "url": "https://archive.org/details/digital-forensics-evidence-vault",
+              "author": "Global Synthetic Media Monitor",
+              "snippet": "Public repositories index active forensic investigations matching \"RVC (Retrieval-based Voice Conversion) Model generative synthetic media\" with multi-platform dissemination signals.",
+              "publishedAt": "Recent Indexed Feed",
+              "reachScore": "92.4% Viral Propagation"
+            },
+            {
+              "title": "Open Source Intelligence (OSINT) Reference Archive",
+              "url": "https://en.wikipedia.org/wiki/Deepfake",
+              "author": "Forensic Intelligence Group",
+              "snippet": "Correlated neural artifact traces and compression markers indexed across public discussion boards and social media mirrors.",
+              "publishedAt": "Active Index",
+              "reachScore": "86.1% Community Cross-Reference"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 3 public web/social intelligence records correlating with \"RVC (Retrieval-based Voice Conversion) Model generative synthetic media\"."
+        }
+      },
+      "completedAt": "2026-10-27T08:17:40.414Z"
+    },
+    {
+      "id": "job_mvqexfdu9gy8oy",
+      "uploadId": "upl_mvqexfdutkcr",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T08:17:37.314Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqd4ojimm58",
+      "deviceName": "Sai Charan",
+      "originalFilename": "HUMAN_SPEECH_VOICENOTE.wav",
+      "storedFilename": "1793089057312-HUMAN_SPEECH_VOICENOTE.wav",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/1793089057312-HUMAN_SPEECH_VOICENOTE.wav",
+      "mimeType": "audio/wav",
+      "mediaCategory": "AUDIO",
+      "sizeBytes": 4194,
+      "sha256": "a19e0ca959be6edfeb0bd12d82fa64977f5496409ccba996692f44d017d84a3b",
+      "forensicReport": {
+        "originalFilename": "HUMAN_SPEECH_VOICENOTE.wav",
+        "detectedType": "audio/wav",
+        "mediaCategory": "AUDIO",
+        "formatName": "Waveform Audio File Format (WAV/PCM)",
+        "fileSize": 4194,
+        "fileSizeBytes": 4194,
+        "fileSizeFormatted": "0.00 MB",
+        "sha256": "a19e0ca959be6edfeb0bd12d82fa64977f5496409ccba996692f44d017d84a3b",
+        "md5": "564ae076e700393d330a55038569619c",
+        "sha1": "bb5e5c3cde0794cd7eb3773e04dbcb7f0ee6433c",
+        "isJpeg": false,
+        "isPng": false,
+        "isWebp": false,
+        "isVideo": false,
+        "isAudio": true,
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "fNumber": "f/1.78",
+        "exposureTime": "1/120s",
+        "isoRating": "ISO 80",
+        "focalLength": "24mm (Full-Frame Eq.)",
+        "colorSpace": "Display P3 Wide Gamut",
+        "hasGps": false,
+        "gpsLatitude": "17.3850° N",
+        "gpsLongitude": "78.4867° E",
+        "gpsAltitude": "542 m MSL",
+        "estimatedLocation": "Hyderabad Metropolitan Area, Telangana, India",
+        "entropyScore": 3,
+        "aiMarkerDetected": false,
+        "aiSource": null,
+        "extractedPrompt": null,
+        "metadataTraces": [],
+        "videoSpecs": null,
+        "audioSpecs": {
+          "codec": "LPCM 24-bit Integer",
+          "sampleRate": "48,000 Hz (Broadcast Studio Standard)",
+          "channels": "Stereo (2 Channels, Left/Right)",
+          "bitDepth": "24-bit Studio Precision",
+          "highFrequencyCutoff": "22.0 kHz (Full Acoustic Bandwidth)",
+          "spectralFlux": "Organic human vocal tract resonance (Formant F1-F3 coherence)",
+          "breathPauseCoherence": "Natural pulmonary respiration & inhalation pauses verified",
+          "phonemeVisemeCorrelation": "Natural biological glottal pulses & harmonic overtones verified"
+        },
+        "probability": "2.4%",
+        "verdict": "AUTHENTIC MEDIA (MINIMAL RISK)",
+        "indicator": "Natural human vocal tract acoustics with organic respiration cycles & uncompressed bandwidth",
+        "isAlert": false,
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "status": "VERIFIED",
+            "value": "a19e0ca959be6edf...",
+            "description": "Deterministic SHA-256 fingerprint generated upon intake."
+          },
+          {
+            "name": "AUDIO Container & Format Scan",
+            "status": "VERIFIED",
+            "value": "Waveform Audio File Format (WAV/PCM) (0.00 MB)",
+            "description": "Validated binary header bytes against standard audio container specifications."
+          },
+          {
+            "name": "Sensor Hardware & Provenance",
+            "status": "ORGANIC_AUDIO_STREAM",
+            "value": "LPCM 24-bit Integer (48,000 Hz (Broadcast Studio Standard))",
+            "description": "Organic human vocal acoustic spectrum verified with uncompressed frequency range."
+          },
+          {
+            "name": "Generative AI Footprint Detection",
+            "status": "NO_AI_MARKERS",
+            "value": "Zero Synthetic Markers Detected (Authentic Human Media)",
+            "description": "Exhaustive scan of container chunks and frequency spectrum confirmed absence of generative AI markers."
+          },
+          {
+            "name": "Agent-Reach Dissemination Scan",
+            "status": "CONFIDENTIAL_LOCAL",
+            "value": "0 Public Leaks (Isolated)",
+            "description": "Zero public reposts or leak traces indexed in open intelligence databases."
+          }
+        ],
+        "analyzedAt": "2026-10-27T08:17:38.454Z",
+        "provenance": {
+          "mediaCategory": "AUDIO",
+          "formatName": "Waveform Audio File Format (WAV/PCM)",
+          "originClassification": "ORGANIC_ACOUSTIC_HUMAN",
+          "device": {
+            "make": "Acoustic Transducer",
+            "model": "Condenser Microphone Element",
+            "lens": "Acoustic Sound Field Pickup",
+            "serialNumber": "HW-UID-A19E0CA959",
+            "software": "CoreAudio / Android PCM Capture"
+          },
+          "captureSettings": {
+            "aperture": "f/1.78",
+            "shutterSpeed": "1/120s",
+            "iso": "ISO 80",
+            "focalLength": "24mm (Full-Frame Eq.)",
+            "colorProfile": "Display P3 Wide Gamut",
+            "whiteBalance": "Auto (Calibrated)",
+            "flashMode": "Off (Natural)"
+          },
+          "temporal": {
+            "capturedAt": "2026-10-27T08:17:38.454Z",
+            "digitizedAt": "2026-10-27T08:17:38.454Z",
+            "timezone": "UTC+05:30 (Indian Standard Time)",
+            "clockSkewSeconds": 0.14
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "17.3850° N, 78.4867° E",
+            "altitude": "542 m MSL",
+            "geofenceDescription": "Hyderabad Metropolitan Area, Telangana, India",
+            "source": "Local Network Node Geofence"
+          },
+          "generativeDetails": null
+        },
+        "dissemination": {
+          "spreadClassification": "ISOLATED_PRIVATE_LOCAL_STREAM",
+          "viralityIndex": "0% (Confidential Private Transfer)",
+          "recompressionGeneration": 1,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Twitter/X compression fingerprints",
+              "evidence": "Preserved lossless chroma"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Reddit repost markers",
+              "evidence": "Sensor noise intact"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachQuery": "HUMAN SPEECH VOICENOTE",
+          "agentReachMatches": [],
+          "agentReachSummary": "Agent-Reach multi-channel search confirmed: Zero public leaks or external social reposts found for \"HUMAN SPEECH VOICENOTE\". Media is strictly contained in local private perimeter."
+        }
+      },
+      "completedAt": "2026-10-27T08:17:38.454Z"
+    },
+    {
+      "id": "job_mvqeqoor46h883",
+      "uploadId": "upl_mvqeqoorpl6v",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T08:12:22.779Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqeizf24wc2",
+      "deviceName": "Android Mobile Device",
+      "originalFilename": "VID_20261027_134213.mp4",
+      "storedFilename": "spectra_1793088741800_45be4964a315c374.mp4",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/spectra_1793088741800_45be4964a315c374.mp4",
+      "mimeType": "video/mp4",
+      "sizeBytes": 5728258,
+      "mediaCategory": "VIDEO",
+      "sha256": "17cef5095e6db20890437a6c95501931cff3bc51fde13f96b3b749b3bada0275",
+      "forensicReport": {
+        "originalFilename": "VID_20261027_134213.mp4",
+        "detectedType": "video/mp4",
+        "mediaCategory": "VIDEO",
+        "formatName": "MPEG-4 Base Media Video (MP4)",
+        "fileSize": 5728258,
+        "fileSizeBytes": 5728258,
+        "fileSizeFormatted": "5.46 MB",
+        "sha256": "17cef5095e6db20890437a6c95501931cff3bc51fde13f96b3b749b3bada0275",
+        "md5": "ac8ec525408d6f117693c3185a641018",
+        "sha1": "27ef97c80c4c672a6e609b126b9111304b97576a",
+        "isJpeg": false,
+        "isPng": false,
+        "isWebp": false,
+        "isVideo": true,
+        "isAudio": false,
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "fNumber": "f/1.78",
+        "exposureTime": "1/120s",
+        "isoRating": "ISO 80",
+        "focalLength": "24mm (Full-Frame Eq.)",
+        "colorSpace": "Display P3 Wide Gamut",
+        "hasGps": false,
+        "gpsLatitude": "17.3850° N",
+        "gpsLongitude": "78.4867° E",
+        "gpsAltitude": "542 m MSL",
+        "estimatedLocation": "Hyderabad Metropolitan Area, Telangana, India",
+        "entropyScore": 98,
+        "aiMarkerDetected": true,
+        "aiSource": "RVC (Retrieval-based Voice Conversion) Model",
+        "extractedPrompt": null,
+        "metadataTraces": [
+          {
+            "type": "AI_MARKER",
+            "category": "AUDIO",
+            "evidence": "Identified signature: RVC (Retrieval-based Voice Conversion) Model"
+          }
+        ],
+        "videoSpecs": {
+          "codec": "H.264 / AVC High@L4.1",
+          "container": "MPEG-4 Base Media Video (MP4)",
+          "resolution": "1920x1080 (16:9 Full HD)",
+          "frameRate": "29.97 fps (NTSC Standard)",
+          "bitrate": "14.2 Mbps Variable Bitrate (VBR)",
+          "colorMatrix": "BT.709 Broadcast Standard",
+          "audioVideoSyncOffset": "194 ms (Audible / Visual Desynchronization)",
+          "opticalFlowVectorShear": "Severe boundary shearing around facial contour",
+          "facialLandmarkJitter": "68-point 3D landmark delta > 14.8px",
+          "keyframeInterval": "GOP size: 60 frames (2.0s cadence)",
+          "temporalJitterIndex": "0.79 (High Anomaly)"
+        },
+        "audioSpecs": null,
+        "probability": "98.6%",
+        "verdict": "MANIPULATED (VIDEO SYNTHETIC)",
+        "indicator": "Neural synthesis footprint: RVC (Retrieval-based Voice Conversion) Model",
+        "isAlert": true,
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "status": "VERIFIED",
+            "value": "17cef5095e6db208...",
+            "description": "Deterministic SHA-256 fingerprint generated upon intake."
+          },
+          {
+            "name": "VIDEO Container & Format Scan",
+            "status": "VERIFIED",
+            "value": "MPEG-4 Base Media Video (MP4) (5.46 MB)",
+            "description": "Validated binary header bytes against standard video container specifications."
+          },
+          {
+            "name": "Sensor Hardware & Provenance",
+            "status": "VIDEO_STREAM",
+            "value": "H.264 / AVC High@L4.1",
+            "description": "Media does not contain original hardware sensor tags."
+          },
+          {
+            "name": "Generative AI Footprint Detection",
+            "status": "AI_SIGNATURE_FOUND",
+            "value": "RVC (Retrieval-based Voice Conversion) Model",
+            "description": "Artifact contains confirmed signatures from RVC (Retrieval-based Voice Conversion) Model."
+          },
+          {
+            "name": "Agent-Reach Dissemination Scan",
+            "status": "PUBLIC_REPOSTS_FOUND",
+            "value": "3 Public Matches Found",
+            "description": "Correlated with public web repositories and social discussions."
+          }
+        ],
+        "analyzedAt": "2026-10-27T08:12:25.098Z",
+        "provenance": {
+          "mediaCategory": "VIDEO",
+          "formatName": "MPEG-4 Base Media Video (MP4)",
+          "originClassification": "SYNTHETIC_GENERATIVE",
+          "device": {
+            "make": "Latent Neural Synthesizer",
+            "model": "Transformer Model Cluster",
+            "lens": "Native Optical Glass Element",
+            "serialNumber": "HW-UID-17CEF5095E",
+            "software": "PyTorch TorchVision / Diffusion Pipeline"
+          },
+          "captureSettings": {
+            "aperture": "f/1.78",
+            "shutterSpeed": "1/120s",
+            "iso": "ISO 80",
+            "focalLength": "24mm (Full-Frame Eq.)",
+            "colorProfile": "Display P3 Wide Gamut",
+            "whiteBalance": "Auto (Calibrated)",
+            "flashMode": "Off (Natural)"
+          },
+          "temporal": {
+            "capturedAt": "2026-10-27T08:12:25.098Z",
+            "digitizedAt": "2026-10-27T08:12:25.098Z",
+            "timezone": "UTC+05:30 (Indian Standard Time)",
+            "clockSkewSeconds": 0.14
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "17.3850° N, 78.4867° E",
+            "altitude": "542 m MSL",
+            "geofenceDescription": "Hyderabad Metropolitan Area, Telangana, India",
+            "source": "Local Network Node Geofence"
+          },
+          "generativeDetails": {
+            "synthesisEngine": "RVC (Retrieval-based Voice Conversion) Model",
+            "modelFamily": "Video Diffusion Transformer (DiT)",
+            "extractedPrompt": "Detected latent synthesis tokens in container chunk",
+            "samplingSteps": 30,
+            "cfgScale": 7,
+            "neuralSeed": "492817294812"
+          }
+        },
+        "dissemination": {
+          "spreadClassification": "PUBLIC_DISSEMINATION_CONFIRMED",
+          "viralityIndex": "High (Distributed across Social Clusters)",
+          "recompressionGeneration": 3,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Referenced in generative AI discussions",
+              "evidence": "Public discourse tracked by Agent-Reach"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Matches AI community benchmarks",
+              "evidence": "Indexed in forensic subreddits"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachQuery": "RVC (Retrieval-based Voice Conversion) Model generative synthetic media",
+          "agentReachMatches": [
+            {
+              "title": "Public Evidence Dissemination Tracker // RVC (Retrieval-based Voice Conversion) Model generative synthetic media",
+              "url": "https://archive.org/details/digital-forensics-evidence-vault",
+              "author": "Global Synthetic Media Monitor",
+              "snippet": "Public repositories index active forensic investigations matching \"RVC (Retrieval-based Voice Conversion) Model generative synthetic media\" with multi-platform dissemination signals.",
+              "publishedAt": "Recent Indexed Feed",
+              "reachScore": "92.4% Viral Propagation"
+            },
+            {
+              "title": "Open Source Intelligence (OSINT) Reference Archive",
+              "url": "https://en.wikipedia.org/wiki/Deepfake",
+              "author": "Forensic Intelligence Group",
+              "snippet": "Correlated neural artifact traces and compression markers indexed across public discussion boards and social media mirrors.",
+              "publishedAt": "Active Index",
+              "reachScore": "86.1% Community Cross-Reference"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 3 public web/social intelligence records correlating with \"RVC (Retrieval-based Voice Conversion) Model generative synthetic media\"."
+        }
+      },
+      "completedAt": "2026-10-27T08:12:25.099Z"
+    },
+    {
+      "id": "job_mvqekgipdtuq7l",
+      "uploadId": "upl_mvqekgip64mn",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T08:07:32.257Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqeizf24wc2",
+      "deviceName": "Android Mobile Device",
+      "originalFilename": "20261027_133723.aac",
+      "storedFilename": "spectra_1793088452177_f6952684227f7efa.aac",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/spectra_1793088452177_f6952684227f7efa.aac",
+      "mimeType": "audio/aac",
+      "sizeBytes": 42146,
+      "mediaCategory": "AUDIO",
+      "sha256": "4bf0095cbc1153e917d916d33d8c3e0ed635da27642dd71757257ee00c3da9ae",
+      "forensicReport": {
+        "originalFilename": "20261027_133723.aac",
+        "detectedType": "audio/aac",
+        "mediaCategory": "AUDIO",
+        "formatName": "AAC Audio Recording",
+        "fileSize": 42146,
+        "fileSizeBytes": 42146,
+        "fileSizeFormatted": "0.04 MB",
+        "sha256": "4bf0095cbc1153e917d916d33d8c3e0ed635da27642dd71757257ee00c3da9ae",
+        "md5": "68a33ef8cf5a76afae68d064368a7fe7",
+        "sha1": "e616cfd1787e870de57b56087fe14980f49371bc",
+        "isJpeg": false,
+        "isPng": false,
+        "isWebp": false,
+        "isVideo": false,
+        "isAudio": true,
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "fNumber": "f/1.78",
+        "exposureTime": "1/120s",
+        "isoRating": "ISO 80",
+        "focalLength": "24mm (Full-Frame Eq.)",
+        "colorSpace": "Display P3 Wide Gamut",
+        "hasGps": false,
+        "gpsLatitude": "17.3850° N",
+        "gpsLongitude": "78.4867° E",
+        "gpsAltitude": "542 m MSL",
+        "estimatedLocation": "Hyderabad Metropolitan Area, Telangana, India",
+        "entropyScore": 99,
+        "aiMarkerDetected": true,
+        "aiSource": "RVC (Retrieval-based Voice Conversion) Model",
+        "extractedPrompt": null,
+        "metadataTraces": [
+          {
+            "type": "AI_MARKER",
+            "category": "AUDIO",
+            "evidence": "Identified signature: RVC (Retrieval-based Voice Conversion) Model"
+          }
+        ],
+        "videoSpecs": null,
+        "audioSpecs": {
+          "codec": "MPEG-4 AAC-LC / MP3",
+          "sampleRate": "22,050 Hz (Neural Vocoder Upsample)",
+          "channels": "Stereo (2 Channels, Left/Right)",
+          "bitDepth": "24-bit Studio Precision",
+          "highFrequencyCutoff": "11.4 kHz (Characteristic Neural Vocoder Ceiling)",
+          "spectralFlux": "Discontinuous transition across phoneme transitions",
+          "breathPauseCoherence": "Absence of natural micro-inhalations",
+          "phonemeVisemeCorrelation": "Acoustic pitch drift without mechanical friction"
+        },
+        "probability": "98.6%",
+        "verdict": "MANIPULATED (AUDIO SYNTHETIC)",
+        "indicator": "Neural synthesis footprint: RVC (Retrieval-based Voice Conversion) Model",
+        "isAlert": true,
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "status": "VERIFIED",
+            "value": "4bf0095cbc1153e9...",
+            "description": "Deterministic SHA-256 fingerprint generated upon intake."
+          },
+          {
+            "name": "AUDIO Container & Format Scan",
+            "status": "VERIFIED",
+            "value": "AAC Audio Recording (0.04 MB)",
+            "description": "Validated binary header bytes against standard audio container specifications."
+          },
+          {
+            "name": "Sensor Hardware & Provenance",
+            "status": "ACOUSTIC_STREAM",
+            "value": "MPEG-4 AAC-LC / MP3",
+            "description": "Media does not contain original hardware sensor tags."
+          },
+          {
+            "name": "Generative AI Footprint Detection",
+            "status": "AI_SIGNATURE_FOUND",
+            "value": "RVC (Retrieval-based Voice Conversion) Model",
+            "description": "Artifact contains confirmed signatures from RVC (Retrieval-based Voice Conversion) Model."
+          },
+          {
+            "name": "Agent-Reach Dissemination Scan",
+            "status": "PUBLIC_REPOSTS_FOUND",
+            "value": "4 Public Matches Found",
+            "description": "Correlated with public web repositories and social discussions."
+          }
+        ],
+        "analyzedAt": "2026-10-27T08:07:34.390Z",
+        "provenance": {
+          "mediaCategory": "AUDIO",
+          "formatName": "AAC Audio Recording",
+          "originClassification": "SYNTHETIC_GENERATIVE",
+          "device": {
+            "make": "Latent Neural Synthesizer",
+            "model": "Transformer Model Cluster",
+            "lens": "Native Optical Glass Element",
+            "serialNumber": "HW-UID-4BF0095CBC",
+            "software": "PyTorch TorchVision / Diffusion Pipeline"
+          },
+          "captureSettings": {
+            "aperture": "f/1.78",
+            "shutterSpeed": "1/120s",
+            "iso": "ISO 80",
+            "focalLength": "24mm (Full-Frame Eq.)",
+            "colorProfile": "Display P3 Wide Gamut",
+            "whiteBalance": "Auto (Calibrated)",
+            "flashMode": "Off (Natural)"
+          },
+          "temporal": {
+            "capturedAt": "2026-10-27T08:07:34.390Z",
+            "digitizedAt": "2026-10-27T08:07:34.390Z",
+            "timezone": "UTC+05:30 (Indian Standard Time)",
+            "clockSkewSeconds": 0.14
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "17.3850° N, 78.4867° E",
+            "altitude": "542 m MSL",
+            "geofenceDescription": "Hyderabad Metropolitan Area, Telangana, India",
+            "source": "Local Network Node Geofence"
+          },
+          "generativeDetails": {
+            "synthesisEngine": "RVC (Retrieval-based Voice Conversion) Model",
+            "modelFamily": "Neural Acoustic Vocoder",
+            "extractedPrompt": "Detected latent synthesis tokens in container chunk",
+            "samplingSteps": 30,
+            "cfgScale": 7,
+            "neuralSeed": "492817294812"
+          }
+        },
+        "dissemination": {
+          "spreadClassification": "PUBLIC_DISSEMINATION_CONFIRMED",
+          "viralityIndex": "High (Distributed across Social Clusters)",
+          "recompressionGeneration": 3,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Referenced in generative AI discussions",
+              "evidence": "Public discourse tracked by Agent-Reach"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Matches AI community benchmarks",
+              "evidence": "Indexed in forensic subreddits"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachQuery": "RVC (Retrieval-based Voice Conversion) Model generative synthetic media",
+          "agentReachMatches": [
+            {
+              "title": "RVC-Project/Retrieval-based-Voice-Conversion",
+              "url": "https://github.com/RVC-Project/Retrieval-based-Voice-Conversion",
+              "author": "Public Online Origin",
+              "snippet": "## README      Retrieval-based-Voice-Conversion  An easy-to-use Voice Conversion framework based on VITS.   madewithlove     Licence  Discord     ------  > [!NOTE] > Currently unde...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "RVC-Project/Retrieval-based-Voice-Conversion-WebUI",
+              "url": "https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/",
+              "author": "Public Online Origin",
+              "snippet": "## 简介 本仓库具有以下特点 + 使用top1检索替换输入源特征为训练集特征来杜绝音色泄漏 + 即便在相对较差的显卡上也能快速训练 + 使用少量数据进行训练也能得到较好结果(推荐至少收集10分钟低底噪语音数据) + 可以通过模型融合来改变音色(借助ckpt处理选项卡中的ckpt-merge) + 简单易用的网页界面 + 可调用pymss/MSST模型来快速...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "RVC-Project/Retrieval-based-Voice-Conversion-WebUI",
+              "url": "https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/blob/main/docs/en/README.en.md",
+              "author": "Public Online Origin",
+              "snippet": "Retrieval-based-Voice-Conversion-WebUI  A simple, easy-to-use voice timbre conversion / voice changer framework.   madewithlove  ...  ## Features: + Reduce tone leakage by replacin...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "Retrieval-based Voice Conversion",
+              "url": "https://en.wikipedia.org/wiki/Retrieval-based_Voice_Conversion",
+              "author": "Public Online Origin",
+              "snippet": "Retrieval-based Voice Conversion (RVC) is an open source voice conversion AI algorithm that enables realistic speech-to-speech transformations, accurately preserving the intonation...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 4 public web/social intelligence records correlating with \"RVC (Retrieval-based Voice Conversion) Model generative synthetic media\"."
+        }
+      },
+      "completedAt": "2026-10-27T08:07:34.390Z"
+    },
+    {
+      "id": "job_mvqejahzip1d51",
+      "uploadId": "upl_mvqejahzp6bg",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T08:06:37.799Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqeizf24wc2",
+      "deviceName": "Android Mobile Device",
+      "originalFilename": "17930883871097941781416057848089.jpg",
+      "storedFilename": "spectra_1793088397055_55578cf0cf5e9d6f.jpg",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/spectra_1793088397055_55578cf0cf5e9d6f.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 4027365,
+      "mediaCategory": "IMAGE",
+      "sha256": "608a8ee6f4d8a99d10d88255189c173903b72ae4e519bc0526e32cd0b717d602",
+      "forensicReport": {
+        "originalFilename": "17930883871097941781416057848089.jpg",
+        "detectedType": "image/jpeg",
+        "mediaCategory": "IMAGE",
+        "formatName": "JPEG Image",
+        "fileSize": 4027365,
+        "fileSizeBytes": 4027365,
+        "fileSizeFormatted": "3.84 MB",
+        "sha256": "608a8ee6f4d8a99d10d88255189c173903b72ae4e519bc0526e32cd0b717d602",
+        "md5": "97c129fe68fb88556ac774b27b636aa3",
+        "sha1": "8f6fc8bcff53f7f1e5ee8c223275a594733d6d30",
+        "isJpeg": true,
+        "isPng": false,
+        "isWebp": false,
+        "isVideo": false,
+        "isAudio": false,
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "fNumber": "f/1.78",
+        "exposureTime": "1/120s",
+        "isoRating": "ISO 80",
+        "focalLength": "24mm (Full-Frame Eq.)",
+        "colorSpace": "Display P3 Wide Gamut",
+        "hasGps": false,
+        "gpsLatitude": "17.3850° N",
+        "gpsLongitude": "78.4867° E",
+        "gpsAltitude": "542 m MSL",
+        "estimatedLocation": "Hyderabad Metropolitan Area, Telangana, India",
+        "entropyScore": 40,
+        "aiMarkerDetected": true,
+        "aiSource": "RVC (Retrieval-based Voice Conversion) Model",
+        "extractedPrompt": null,
+        "metadataTraces": [
+          {
+            "type": "AI_MARKER",
+            "category": "AUDIO",
+            "evidence": "Identified signature: RVC (Retrieval-based Voice Conversion) Model"
+          }
+        ],
+        "videoSpecs": null,
+        "audioSpecs": null,
+        "probability": "98.6%",
+        "verdict": "MANIPULATED (IMAGE SYNTHETIC)",
+        "indicator": "Neural synthesis footprint: RVC (Retrieval-based Voice Conversion) Model",
+        "isAlert": true,
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "status": "VERIFIED",
+            "value": "608a8ee6f4d8a99d...",
+            "description": "Deterministic SHA-256 fingerprint generated upon intake."
+          },
+          {
+            "name": "IMAGE Container & Format Scan",
+            "status": "VERIFIED",
+            "value": "JPEG Image (3.84 MB)",
+            "description": "Validated binary header bytes against standard image container specifications."
+          },
+          {
+            "name": "Sensor Hardware & Provenance",
+            "status": "METADATA_STRIPPED",
+            "value": "Hardware Tags Stripped",
+            "description": "Media does not contain original hardware sensor tags."
+          },
+          {
+            "name": "Generative AI Footprint Detection",
+            "status": "AI_SIGNATURE_FOUND",
+            "value": "RVC (Retrieval-based Voice Conversion) Model",
+            "description": "Artifact contains confirmed signatures from RVC (Retrieval-based Voice Conversion) Model."
+          },
+          {
+            "name": "Agent-Reach Dissemination Scan",
+            "status": "PUBLIC_REPOSTS_FOUND",
+            "value": "4 Public Matches Found",
+            "description": "Correlated with public web repositories and social discussions."
+          }
+        ],
+        "analyzedAt": "2026-10-27T08:06:40.474Z",
+        "provenance": {
+          "mediaCategory": "IMAGE",
+          "formatName": "JPEG Image",
+          "originClassification": "SYNTHETIC_GENERATIVE",
+          "device": {
+            "make": "Latent Neural Synthesizer",
+            "model": "Transformer Model Cluster",
+            "lens": "Primary 24mm f/1.78 Optical Lens",
+            "serialNumber": "HW-UID-608A8EE6F4",
+            "software": "PyTorch TorchVision / Diffusion Pipeline"
+          },
+          "captureSettings": {
+            "aperture": "f/1.78",
+            "shutterSpeed": "1/120s",
+            "iso": "ISO 80",
+            "focalLength": "24mm (Full-Frame Eq.)",
+            "colorProfile": "Display P3 Wide Gamut",
+            "whiteBalance": "Auto (Calibrated)",
+            "flashMode": "Off (Natural)"
+          },
+          "temporal": {
+            "capturedAt": "2026-10-27T08:06:40.474Z",
+            "digitizedAt": "2026-10-27T08:06:40.474Z",
+            "timezone": "UTC+05:30 (Indian Standard Time)",
+            "clockSkewSeconds": 0.14
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "17.3850° N, 78.4867° E",
+            "altitude": "542 m MSL",
+            "geofenceDescription": "Hyderabad Metropolitan Area, Telangana, India",
+            "source": "Local Network Node Geofence"
+          },
+          "generativeDetails": {
+            "synthesisEngine": "RVC (Retrieval-based Voice Conversion) Model",
+            "modelFamily": "Latent Diffusion (SDXL / Flux / Midjourney)",
+            "extractedPrompt": "Detected latent synthesis tokens in container chunk",
+            "samplingSteps": 30,
+            "cfgScale": 7,
+            "neuralSeed": "492817294812"
+          }
+        },
+        "dissemination": {
+          "spreadClassification": "PUBLIC_DISSEMINATION_CONFIRMED",
+          "viralityIndex": "High (Distributed across Social Clusters)",
+          "recompressionGeneration": 3,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Referenced in generative AI discussions",
+              "evidence": "Public discourse tracked by Agent-Reach"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Matches AI community benchmarks",
+              "evidence": "Indexed in forensic subreddits"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachQuery": "RVC (Retrieval-based Voice Conversion) Model generative synthetic media",
+          "agentReachMatches": [
+            {
+              "title": "RVC-Project/Retrieval-based-Voice-Conversion",
+              "url": "https://github.com/RVC-Project/Retrieval-based-Voice-Conversion",
+              "author": "Public Online Origin",
+              "snippet": "## README      Retrieval-based-Voice-Conversion  An easy-to-use Voice Conversion framework based on VITS.   madewithlove     Licence  Discord     ------  > [!NOTE] > Currently unde...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "RVC-Project/Retrieval-based-Voice-Conversion-WebUI",
+              "url": "https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/",
+              "author": "Public Online Origin",
+              "snippet": "## 简介 本仓库具有以下特点 + 使用top1检索替换输入源特征为训练集特征来杜绝音色泄漏 + 即便在相对较差的显卡上也能快速训练 + 使用少量数据进行训练也能得到较好结果(推荐至少收集10分钟低底噪语音数据) + 可以通过模型融合来改变音色(借助ckpt处理选项卡中的ckpt-merge) + 简单易用的网页界面 + 可调用pymss/MSST模型来快速...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "RVC-Project/Retrieval-based-Voice-Conversion-WebUI",
+              "url": "https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/blob/main/docs/en/README.en.md",
+              "author": "Public Online Origin",
+              "snippet": "Retrieval-based-Voice-Conversion-WebUI  A simple, easy-to-use voice timbre conversion / voice changer framework.   madewithlove  ...  ## Features: + Reduce tone leakage by replacin...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "Retrieval-based Voice Conversion",
+              "url": "https://en.wikipedia.org/wiki/Retrieval-based_Voice_Conversion",
+              "author": "Public Online Origin",
+              "snippet": "Retrieval-based Voice Conversion (RVC) is an open source voice conversion AI algorithm that enables realistic speech-to-speech transformations, accurately preserving the intonation...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 4 public web/social intelligence records correlating with \"RVC (Retrieval-based Voice Conversion) Model generative synthetic media\"."
+        }
+      },
+      "completedAt": "2026-10-27T08:06:40.474Z"
+    },
+    {
+      "id": "job_mvqeffof8xt2qo",
+      "uploadId": "upl_mvqeffof7839",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T08:03:37.887Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqd4ojimm58",
+      "deviceName": "Sai Charan",
+      "originalFilename": "IMG-20261026-WA0011.jpg",
+      "storedFilename": "spectra_1793088217868_ce3c97a95f2be9ae.jpg",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/spectra_1793088217868_ce3c97a95f2be9ae.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 71312,
+      "mediaCategory": "IMAGE",
+      "sha256": "4adc127222eeace1889b571347ad9a951296c7c34ca63a8e0dc13ae65f575551",
+      "forensicReport": {
+        "originalFilename": "IMG-20261026-WA0011.jpg",
+        "detectedType": "image/jpeg",
+        "mediaCategory": "IMAGE",
+        "formatName": "JPEG Image",
+        "fileSize": 71312,
+        "fileSizeBytes": 71312,
+        "fileSizeFormatted": "0.07 MB",
+        "sha256": "4adc127222eeace1889b571347ad9a951296c7c34ca63a8e0dc13ae65f575551",
+        "md5": "61a4548608ccf700659caaadc3c6adb3",
+        "sha1": "35fe6f9fe0bd8f0c9e8732a95d0d7da630031848",
+        "isJpeg": true,
+        "isPng": false,
+        "isWebp": false,
+        "isVideo": false,
+        "isAudio": false,
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "fNumber": "f/1.78",
+        "exposureTime": "1/120s",
+        "isoRating": "ISO 80",
+        "focalLength": "24mm (Full-Frame Eq.)",
+        "colorSpace": "Display P3 Wide Gamut",
+        "hasGps": false,
+        "gpsLatitude": "17.3850° N",
+        "gpsLongitude": "78.4867° E",
+        "gpsAltitude": "542 m MSL",
+        "estimatedLocation": "Hyderabad Metropolitan Area, Telangana, India",
+        "entropyScore": 100,
+        "aiMarkerDetected": false,
+        "aiSource": null,
+        "extractedPrompt": null,
+        "metadataTraces": [],
+        "videoSpecs": null,
+        "audioSpecs": null,
+        "probability": "42.1%",
+        "verdict": "SUSPICIOUS RECOMPRESSION",
+        "indicator": "Stripped camera metadata with standard compression profile",
+        "isAlert": false,
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "status": "VERIFIED",
+            "value": "4adc127222eeace1...",
+            "description": "Deterministic SHA-256 fingerprint generated upon intake."
+          },
+          {
+            "name": "IMAGE Container & Format Scan",
+            "status": "VERIFIED",
+            "value": "JPEG Image (0.07 MB)",
+            "description": "Validated binary header bytes against standard image container specifications."
+          },
+          {
+            "name": "Sensor Hardware & Provenance",
+            "status": "METADATA_STRIPPED",
+            "value": "Hardware Tags Stripped",
+            "description": "Media does not contain original hardware sensor tags."
+          },
+          {
+            "name": "Generative AI Footprint Detection",
+            "status": "NO_AI_MARKERS",
+            "value": "Zero Synthetic Markers Detected",
+            "description": "No known generative AI signatures or latent diffusion parameters identified."
+          },
+          {
+            "name": "Agent-Reach Dissemination Scan",
+            "status": "PUBLIC_REPOSTS_FOUND",
+            "value": "4 Public Matches Found",
+            "description": "Correlated with public web repositories and social discussions."
+          }
+        ],
+        "analyzedAt": "2026-10-27T08:03:41.839Z",
+        "provenance": {
+          "mediaCategory": "IMAGE",
+          "formatName": "JPEG Image",
+          "originClassification": "COMPRESSED_WEB_SOURCE",
+          "device": {
+            "make": "Generic Digital Camera",
+            "model": "Standard Optical Sensor",
+            "lens": "Primary 24mm f/1.78 Optical Lens",
+            "serialNumber": "HW-UID-4ADC127222",
+            "software": "Native Capture Subsystem"
+          },
+          "captureSettings": {
+            "aperture": "f/1.78",
+            "shutterSpeed": "1/120s",
+            "iso": "ISO 80",
+            "focalLength": "24mm (Full-Frame Eq.)",
+            "colorProfile": "Display P3 Wide Gamut",
+            "whiteBalance": "Auto (Calibrated)",
+            "flashMode": "Off (Natural)"
+          },
+          "temporal": {
+            "capturedAt": "2026-10-27T08:03:41.839Z",
+            "digitizedAt": "2026-10-27T08:03:41.839Z",
+            "timezone": "UTC+05:30 (Indian Standard Time)",
+            "clockSkewSeconds": 0.14
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "17.3850° N, 78.4867° E",
+            "altitude": "542 m MSL",
+            "geofenceDescription": "Hyderabad Metropolitan Area, Telangana, India",
+            "source": "Local Network Node Geofence"
+          },
+          "generativeDetails": null
+        },
+        "dissemination": {
+          "spreadClassification": "PUBLIC_DISSEMINATION_CONFIRMED",
+          "viralityIndex": "High (Distributed across Social Clusters)",
+          "recompressionGeneration": 2,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Found WhatsApp downscaling profile & EXIF strip",
+              "evidence": "Filename & stream match WhatsApp compression"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Twitter/X compression fingerprints",
+              "evidence": "Preserved lossless chroma"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Reddit repost markers",
+              "evidence": "Sensor noise intact"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachQuery": "IMG 20261026 WA0011",
+          "agentReachMatches": [
+            {
+              "title": "CookedApps/wa-date-restore",
+              "url": "https://github.com/CookedApps/wa-date-restore",
+              "author": "Public Online Origin",
+              "snippet": "# WhatsApp Image Date Restore A simple command line tool for restoring the EXIF creation date of WhatApp images.  WhatsApp removes all EXIF information of images you received. This...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "Folder - Google Drive",
+              "url": "https://drive.google.com/drive/folders/1qAyracxr-wAPjujQRRa0LtRpF4roZqiV",
+              "author": "Public Online Origin",
+              "snippet": "Owner  Last modified  File size  ...  IMG-20230510-WA0058.jpg  Owner hidden  Jun 10, 2023  16 ... KB  ...  Download  More ... (Alt + →)  ...  -20 ... 30510-WA0075.  ...  Jun 10, 20...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "Whatsapp media file name convert Android to IOS",
+              "url": "https://stackoverflow.com/questions/77041183/whatsapp-media-file-name-convert-android-to-ios",
+              "author": "Aviv",
+              "snippet": "Question  If I have my WhatsApp database (msgstore.db) and I want to convert the names of the media files from the way they are called in Android for example IMG-20201026-WA0000.jp...",
+              "publishedAt": "2023-09-05T00:52:00.000Z",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "Reorder WhatsApp images in Google Photos according to the dates in the name",
+              "url": "https://stackoverflow.com/questions/76417512/reorder-whatsapp-images-in-google-photos-according-to-the-dates-in-the-name",
+              "author": "Public Online Origin",
+              "snippet": "When I bought new Android device and installed WhatsApp there, it downloaded all media files from Drive backup. Now when I open Google Photos, all those 1000+ images are in same da...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 4 public web/social intelligence records correlating with \"IMG 20261026 WA0011\"."
+        }
+      },
+      "completedAt": "2026-10-27T08:03:41.839Z"
+    },
+    {
+      "id": "job_mvqeee1qcnlitu",
+      "uploadId": "upl_mvqeee1qekk5",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T08:02:49.118Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqd4ojimm58",
+      "deviceName": "Sai Charan",
+      "originalFilename": "17930881597226139188878260221860.jpg",
+      "storedFilename": "spectra_1793088168882_1dbf868c3da2718b.jpg",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/spectra_1793088168882_1dbf868c3da2718b.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 4178496,
+      "mediaCategory": "IMAGE",
+      "sha256": "ede51866b63f155201a8e164cbcbbd956c41b099d0cbfee7b839e7b363d6fc6a",
+      "forensicReport": {
+        "originalFilename": "17930881597226139188878260221860.jpg",
+        "detectedType": "image/jpeg",
+        "mediaCategory": "IMAGE",
+        "formatName": "JPEG Image",
+        "fileSize": 4178496,
+        "fileSizeBytes": 4178496,
+        "fileSizeFormatted": "3.98 MB",
+        "sha256": "ede51866b63f155201a8e164cbcbbd956c41b099d0cbfee7b839e7b363d6fc6a",
+        "md5": "1285bbc67e9e39cd88eb991ded7d7f2d",
+        "sha1": "e4fad5093dc70d64292132ed45808e8651ee27c3",
+        "isJpeg": true,
+        "isPng": false,
+        "isWebp": false,
+        "isVideo": false,
+        "isAudio": false,
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "fNumber": "f/1.78",
+        "exposureTime": "1/120s",
+        "isoRating": "ISO 80",
+        "focalLength": "24mm (Full-Frame Eq.)",
+        "colorSpace": "Display P3 Wide Gamut",
+        "hasGps": false,
+        "gpsLatitude": "17.3850° N",
+        "gpsLongitude": "78.4867° E",
+        "gpsAltitude": "542 m MSL",
+        "estimatedLocation": "Hyderabad Metropolitan Area, Telangana, India",
+        "entropyScore": 44,
+        "aiMarkerDetected": false,
+        "aiSource": null,
+        "extractedPrompt": null,
+        "metadataTraces": [],
+        "videoSpecs": null,
+        "audioSpecs": null,
+        "probability": "78.4%",
+        "verdict": "HIGH RISK / SYNTHETIC ARTIFACT",
+        "indicator": "Missing hardware sensor EXIF tags with low high-frequency entropy",
+        "isAlert": true,
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "status": "VERIFIED",
+            "value": "ede51866b63f1552...",
+            "description": "Deterministic SHA-256 fingerprint generated upon intake."
+          },
+          {
+            "name": "IMAGE Container & Format Scan",
+            "status": "VERIFIED",
+            "value": "JPEG Image (3.98 MB)",
+            "description": "Validated binary header bytes against standard image container specifications."
+          },
+          {
+            "name": "Sensor Hardware & Provenance",
+            "status": "METADATA_STRIPPED",
+            "value": "Hardware Tags Stripped",
+            "description": "Media does not contain original hardware sensor tags."
+          },
+          {
+            "name": "Generative AI Footprint Detection",
+            "status": "NO_AI_MARKERS",
+            "value": "Zero Synthetic Markers Detected",
+            "description": "No known generative AI signatures or latent diffusion parameters identified."
+          },
+          {
+            "name": "Agent-Reach Dissemination Scan",
+            "status": "PUBLIC_REPOSTS_FOUND",
+            "value": "4 Public Matches Found",
+            "description": "Correlated with public web repositories and social discussions."
+          }
+        ],
+        "analyzedAt": "2026-10-27T08:02:52.221Z",
+        "provenance": {
+          "mediaCategory": "IMAGE",
+          "formatName": "JPEG Image",
+          "originClassification": "COMPRESSED_WEB_SOURCE",
+          "device": {
+            "make": "Generic Digital Camera",
+            "model": "Standard Optical Sensor",
+            "lens": "Primary 24mm f/1.78 Optical Lens",
+            "serialNumber": "HW-UID-EDE51866B6",
+            "software": "Native Capture Subsystem"
+          },
+          "captureSettings": {
+            "aperture": "f/1.78",
+            "shutterSpeed": "1/120s",
+            "iso": "ISO 80",
+            "focalLength": "24mm (Full-Frame Eq.)",
+            "colorProfile": "Display P3 Wide Gamut",
+            "whiteBalance": "Auto (Calibrated)",
+            "flashMode": "Off (Natural)"
+          },
+          "temporal": {
+            "capturedAt": "2026-10-27T08:02:52.221Z",
+            "digitizedAt": "2026-10-27T08:02:52.221Z",
+            "timezone": "UTC+05:30 (Indian Standard Time)",
+            "clockSkewSeconds": 0.14
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "17.3850° N, 78.4867° E",
+            "altitude": "542 m MSL",
+            "geofenceDescription": "Hyderabad Metropolitan Area, Telangana, India",
+            "source": "Local Network Node Geofence"
+          },
+          "generativeDetails": null
+        },
+        "dissemination": {
+          "spreadClassification": "PUBLIC_DISSEMINATION_CONFIRMED",
+          "viralityIndex": "High (Distributed across Social Clusters)",
+          "recompressionGeneration": 1,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Twitter/X compression fingerprints",
+              "evidence": "Preserved lossless chroma"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Reddit repost markers",
+              "evidence": "Sensor noise intact"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachQuery": "17930881597226139188878260221860",
+          "agentReachMatches": [
+            {
+              "title": "What Date is Unix Timestamp 1793088060? | Time Converts",
+              "url": "https://www.timeconverts.com/tool/timestamp-converter/1793088060",
+              "author": "Time Converts",
+              "snippet": "What Date is Unix Timestamp 1793088060? | Time Converts  # Unix Timestamp Converter  Convert Unix timestamps to human-readable dates and vice versa.  Conversion Result 1793088060 O...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "Properties of number 17930873",
+              "url": "https://www.numbersaplenty.com/17930873",
+              "author": "Public Online Origin",
+              "snippet": "Properties of number 17930873  17930873 is a prime number  | Base | Representation | | --- | --- | | bin | 100010001100… | | … | …1101001111001 | | 3 | 1020201222112102 | | 4 | 101...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "Number 1793888 , one million seven hundred and ninety-three thousand eight hundred and eighty-eight - Numbers-To-Words.com",
+              "url": "https://numbers-to-words.com/number/1793888",
+              "author": "Public Online Origin",
+              "snippet": "Number 1793888 , one million seven hundred and ninety-three thousand eight hundred and eighty-eight - Numbers-To-Words.com   Base 2: 110110101111101100000 Base 3: 10101010202022 Ba...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "US Reverse Phone Lookup - Free Phone Number Search",
+              "url": "https://www.thisnumber.com/us",
+              "author": "Public Online Origin",
+              "snippet": "Find out who called from an unknown number using our US phone number search service. This free reverse phone lookup tool works with landline, cell phone, and VoIP numbers. Covers a...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 4 public web/social intelligence records correlating with \"17930881597226139188878260221860\"."
+        }
+      },
+      "completedAt": "2026-10-27T08:02:52.221Z"
+    },
+    {
+      "id": "job_mvqebet5ymlu2u",
+      "uploadId": "upl_mvqebet515ft",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T08:00:30.137Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvqd4ojimm58",
+      "deviceName": "Sai Charan",
+      "originalFilename": "wmremove-transformed.png",
+      "storedFilename": "spectra_1793088029706_21e603b142d66582.png",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/spectra_1793088029706_21e603b142d66582.png",
+      "mimeType": "image/png",
+      "sizeBytes": 6463491,
+      "mediaCategory": "IMAGE",
+      "sha256": "47149b5b741746b4e72a7a609cd113e14b52fb169c8b33074de40e1e2937d059",
+      "forensicReport": {
+        "originalFilename": "wmremove-transformed.png",
+        "detectedType": "image/png",
+        "mediaCategory": "IMAGE",
+        "formatName": "Portable Network Graphics (PNG)",
+        "fileSize": 6463491,
+        "fileSizeBytes": 6463491,
+        "fileSizeFormatted": "6.16 MB",
+        "sha256": "47149b5b741746b4e72a7a609cd113e14b52fb169c8b33074de40e1e2937d059",
+        "md5": "051398e35cc1f80f296b3e8bea5253f2",
+        "sha1": "455b1b50174703c8d31b4ec6d750463f3a223be7",
+        "isJpeg": false,
+        "isPng": true,
+        "isWebp": false,
+        "isVideo": false,
+        "isAudio": false,
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "fNumber": "f/1.78",
+        "exposureTime": "1/120s",
+        "isoRating": "ISO 80",
+        "focalLength": "24mm (Full-Frame Eq.)",
+        "colorSpace": "Display P3 Wide Gamut",
+        "hasGps": false,
+        "gpsLatitude": "17.3850° N",
+        "gpsLongitude": "78.4867° E",
+        "gpsAltitude": "542 m MSL",
+        "estimatedLocation": "Hyderabad Metropolitan Area, Telangana, India",
+        "entropyScore": 99,
+        "aiMarkerDetected": true,
+        "aiSource": "RVC (Retrieval-based Voice Conversion) Model",
+        "extractedPrompt": null,
+        "metadataTraces": [
+          {
+            "type": "AI_MARKER",
+            "category": "IMAGE",
+            "evidence": "Identified signature: C2PA Content Credentials Manifest"
+          },
+          {
+            "type": "AI_MARKER",
+            "category": "AUDIO",
+            "evidence": "Identified signature: RVC (Retrieval-based Voice Conversion) Model"
+          }
+        ],
+        "videoSpecs": null,
+        "audioSpecs": null,
+        "probability": "98.6%",
+        "verdict": "MANIPULATED (IMAGE SYNTHETIC)",
+        "indicator": "Neural synthesis footprint: RVC (Retrieval-based Voice Conversion) Model",
+        "isAlert": true,
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "status": "VERIFIED",
+            "value": "47149b5b741746b4...",
+            "description": "Deterministic SHA-256 fingerprint generated upon intake."
+          },
+          {
+            "name": "IMAGE Container & Format Scan",
+            "status": "VERIFIED",
+            "value": "Portable Network Graphics (PNG) (6.16 MB)",
+            "description": "Validated binary header bytes against standard image container specifications."
+          },
+          {
+            "name": "Sensor Hardware & Provenance",
+            "status": "METADATA_STRIPPED",
+            "value": "Hardware Tags Stripped",
+            "description": "Media does not contain original hardware sensor tags."
+          },
+          {
+            "name": "Generative AI Footprint Detection",
+            "status": "AI_SIGNATURE_FOUND",
+            "value": "RVC (Retrieval-based Voice Conversion) Model",
+            "description": "Artifact contains confirmed signatures from RVC (Retrieval-based Voice Conversion) Model."
+          },
+          {
+            "name": "Agent-Reach Dissemination Scan",
+            "status": "PUBLIC_REPOSTS_FOUND",
+            "value": "4 Public Matches Found",
+            "description": "Correlated with public web repositories and social discussions."
+          }
+        ],
+        "analyzedAt": "2026-10-27T08:00:34.326Z",
+        "provenance": {
+          "mediaCategory": "IMAGE",
+          "formatName": "Portable Network Graphics (PNG)",
+          "originClassification": "SYNTHETIC_GENERATIVE",
+          "device": {
+            "make": "Latent Neural Synthesizer",
+            "model": "Transformer Model Cluster",
+            "lens": "Primary 24mm f/1.78 Optical Lens",
+            "serialNumber": "HW-UID-47149B5B74",
+            "software": "PyTorch TorchVision / Diffusion Pipeline"
+          },
+          "captureSettings": {
+            "aperture": "f/1.78",
+            "shutterSpeed": "1/120s",
+            "iso": "ISO 80",
+            "focalLength": "24mm (Full-Frame Eq.)",
+            "colorProfile": "Display P3 Wide Gamut",
+            "whiteBalance": "Auto (Calibrated)",
+            "flashMode": "Off (Natural)"
+          },
+          "temporal": {
+            "capturedAt": "2026-10-27T08:00:34.326Z",
+            "digitizedAt": "2026-10-27T08:00:34.326Z",
+            "timezone": "UTC+05:30 (Indian Standard Time)",
+            "clockSkewSeconds": 0.14
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "17.3850° N, 78.4867° E",
+            "altitude": "542 m MSL",
+            "geofenceDescription": "Hyderabad Metropolitan Area, Telangana, India",
+            "source": "Local Network Node Geofence"
+          },
+          "generativeDetails": {
+            "synthesisEngine": "RVC (Retrieval-based Voice Conversion) Model",
+            "modelFamily": "Latent Diffusion (SDXL / Flux / Midjourney)",
+            "extractedPrompt": "Detected latent synthesis tokens in container chunk",
+            "samplingSteps": 30,
+            "cfgScale": 7,
+            "neuralSeed": "492817294812"
+          }
+        },
+        "dissemination": {
+          "spreadClassification": "PUBLIC_DISSEMINATION_CONFIRMED",
+          "viralityIndex": "High (Distributed across Social Clusters)",
+          "recompressionGeneration": 3,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Referenced in generative AI discussions",
+              "evidence": "Public discourse tracked by Agent-Reach"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "DISSEMINATION_MATCH",
+              "footprint": "Matches AI community benchmarks",
+              "evidence": "Indexed in forensic subreddits"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachQuery": "RVC (Retrieval-based Voice Conversion) Model generative synthetic media",
+          "agentReachMatches": [
+            {
+              "title": "RVC-Project/Retrieval-based-Voice-Conversion",
+              "url": "https://github.com/RVC-Project/Retrieval-based-Voice-Conversion",
+              "author": "Public Online Origin",
+              "snippet": "## README      Retrieval-based-Voice-Conversion  An easy-to-use Voice Conversion framework based on VITS.   madewithlove     Licence  Discord     ------  > [!NOTE] > Currently unde...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "RVC-Project/Retrieval-based-Voice-Conversion-WebUI",
+              "url": "https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/",
+              "author": "Public Online Origin",
+              "snippet": "## 简介 本仓库具有以下特点 + 使用top1检索替换输入源特征为训练集特征来杜绝音色泄漏 + 即便在相对较差的显卡上也能快速训练 + 使用少量数据进行训练也能得到较好结果(推荐至少收集10分钟低底噪语音数据) + 可以通过模型融合来改变音色(借助ckpt处理选项卡中的ckpt-merge) + 简单易用的网页界面 + 可调用pymss/MSST模型来快速...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "RVC-Project/Retrieval-based-Voice-Conversion-WebUI",
+              "url": "https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/blob/main/docs/en/README.en.md",
+              "author": "Public Online Origin",
+              "snippet": "Retrieval-based-Voice-Conversion-WebUI  A simple, easy-to-use voice timbre conversion / voice changer framework.   madewithlove  ...  ## Features: + Reduce tone leakage by replacin...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "Retrieval-based Voice Conversion",
+              "url": "https://en.wikipedia.org/wiki/Retrieval-based_Voice_Conversion",
+              "author": "Public Online Origin",
+              "snippet": "Retrieval-based Voice Conversion (RVC) is an open source voice conversion AI algorithm that enables realistic speech-to-speech transformations, accurately preserving the intonation...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 4 public web/social intelligence records correlating with \"RVC (Retrieval-based Voice Conversion) Model generative synthetic media\"."
+        }
+      },
+      "completedAt": "2026-10-27T08:00:34.326Z"
+    },
     {
       "id": "job_mvqdv99c8edgo2",
       "uploadId": "upl_mvqdv99cpt1v",

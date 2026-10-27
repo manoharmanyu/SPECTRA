@@ -2705,6 +2705,10 @@ button { font: inherit; }
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Export JSON
           </button>
+          <button class="admin-btn" onclick="handleWeeklyPurge()" title="Purge files & jobs older than 1 week">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            Weekly Purge
+          </button>
           <button class="admin-btn danger" onclick="clearAllAuditLogs()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
             Clear Logs
@@ -4340,6 +4344,25 @@ function showVerdict(presetId) {
       renderDashboardView();
       updateAdminTopBar();
       showToast('All investigation audit logs have been cleared.');
+    }
+  };
+
+  window.handleWeeklyPurge = async function() {
+    if (!confirm('Execute 1-Week Cache Purge? This will remove temporary uploads and job artifacts older than 7 days.')) return;
+    try {
+      const res = await fetch('/api/maintenance/clear-cache', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ maxAgeDays: 7 })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast(`Cache cleaned: ${data.metrics?.bytesFreedFormatted || '0 MB'} freed.`);
+      } else {
+        showToast(data.error || 'Purge failed.', true);
+      }
+    } catch (e) {
+      showToast('Cache purge error: ' + e.message, true);
     }
   };
 

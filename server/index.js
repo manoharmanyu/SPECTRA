@@ -7,12 +7,16 @@ import { wsHub } from './ws.js';
 import { authRouter } from './routes/auth.js';
 import { pairingRouter } from './routes/pairing.js';
 import { uploadRouter } from './routes/upload.js';
+import { initWeeklyCacheScheduler, runWeeklyCacheCleanup, getCacheStatus } from './cleaner.js';
 
 const app = express();
 const server = http.createServer(app);
 
 // Initialize WebSocket Hub on same HTTP server
 wsHub.init(server);
+
+// Start Automated 1-Week Cache & Storage Maintenance Scheduler
+initWeeklyCacheScheduler();
 
 // Middleware
 app.use(
@@ -60,6 +64,25 @@ const statusHandler = (req, res) => {
 
 app.get('/api/status', statusHandler);
 app.get('/status', statusHandler);
+
+// Cache & Maintenance Endpoints (Purges files & records older than 1 week)
+const cacheStatusHandler = (req, res) => {
+  res.json({ success: true, cache: getCacheStatus() });
+};
+const clearCacheHandler = (req, res) => {
+  const days = parseInt(req.body?.maxAgeDays || '7', 10);
+  const result = runWeeklyCacheCleanup(days);
+  res.json({
+    success: true,
+    message: `Weekly cache purge executed. Storage optimized (Retaining items under ${days} days).`,
+    ...result
+  });
+};
+
+app.get('/api/maintenance/cache-status', cacheStatusHandler);
+app.get('/maintenance/cache-status', cacheStatusHandler);
+app.post('/api/maintenance/clear-cache', clearCacheHandler);
+app.post('/maintenance/clear-cache', clearCacheHandler);
 
 // Start Server if not imported as module in test and not running in Vercel Serverless Function
 if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {

@@ -329,11 +329,11 @@ uploadRouter.post('/upload/simulate-paired-capture', requireAuth, async (req, re
   let mimeType = 'image/jpeg';
   let fileBuffer = null;
 
-  if (mode === 'video') {
+  if (mode === 'video-ai') {
     originalFilename = 'INTERVIEW_LIVESTREAM_SURVEILLANCE.mp4';
     mediaCategory = 'VIDEO';
     mimeType = 'video/mp4';
-    // Valid MP4 container header fixture
+    // Valid MP4 container header fixture with synthetic deepfake markers
     const ftyp = Buffer.from([
       0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6f, 0x6d,
       0x00, 0x00, 0x02, 0x00, 0x69, 0x73, 0x6f, 0x6d, 0x69, 0x73, 0x6f, 0x32,
@@ -342,19 +342,46 @@ uploadRouter.post('/upload/simulate-paired-capture', requireAuth, async (req, re
     const videoMetadata = Buffer.from('moov\x00mvhd\x00tkhd\x00avc1\x00deepfacelab facefusion optical flow temporal desync liveportrait');
     const dummyVideo = Buffer.alloc(8192, 0x41);
     fileBuffer = Buffer.concat([ftyp, videoMetadata, dummyVideo]);
-  } else if (mode === 'audio') {
-    originalFilename = 'ELECTION_SPEECH_VOICEMAIL.wav';
+  } else if (mode === 'video') {
+    originalFilename = 'AUTHENTIC_PHONE_RECORDING.mp4';
+    mediaCategory = 'VIDEO';
+    mimeType = 'video/mp4';
+    // Authentic camera MP4 container header with standard Apple QuickTime atoms
+    const ftyp = Buffer.from([
+      0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6f, 0x6d,
+      0x00, 0x00, 0x02, 0x00, 0x69, 0x73, 0x6f, 0x6d, 0x69, 0x73, 0x6f, 0x32,
+      0x61, 0x76, 0x63, 0x31, 0x6d, 0x70, 0x34, 0x31
+    ]);
+    const videoMetadata = Buffer.from('moov\x00mvhd\x00tkhd\x00avc1\x00Apple QuickTime Movie H.264 High@L4.1 29.97fps');
+    const dummyVideo = Buffer.alloc(8192, 0x41);
+    fileBuffer = Buffer.concat([ftyp, videoMetadata, dummyVideo]);
+  } else if (mode === 'audio-ai') {
+    originalFilename = 'SYNTHETIC_VOICE_CLONE.wav';
     mediaCategory = 'AUDIO';
     mimeType = 'audio/wav';
-    // Valid WAV/RIFF header fixture
+    // Valid WAV/RIFF header fixture with synthetic neural vocoder tags
     const riff = Buffer.from([
       0x52, 0x49, 0x46, 0x46, 0x24, 0x08, 0x00, 0x00, 0x57, 0x41, 0x56, 0x45,
       0x66, 0x6d, 0x74, 0x20, 0x10, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00,
       0x44, 0xac, 0x00, 0x00, 0x88, 0x58, 0x01, 0x00, 0x02, 0x00, 0x10, 0x00,
       0x64, 0x61, 0x74, 0x61, 0x00, 0x08, 0x00, 0x00
     ]);
-    const audioMetadata = Buffer.from('elevenlabs tortoise-tts rvc voice clone high frequency cutoff neural vocoder');
+    const audioMetadata = Buffer.from('elevenlabs tortoise-tts rvc_v2 neural voice clone synthesis');
     const dummyAudio = Buffer.alloc(4096, 0x60);
+    fileBuffer = Buffer.concat([riff, audioMetadata, dummyAudio]);
+  } else if (mode === 'audio') {
+    originalFilename = 'HUMAN_SPEECH_VOICENOTE.wav';
+    mediaCategory = 'AUDIO';
+    mimeType = 'audio/wav';
+    // Clean PCM audio WAV from phone microphone (genuine human speaker)
+    const riff = Buffer.from([
+      0x52, 0x49, 0x46, 0x46, 0x24, 0x08, 0x00, 0x00, 0x57, 0x41, 0x56, 0x45,
+      0x66, 0x6d, 0x74, 0x20, 0x10, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00,
+      0x44, 0xac, 0x00, 0x00, 0x88, 0x58, 0x01, 0x00, 0x02, 0x00, 0x10, 0x00,
+      0x64, 0x61, 0x74, 0x61, 0x00, 0x08, 0x00, 0x00
+    ]);
+    const audioMetadata = Buffer.from('LPCM 24-bit 48kHz Stereo Microphone Capture Linear PCM');
+    const dummyAudio = Buffer.alloc(4096, 0x30);
     fileBuffer = Buffer.concat([riff, audioMetadata, dummyAudio]);
   } else {
     const isAi = mode === 'ai';
