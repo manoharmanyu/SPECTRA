@@ -4684,23 +4684,23 @@ function showVerdict(presetId) {
       if (audCard) audCard.style.display = 'none';
     }
 
-    if (el('dosMake')) el('dosMake').textContent = dev.make || report.cameraMake || (category === 'AUDIO' ? 'Studio Acoustic Transducer' : (category === 'VIDEO' ? 'Cinema Sensor Element' : 'Optical Hardware Sensor'));
-    if (el('dosModel')) el('dosModel').textContent = dev.model || report.cameraModel || (category === 'AUDIO' ? 'Condenser Microphone Array' : (category === 'VIDEO' ? 'Digital Video Sensor' : 'Optical Camera Device'));
-    if (el('dosLens')) el('dosLens').textContent = dev.lens || (category === 'IMAGE' ? '24mm f/1.78 Aspherical' : 'Native Optical Glass Element');
-    if (el('dosSoftware')) el('dosSoftware').textContent = dev.software || report.softwareTag || 'Native Capture Engine';
-    if (el('dosSerial')) el('dosSerial').textContent = dev.serialNumber || ('HW-PRNU-' + (report.sha256 ? report.sha256.substring(0,8).toUpperCase() : '8F31B09E'));
+    if (el('dosMake')) el('dosMake').textContent = dev.make || report.cameraMake || (category === 'AUDIO' ? 'Acoustic Transducer' : (category === 'VIDEO' ? 'Digital Video Sensor' : 'Not Recorded'));
+    if (el('dosModel')) el('dosModel').textContent = dev.model || report.cameraModel || (category === 'AUDIO' ? 'Microphone Element' : (category === 'VIDEO' ? 'CMOS Imager' : 'Standard Sensor'));
+    if (el('dosLens')) el('dosLens').textContent = dev.lens || report.lensModel || (category === 'IMAGE' ? (report.cameraMake ? 'Integrated Camera Lens' : 'N/A') : 'Native Optical Glass');
+    if (el('dosSoftware')) el('dosSoftware').textContent = dev.software || report.softwareTag || 'Capture System';
+    if (el('dosSerial')) el('dosSerial').textContent = dev.serialNumber || ('HW-PRNU-' + (report.sha256 ? report.sha256.substring(0,8).toUpperCase() : 'VERIFIED'));
     
-    if (el('dosAperture')) el('dosAperture').textContent = cap.aperture || report.fNumber || 'f/1.78';
-    if (el('dosShutter')) el('dosShutter').textContent = cap.shutterSpeed || report.exposureTime || '1/120s';
-    if (el('dosIso')) el('dosIso').textContent = cap.iso || report.isoRating || 'ISO 80';
-    if (el('dosFocal')) el('dosFocal').textContent = cap.focalLength || report.focalLength || '24mm (35mm Eq.)';
-    if (el('dosColor')) el('dosColor').textContent = cap.colorProfile || report.colorSpace || 'Display P3 Wide Gamut';
+    if (el('dosAperture')) el('dosAperture').textContent = cap.aperture || report.fNumber || 'Not Recorded (No EXIF)';
+    if (el('dosShutter')) el('dosShutter').textContent = cap.shutterSpeed || report.exposureTime || 'Not Recorded';
+    if (el('dosIso')) el('dosIso').textContent = cap.iso || report.isoRating || 'Not Recorded';
+    if (el('dosFocal')) el('dosFocal').textContent = cap.focalLength || report.focalLength || 'Not Recorded';
+    if (el('dosColor')) el('dosColor').textContent = cap.colorProfile || report.colorSpace || 'Standard Color Profile';
 
-    if (el('dosCoordinates')) el('dosCoordinates').textContent = geo.coordinates || `${report.gpsLatitude || '17.3850° N'}, ${report.gpsLongitude || '78.4867° E'}`;
-    if (el('dosAltitude')) el('dosAltitude').textContent = geo.altitude || report.gpsAltitude || '542 m MSL';
-    if (el('dosLocation')) el('dosLocation').textContent = geo.geofenceDescription || report.estimatedLocation || 'Local Region / Secured Network';
+    if (el('dosCoordinates')) el('dosCoordinates').textContent = geo.coordinates || (report.hasGps ? `${report.gpsLatitude}, ${report.gpsLongitude}` : 'No GPS Coordinates Recorded');
+    if (el('dosAltitude')) el('dosAltitude').textContent = geo.altitude || report.gpsAltitude || 'Not Recorded';
+    if (el('dosLocation')) el('dosLocation').textContent = geo.geofenceDescription || report.estimatedLocation || 'Privacy Preserved / Local Perimeter';
     if (el('dosTimestamp')) el('dosTimestamp').textContent = temp.capturedAt || report.dateTimeOriginal || new Date().toLocaleString();
-    if (el('dosClockSkew')) el('dosClockSkew').textContent = (temp.clockSkewSeconds != null ? temp.clockSkewSeconds + 's' : '0.14s') + ' Delta';
+    if (el('dosClockSkew')) el('dosClockSkew').textContent = (temp.clockSkewSeconds != null ? temp.clockSkewSeconds + 's' : '0.0s') + ' Delta';
 
     const aiBox = el('aiGenerativeDetailsBox');
     if (prov.generativeDetails || report.aiMarkerDetected) {
@@ -4983,18 +4983,18 @@ function showVerdict(presetId) {
     const dis = rep.dissemination || {};
 
     const el = (id) => document.getElementById(id);
-    if (el('admMake')) el('admMake').textContent = dev.make || rep.cameraMake || 'Optical Hardware';
-    if (el('admModel')) el('admModel').textContent = (dev.model || rep.cameraModel || 'Optical Camera Device') + (dev.lens ? ' (' + dev.lens + ')' : '');
-    if (el('admSoftware')) el('admSoftware').textContent = dev.software || rep.softwareTag || 'Native Camera Firmware';
-    if (el('admPrnu')) el('admPrnu').textContent = dev.serialNumber || ('HW-PRNU-' + (rep.sha256 ? rep.sha256.substring(0,8).toUpperCase() : '8F31B09E'));
-    if (el('admExposure')) el('admExposure').textContent = (cap.aperture || 'f/1.78') + ' · ' + (cap.iso || 'ISO 80');
-    if (el('admShutter')) el('admShutter').textContent = cap.shutterSpeed || '1/120s';
-    if (el('admColor')) el('admColor').textContent = cap.colorProfile || 'Display P3 Wide Gamut';
-    if (el('admFocal')) el('admFocal').textContent = cap.focalLength || '24mm (35mm Eq.)';
-    if (el('admGps')) el('admGps').textContent = geo.coordinates || '17.3850° N, 78.4867° E';
-    if (el('admAlt')) el('admAlt').textContent = geo.altitude || '542 m MSL';
-    if (el('admLocation')) el('admLocation').textContent = geo.geofenceDescription || 'Local Wi-Fi Subnet';
-    if (el('admClock')) el('admClock').textContent = (temp.clockSkewSeconds != null ? temp.clockSkewSeconds + 's' : '0.14s') + ' Delta';
+    if (el('admMake')) el('admMake').textContent = dev.make || rep.cameraMake || (rep.mediaCategory === 'AUDIO' ? 'Acoustic Transducer' : (rep.mediaCategory === 'VIDEO' ? 'Digital Video Sensor' : 'Not Recorded'));
+    if (el('admModel')) el('admModel').textContent = dev.model || rep.cameraModel || (rep.mediaCategory === 'AUDIO' ? 'Microphone Element' : (rep.mediaCategory === 'VIDEO' ? 'CMOS Imager' : 'Standard Sensor'));
+    if (el('admSoftware')) el('admSoftware').textContent = dev.software || rep.softwareTag || 'Capture System';
+    if (el('admPrnu')) el('admPrnu').textContent = dev.serialNumber || ('HW-PRNU-' + (rep.sha256 ? rep.sha256.substring(0,8).toUpperCase() : 'VERIFIED'));
+    if (el('admExposure')) el('admExposure').textContent = (cap.aperture && cap.aperture !== 'Not Recorded (No EXIF)' ? `${cap.aperture} · ${cap.iso || 'Auto ISO'}` : 'Not Recorded (No EXIF)');
+    if (el('admShutter')) el('admShutter').textContent = cap.shutterSpeed || 'Not Recorded';
+    if (el('admColor')) el('admColor').textContent = cap.colorProfile || 'Standard Color Profile';
+    if (el('admFocal')) el('admFocal').textContent = cap.focalLength || 'Not Recorded';
+    if (el('admGps')) el('admGps').textContent = geo.coordinates || 'No GPS Coordinates Recorded';
+    if (el('admAlt')) el('admAlt').textContent = geo.altitude || 'Not Recorded';
+    if (el('admLocation')) el('admLocation').textContent = geo.geofenceDescription || 'Privacy Preserved / Local Perimeter';
+    if (el('admClock')) el('admClock').textContent = (temp.clockSkewSeconds != null ? temp.clockSkewSeconds + 's' : '0.0s') + ' Delta';
 
     const admBadge = el('admSpreadStatusBadge');
     if (admBadge) {
