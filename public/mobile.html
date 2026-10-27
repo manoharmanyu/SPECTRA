@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>SPECTRA Mobile — Secure Forensic Capture</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +30,8 @@
       color: var(--text-white);
       font-family: var(--font-body);
       min-height: 100vh;
-      padding: 16px;
+      min-height: 100dvh;
+      padding: max(16px, env(safe-area-inset-top, 16px)) max(16px, env(safe-area-inset-right, 16px)) max(16px, env(safe-area-inset-bottom, 16px)) max(16px, env(safe-area-inset-left, 16px));
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -334,6 +335,65 @@
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+
+    /* Tablet / iPad Fluid Layout (768px and up) */
+    @media (min-width: 768px) {
+      .mobile-header {
+        max-width: 680px;
+        padding: 16px 8px;
+      }
+      .card {
+        max-width: 680px;
+        padding: 32px 28px;
+        border-radius: 24px;
+      }
+      .action-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 14px !important;
+      }
+      .action-tile {
+        padding: 24px 14px;
+      }
+      .action-tile svg {
+        width: 28px;
+        height: 28px;
+      }
+      .preview-img, video#previewVideo {
+        max-height: 380px !important;
+      }
+      h1, h2 {
+        font-size: 24px;
+      }
+      p.subtitle {
+        font-size: 14.5px;
+      }
+    }
+
+    /* Small Screen Optimization (e.g. iPhone SE, 320px–380px) */
+    @media (max-width: 380px) {
+      .card {
+        padding: 18px 14px;
+        border-radius: 16px;
+      }
+      .brand-title {
+        font-size: 14.5px;
+      }
+      .input-box.mono {
+        font-size: 15px;
+        letter-spacing: 0.12em;
+        padding: 11px 8px;
+      }
+      .btn {
+        padding: 12px;
+        font-size: 13.5px;
+      }
+      .action-tile {
+        padding: 16px 8px;
+      }
+      .action-tile span {
+        font-size: 11.5px;
+      }
     }
   </style>
 </head>

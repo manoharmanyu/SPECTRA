@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SPECTRA — AI-Powered Deepfake & Synthetic Media Forensics Platform</title>
 <meta name="description" content="AI-Powered Deepfake & Synthetic Media Forensics Platform. Truth Beyond Appearance.">
 
@@ -1834,6 +1834,513 @@ button { font: inherit; }
   text-align: center;
 }
 
+/* ==========================================================================
+   SPECTRA RESPONSIVE SUITE — ANDROID, IPHONE, IPAD & TABLET OPTIMIZATIONS
+   ========================================================================== */
+
+/* 1. TABLETS & IPADS (769px to 1024px: iPad Mini, Air, Pro 11", Galaxy Tab) */
+@media (max-width: 1024px) {
+  .top {
+    padding: max(12px, env(safe-area-inset-top, 12px)) clamp(16px, 3vw, 32px) 12px !important;
+  }
+  .top-socials {
+    display: none !important;
+  }
+  .top nav {
+    gap: 16px;
+    font-size: 13px;
+  }
+  .top-right-group {
+    gap: 8px;
+  }
+  .top-cta-btn {
+    padding: 7px 14px;
+    font-size: 12px;
+  }
+  .analysis-workspace-card {
+    padding: 28px 20px;
+  }
+  .paired-controls-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .paired-meta-bar {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .dossier-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .admin-modal-card {
+    max-width: 90vw;
+    max-height: 88vh;
+    padding: 24px 20px;
+  }
+  .admin-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .research-grid,
+  .about-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .workflow-timeline {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+/* 2. MOBILE PHONES & PHABLETS (<= 768px: Android & iPhone Viewports) */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  /* Fixed Mobile Header with Dual-Row Nav Strip */
+  .top {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    padding: max(10px, env(safe-area-inset-top, 10px)) 14px 8px 14px !important;
+    background: rgba(3, 5, 11, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    z-index: 999 !important;
+  }
+  .top .brand .logo-text {
+    font-size: 20px !important;
+    letter-spacing: 0.04em !important;
+  }
+  .top-socials {
+    display: none !important;
+  }
+  .top-right-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+  .top-cta-btn {
+    padding: 6px 10px !important;
+    font-size: 11.5px !important;
+    min-height: 36px !important;
+    border-radius: 8px !important;
+    margin-right: 0 !important;
+  }
+  .top-cta-btn svg {
+    margin-right: 2px !important;
+  }
+  .btn-text-full { display: none !important; }
+  .btn-text-short { display: inline !important; }
+
+  /* Smooth Horizontal Scrollable Nav Strip on Mobile */
+  .top nav {
+    width: 100% !important;
+    order: 3 !important;
+    display: flex !important;
+    gap: 6px !important;
+    padding: 8px 0 2px 0 !important;
+    margin-top: 6px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+  .top nav::-webkit-scrollbar {
+    display: none !important;
+  }
+  .top nav a {
+    padding: 4px 12px !important;
+    font-size: 11.5px !important;
+    white-space: nowrap !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: var(--slate) !important;
+  }
+  .top nav a.active {
+    background: linear-gradient(135deg, rgba(8,123,255,0.35), rgba(155,0,255,0.45)) !important;
+    border: 1px solid rgba(155, 0, 255, 0.6) !important;
+    color: #FFFFFF !important;
+  }
+  .top nav a.active:after {
+    display: none !important;
+  }
+
+  /* Hero Section Spacing for Mobile */
+  .hero {
+    padding: calc(96px + env(safe-area-inset-top, 0px)) 14px 40px !important;
+    min-height: auto !important;
+  }
+  .hero-header-box {
+    margin-bottom: 24px !important;
+  }
+  .hero-eyebrow {
+    font-size: 10px !important;
+    letter-spacing: 0.12em !important;
+  }
+  .hero-title {
+    font-size: clamp(36px, 11vw, 56px) !important;
+  }
+  .hero-subheading {
+    font-size: clamp(17px, 5.2vw, 24px) !important;
+  }
+  .hero-desc {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+    padding: 0 4px !important;
+  }
+  .hero-actions {
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 320px !important;
+    gap: 10px !important;
+    margin: 20px auto 0 !important;
+  }
+  .hero-actions .btn-primary,
+  .hero-actions .btn-secondary {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 12px 18px !important;
+    font-size: 13.5px !important;
+  }
+
+  /* Forensic Workspace & HUD */
+  .forensic-workspace {
+    flex-direction: column !important;
+    width: 100% !important;
+    margin-top: 10px !important;
+  }
+  .hud-col {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 10px 0 !important;
+  }
+  .hud-panel {
+    padding: 14px 12px !important;
+    border-radius: 12px !important;
+  }
+  .hud-panel-title {
+    font-size: 11px !important;
+  }
+  .hud-face-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+  .hud-face-card {
+    padding: 8px !important;
+  }
+  .hud-face-card img {
+    height: 70px !important;
+  }
+  .hud-radar-svg {
+    height: 120px !important;
+  }
+
+  /* Sketchbook 3D Canvas on Mobile */
+  .sb-3d {
+    max-width: 100% !important;
+    perspective: 1200px !important;
+  }
+  .sb-wrap {
+    width: 100vw !important;
+    margin-inline: calc(50% - 50vw) !important;
+  }
+  .sb-arrow {
+    width: 38px !important;
+    height: 38px !important;
+  }
+  .sb-tools {
+    transform: scale(0.92);
+    transform-origin: center;
+  }
+
+  /* Paired Status Console & Controls */
+  .paired-status-console {
+    padding: 14px 12px !important;
+    border-radius: 14px !important;
+  }
+  .paired-status-main {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+  .paired-status-indicator {
+    width: 100% !important;
+  }
+  .paired-device-title {
+    font-size: 15px !important;
+  }
+  .paired-controls-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  .paired-controls-row > button:first-child {
+    grid-column: 1 / -1 !important;
+  }
+  .paired-controls-row .admin-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 9px 6px !important;
+    font-size: 11.5px !important;
+  }
+  .paired-meta-bar {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    padding-top: 10px !important;
+  }
+  .paired-meta-cell {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    border-radius: 8px !important;
+    padding: 8px 10px !important;
+  }
+
+  /* Analysis Workspace & Dropzone */
+  .analysis-workspace-card {
+    padding: 16px 12px !important;
+    border-radius: 16px !important;
+    margin-top: 20px !important;
+  }
+  .upload-dropzone {
+    padding: 26px 12px !important;
+  }
+  .preset-buttons {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+  .preset-btn {
+    padding: 9px 8px !important;
+    font-size: 11.5px !important;
+    justify-content: center !important;
+  }
+  .verdict-box {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+  .verdict-stat {
+    padding: 10px 12px !important;
+  }
+
+  /* Dossier Tabs & Grid Cards */
+  .dossier-tab-row {
+    gap: 6px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+  .dossier-tab-row::-webkit-scrollbar {
+    display: none !important;
+  }
+  .dossier-tab-btn {
+    padding: 7px 10px !important;
+    font-size: 11.5px !important;
+  }
+  .dossier-grid-3 {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  .dossier-info-card {
+    padding: 12px !important;
+  }
+  .dossier-kv {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+    padding: 6px 0 !important;
+  }
+  .dossier-kv .k {
+    font-size: 11px !important;
+    min-width: 95px !important;
+    color: #94A3B8 !important;
+  }
+  .dossier-kv .v {
+    font-size: 11.5px !important;
+    word-break: break-all !important;
+    text-align: right !important;
+    max-width: 65% !important;
+  }
+
+  /* Modals (Admin, Device Pairing, 2FA) */
+  .auth-modal-backdrop {
+    padding: 8px !important;
+    padding-top: max(8px, env(safe-area-inset-top, 8px)) !important;
+    padding-bottom: max(8px, env(safe-area-inset-bottom, 8px)) !important;
+  }
+  .admin-modal-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 94vh !important;
+    padding: 18px 14px 20px 14px !important;
+    border-radius: 16px !important;
+    box-sizing: border-box !important;
+  }
+  .auth-modal-close {
+    top: 10px !important;
+    right: 10px !important;
+    width: 30px !important;
+    height: 30px !important;
+  }
+  .admin-title {
+    font-size: 19px !important;
+  }
+  .admin-subtitle {
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+  }
+  .admin-kpi-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+  .admin-kpi-card {
+    padding: 10px !important;
+  }
+  .admin-kpi-label {
+    font-size: 9.5px !important;
+  }
+  .admin-kpi-val {
+    font-size: 19px !important;
+  }
+  .admin-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+  .admin-tools-group {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
+    width: 100% !important;
+  }
+  .admin-btn {
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 8px 10px !important;
+    font-size: 11.5px !important;
+  }
+  .pairing-grid-responsive {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .pairing-qr-img {
+    width: 140px !important;
+    height: 140px !important;
+  }
+  .pairing-code-digits {
+    font-size: 21px !important;
+    letter-spacing: 0.12em !important;
+  }
+  #twoFactorSetupSection > div > div[style*="display:flex"] {
+    flex-direction: column !important;
+  }
+  #twoFactorSetupSection .auth-btn-submit {
+    margin-top: 6px !important;
+  }
+  .recovery-codes-grid {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+  }
+  .dossier-meta-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+  #admMakernoteBadgesGrid {
+    gap: 4px !important;
+  }
+  #admMakernoteBadgesGrid > div {
+    font-size: 9.5px !important;
+    padding: 3px 6px !important;
+  }
+  #admRawDirectoriesFeed {
+    max-height: 200px !important;
+    font-size: 9.5px !important;
+    padding: 8px !important;
+  }
+
+  /* Research, Workflow, and About Grids */
+  .research-grid,
+  .about-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .workflow-timeline {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .plates {
+    margin: 40px auto 30px auto !important;
+    padding: 0 12px !important;
+  }
+  .plates-title {
+    font-size: clamp(24px, 6.5vw, 34px) !important;
+  }
+  .plate-card-header {
+    padding: 12px 14px !important;
+  }
+
+  /* Footer on Mobile */
+  .spectra-footer {
+    padding: 36px 14px 24px !important;
+  }
+  .footer-inner {
+    gap: 20px !important;
+  }
+  .footer-top {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 14px !important;
+  }
+  .footer-links {
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+  }
+  .footer-bottom {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+}
+
+/* 3. ULTRA-COMPACT PHONES (<= 380px: iPhone SE, Galaxy Z Flip cover, compact Android) */
+@media (max-width: 380px) {
+  .top {
+    padding: max(8px, env(safe-area-inset-top, 8px)) 8px 6px 8px !important;
+  }
+  .top .brand .logo-text {
+    font-size: 18px !important;
+  }
+  .top-cta-btn {
+    padding: 5px 7px !important;
+    font-size: 10.5px !important;
+  }
+  .paired-controls-row {
+    grid-template-columns: 1fr !important;
+  }
+  .paired-controls-row .admin-btn {
+    padding: 8px 4px !important;
+    font-size: 11px !important;
+  }
+  .preset-buttons {
+    grid-template-columns: 1fr !important;
+  }
+  .admin-kpi-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1873,7 +2380,8 @@ button { font: inherit; }
       </div>
       <button id="btnConnectPhone" class="top-cta-btn" onclick="openPairingModal()" aria-label="Connect Phone" style="background:rgba(0,229,255,0.12);border-color:rgba(0,229,255,0.4);color:#00E5FF;margin-right:8px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-right:4px"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-        <span>Connect Phone</span>
+        <span class="btn-text-full">Connect Phone</span>
+        <span class="btn-text-short" style="display:none;">Pair</span>
         <span id="pairedDevicesBadge" style="display:none;background:#00E5FF;color:#000;font-size:10px;font-weight:800;border-radius:10px;padding:1px 6px;margin-left:5px;">0</span>
       </button>
       <button id="btn2faSecurity" class="top-cta-btn" onclick="open2faModal()" aria-label="2FA Security" style="background:rgba(196,69,255,0.12);border-color:rgba(196,69,255,0.4);color:#C445FF;margin-right:8px;">
@@ -1882,7 +2390,8 @@ button { font: inherit; }
       </button>
       <button id="topAdminBtn" class="top-cta-btn" onclick="openAdminPortal()" aria-label="Open Admin Command Center">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        Admin Login
+        <span class="btn-text-full">Admin Login</span>
+        <span class="btn-text-short" style="display:none;">Admin</span>
       </button>
       <div id="topAdminActiveContainer" class="top-user-container" style="display:none;">
         <button id="topAdminActiveBtn" class="top-user-btn" onclick="openAdminPortal()" aria-label="Admin Intelligence Dashboard">
