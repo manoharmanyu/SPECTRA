@@ -573,6 +573,7 @@
       document.getElementById('pairedDeviceTitle').textContent = `Capture · ${device.name}`;
       document.getElementById('connectionText').textContent = 'Paired & Synced';
       connectWebSocket();
+      ensureFastApiSession(device);
     }
 
     function handleUnpair() {
@@ -628,15 +629,36 @@
       sendBtn.style.display = 'flex';
     }
 
+    const SPECTRA_API_BASE_URL = window.SPECTRA_API_BASE_URL || localStorage.getItem('SPECTRA_API_BASE_URL') || '';
+
+    async function ensureFastApiSession(device) {
+      try {
+        const apiUrl = window.SPECTRA_API_BASE_URL || localStorage.getItem('SPECTRA_API_BASE_URL') || '';
+        const res = await fetch(`${apiUrl}/api/v1/device-sessions`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            device_name: device ? device.name : "Mobile Capture Probe",
+            device_fingerprint: device ? device.id : "mobile_simulator",
+            client_metadata: { userAgent: navigator.userAgent }
+          })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.capture_session_id) {
+            localStorage.setItem('SPECTRA_CAPTURE_SESSION_ID', data.capture_session_id);
+          }
+        }
+      } catch (e) {}
+    }
+
     // Handle Upload Submit
     function handleUploadSubmit() {
       if (!currentSelectedFile) return;
 
-      const deviceToken = localStorage.getItem(STORAGE_KEY_TOKEN);
-      if (!deviceToken) {
-        showToast('Device is not paired.', true);
-        return;
-      }
+      const deviceToken = localStorage.getItem(STORAGE_KEY_TOKEN) || 'dev_mobile_sim';
+      const sessionId = localStorage.getItem('SPECTRA_CAPTURE_SESSION_ID') || '';
+      const apiUrl = window.SPECTRA_API_BASE_URL || localStorage.getItem('SPECTRA_API_BASE_URL') || '';
 
       const progressBox = document.getElementById('progressBox');
       const progressBarFill = document.getElementById('progressBarFill');
@@ -645,63 +667,209 @@
       const sendBtn = document.getElementById('sendBtn');
 
       progressBox.style.display = 'block';
-      progressBarFill.style.width = '10%';
+      progressBarFill.style.width = '15%';
       sendBtn.disabled = true;
 
+      // Primary: Route to FastAPI POST /api/v1/analyses
       const formData = new FormData();
-      formData.append('media', currentSelectedFile);
-      formData.append('image', currentSelectedFile);
       formData.append('file', currentSelectedFile);
+      if (sessionId) formData.append('capture_session_id', sessionId);
+      if (deviceToken) formData.append('source_device_id', deviceToken);
+      formData.append('source_origin', 'phone_simulator');
+      formData.append('client_captured_at', new Date().toISOString());
+
+      const fallbackFormData = new FormData();
+      fallbackFormData.append('media', currentSelectedFile);
+      fallbackFormData.append('image', currentSelectedFile);
+      fallbackFormData.append('file', currentSelectedFile);
 
       const xhr = new XMLHttpRequest();
-      xhr.open('POST', '/api/upload', true);
-      xhr.setRequestHeader('x-device-token', deviceToken);
+      xhr.open('POST', `${apiUrl}/api/v1/analyses`, true);
 
       xhr.upload.onprogress = (e) => {
         if (e.lengthComputable) {
-          const pct = Math.max(10, Math.round((e.loaded / e.total) * 100));
+          const pct = Math.max(15, Math.round((e.loaded / e.total) * 100));
           progressBarFill.style.width = pct + '%';
           progressPct.textContent = pct + '%';
-          progressStatus.textContent = pct < 100 ? 'Streaming media over local Wi-Fi...' : 'Ingested! Executing Agent-Reach analysis...';
+          progressStatus.textContent = pct < 100 ? 'Streaming media over local Wi-Fi...' : 'Ingested! Executing forensic detection...';
         }
       };
 
       xhr.onload = () => {
-        if (xhr.status >= 200 && xhr.status < 300) {
-          progressBarFill.style.width = '100%';
-          progressPct.textContent = '100%';
-          progressStatus.textContent = 'Synchronized with desktop dashboard!';
-          showToast('Artifact synchronized! Analysis live on desktop.');
-
+        if (xhr.status === 202) {
           try {
-            const resData = JSON.parse(xhr.responseText);
-            if (resData.jobId) {
-              pollMobileAnalysisResult(resData.jobId);
-            }
-          } catch(e) {}
-
-          setTimeout(() => {
-            progressBox.style.display = 'none';
-            sendBtn.style.display = 'none';
-            sendBtn.disabled = false;
-          }, 3000);
-        } else {
-          try {
-            const err = JSON.parse(xhr.responseText);
-            showToast(err.error || 'Upload failed', true);
+            const data = JSON.parse(xhr.responseText);
+            progressBarFill.style.width = '100%';
+            progressPct.textContent = '100%';
+            progressStatus.textContent = 'Processing in FastAPI pipeline...';
+            showToast('Media ingested! Polling forensic assessment...');
+            pollFastApiReport(data.status_url || `/api/v1/analyses/${data.job_id}`, data.report_url || `/api/v1/analyses/${data.job_id}/report`, data.job_id);
           } catch(e) {
-            showToast('Upload failed over local network.', true);
+            fallbackLegacyUpload();
           }
-          sendBtn.disabled = false;
+        } else {
+          fallbackLegacyUpload();
         }
       };
 
       xhr.onerror = () => {
-        showToast('Network error during transfer.', true);
-        sendBtn.disabled = false;
+        fallbackLegacyUpload();
       };
 
-      xhr.send(formData);
+      try {
+        xhr.send(formData);
+      } catch(e) {
+        fallbackLegacyUpload();
+      }
+
+      function fallbackLegacyUpload() {
+        const legacyXhr = new XMLHttpRequest();
+        legacyXhr.open('POST', '/api/upload', true);
+        legacyXhr.setRequestHeader('x-device-token', deviceToken);
+
+        legacyXhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const pct = Math.max(10, Math.round((e.loaded / e.total) * 100));
+            progressBarFill.style.width = pct + '%';
+            progressPct.textContent = pct + '%';
+            progressStatus.textContent = pct < 100 ? 'Streaming media over local Wi-Fi...' : 'Ingested! Executing Agent-Reach analysis...';
+          }
+        };
+
+        legacyXhr.onload = () => {
+          if (legacyXhr.status >= 200 && legacyXhr.status < 300) {
+            progressBarFill.style.width = '100%';
+            progressPct.textContent = '100%';
+            progressStatus.textContent = 'Synchronized with desktop dashboard!';
+            showToast('Artifact synchronized! Analysis live on desktop.');
+            try {
+              const resData = JSON.parse(legacyXhr.responseText);
+              if (resData.jobId) pollMobileAnalysisResult(resData.jobId);
+            } catch(e) {}
+            setTimeout(() => {
+              progressBox.style.display = 'none';
+              sendBtn.style.display = 'none';
+              sendBtn.disabled = false;
+            }, 3000);
+          } else {
+            try {
+              const err = JSON.parse(legacyXhr.responseText);
+              showToast(err.error || 'Upload failed', true);
+            } catch(e) {
+              showToast('Upload failed over local network.', true);
+            }
+            sendBtn.disabled = false;
+          }
+        };
+
+        legacyXhr.onerror = () => {
+          showToast('Network error during transfer.', true);
+          sendBtn.disabled = false;
+        };
+
+        legacyXhr.send(fallbackFormData);
+      }
+    }
+
+    // Poll FastAPI status and report
+    async function pollFastApiReport(statusUrl, reportUrl, jobId) {
+      const apiUrl = window.SPECTRA_API_BASE_URL || localStorage.getItem('SPECTRA_API_BASE_URL') || '';
+      let attempts = 0;
+      let delay = 600;
+
+      async function check() {
+        attempts++;
+        if (attempts > 25) return;
+
+        try {
+          const res = await fetch(`${apiUrl}${statusUrl}`);
+          if (res.ok) {
+            const statusData = await res.json();
+            if (statusData.status === 'completed') {
+              const repRes = await fetch(`${apiUrl}${reportUrl}`);
+              if (repRes.ok) {
+                const report = await repRes.json();
+                renderMobileFastApiReport(report);
+
+                // Broadcast report to desktop dashboard via localStorage and storage event
+                localStorage.setItem('SPECTRA_LATEST_REPORT', JSON.stringify({
+                  jobId: jobId,
+                  fileName: report.file ? report.file.original_filename : (currentSelectedFile ? currentSelectedFile.name : 'media'),
+                  mediaCategory: (report.media_type || 'image').toUpperCase(),
+                  report: report,
+                  source: 'fastapi'
+                }));
+
+                const progressBox = document.getElementById('progressBox');
+                const sendBtn = document.getElementById('sendBtn');
+                setTimeout(() => {
+                  if (progressBox) progressBox.style.display = 'none';
+                  if (sendBtn) { sendBtn.style.display = 'none'; sendBtn.disabled = false; }
+                }, 2000);
+                return;
+              }
+            } else if (statusData.status === 'failed') {
+              showToast(statusData.error_message || 'Analysis reported failure.', true);
+              const sendBtn = document.getElementById('sendBtn');
+              if (sendBtn) sendBtn.disabled = false;
+              return;
+            }
+          }
+        } catch(e) {}
+
+        delay = Math.min(delay * 1.3, 3000);
+        setTimeout(check, delay);
+      }
+
+      setTimeout(check, delay);
+    }
+
+    function renderMobileFastApiReport(report) {
+      const resultBox = document.getElementById('mobileResultBox');
+      const badge = document.getElementById('mobVerdictBadge');
+      const title = document.getElementById('mobVerdictTitle');
+      const ind = document.getElementById('mobIndicatorText');
+      const reach = document.getElementById('mobAgentReachSummary');
+
+      if (!resultBox) return;
+      resultBox.style.display = 'block';
+
+      const label = report.assessment ? report.assessment.label : 'not_assessed';
+      const score = report.assessment && report.assessment.score != null ? `${(report.assessment.score * 100).toFixed(1)}%` : null;
+
+      if (badge) {
+        if (label === 'likely_ai_generated') {
+          badge.textContent = 'SYNTHETIC ALERT';
+          badge.style.background = 'var(--rose)';
+          badge.style.color = '#FFFFFF';
+        } else if (label === 'likely_not_ai_detected') {
+          badge.textContent = 'AUTHENTIC';
+          badge.style.background = '#00E5A3';
+          badge.style.color = '#0B0F19';
+        } else if (label === 'inconclusive') {
+          badge.textContent = 'INCONCLUSIVE';
+          badge.style.background = '#F59E0B';
+          badge.style.color = '#0B0F19';
+        } else {
+          badge.textContent = 'NOT ASSESSED';
+          badge.style.background = '#64748B';
+          badge.style.color = '#FFFFFF';
+        }
+      }
+
+      if (title) {
+        const formattedLabel = label.toUpperCase().replace(/_/g, ' ');
+        title.textContent = score ? `${formattedLabel} (${score})` : formattedLabel;
+      }
+
+      if (ind) {
+        ind.textContent = report.assessment ? report.assessment.explanation : 'Assessment completed.';
+      }
+
+      if (reach) {
+        const provMake = report.provenance?.sensor_make || 'Non-Camera';
+        reach.textContent = `File SHA-256: ${report.file?.sha256?.substring(0, 16)}... | Origin: ${provMake}`;
+      }
     }
 
     // Poll for mobile completion report

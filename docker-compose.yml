@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: spectra_api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - PORT=8000
+      - HOST=0.0.0.0
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/spectra_forensics
+      - SPECTRA_INTERNAL_TOKEN=spectra_internal_dev_secret_token_change_in_production
+      - SPECTRA_WEBHOOK_TOKEN=spectra_webhook_dev_token_change_in_production
+      - STORAGE_BACKEND=local
+      - LOCAL_STORAGE_PATH=/app/storage_data
+      - FRONTEND_ORIGINS=http://localhost:5173,http://localhost:3000,https://thespectra.vercel.app,https://spectra-mobile.vercel.app
+      - N8N_WEBHOOK_URL=http://n8n:5678/webhook/spectra-analysis
+      - STANDALONE_PIPELINE=true
+    volumes:
+      - spectra_storage:/app/storage_data
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    container_name: spectra_postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=spectra_forensics
+    ports:
+      - "5432:5432"
+    volumes:
+      - spectra_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d spectra_forensics"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: spectra_n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=0.0.0.0
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678/
+    volumes:
+      - spectra_n8n_data:/home/node/.n8n
+    depends_on:
+      - api
+
+volumes:
+  spectra_storage:
+  spectra_db_data:
+  spectra_n8n_data:

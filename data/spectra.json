@@ -229,6 +229,15 @@
       "userAgent": "",
       "expiresAt": "2026-10-28T08:51:58.088Z",
       "createdAt": "2026-10-27T08:51:58.089Z"
+    },
+    {
+      "id": "ses_ylik2kdwmvqsx1v5",
+      "userId": "usr_mvqsx1v1r5bk",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-28T14:49:14.417Z",
+      "createdAt": "2026-10-27T14:49:14.417Z"
     }
   ],
   "pairingCodes": [
@@ -652,6 +661,85 @@
       "expiresAt": "2026-10-27T08:56:58.093Z",
       "createdAt": "2026-10-27T08:51:58.093Z",
       "consumedAt": "2026-10-27T08:51:58.107Z"
+    },
+    {
+      "code": "XZUH6W8M",
+      "displayCode": "XZUH-6W8M",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_g4syke7ymvqd74rd",
+      "attempts": 0,
+      "status": "pending",
+      "proposedDeviceName": null,
+      "deviceTokenHash": null,
+      "deviceId": null,
+      "expiresAt": "2026-10-27T09:02:52.722Z",
+      "createdAt": "2026-10-27T08:57:52.722Z"
+    },
+    {
+      "code": "58YXNLMU",
+      "displayCode": "58YX-NLMU",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_g4syke7ymvqd74rd",
+      "attempts": 0,
+      "status": "pending",
+      "proposedDeviceName": null,
+      "deviceTokenHash": null,
+      "deviceId": null,
+      "expiresAt": "2026-10-27T09:14:09.304Z",
+      "createdAt": "2026-10-27T09:09:09.304Z"
+    },
+    {
+      "code": "79C255XP",
+      "displayCode": "79C2-55XP",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_g4syke7ymvqd74rd",
+      "attempts": 0,
+      "status": "pending",
+      "proposedDeviceName": null,
+      "deviceTokenHash": null,
+      "deviceId": null,
+      "expiresAt": "2026-10-27T09:18:25.513Z",
+      "createdAt": "2026-10-27T09:13:25.513Z"
+    },
+    {
+      "code": "QYZV5Y9M",
+      "displayCode": "QYZV-5Y9M",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_g4syke7ymvqd74rd",
+      "attempts": 0,
+      "status": "pending",
+      "proposedDeviceName": null,
+      "deviceTokenHash": null,
+      "deviceId": null,
+      "expiresAt": "2026-10-27T09:25:10.457Z",
+      "createdAt": "2026-10-27T09:20:10.457Z"
+    },
+    {
+      "code": "T88DSWVW",
+      "displayCode": "T88D-SWVW",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_g4syke7ymvqd74rd",
+      "attempts": 0,
+      "status": "pending",
+      "proposedDeviceName": null,
+      "deviceTokenHash": null,
+      "deviceId": null,
+      "expiresAt": "2026-10-27T09:25:17.027Z",
+      "createdAt": "2026-10-27T09:20:17.027Z"
+    },
+    {
+      "code": "B3TV8TWD",
+      "displayCode": "B3TV-8TWD",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_gppntmwnmvqsx1rm",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "a3e31a062f7bf6cb2c37df83efbfea87ab049747f5b98b7e05eaca3d8fd01964",
+      "deviceId": "dev_mvqsx1vqp00j",
+      "expiresAt": "2026-10-27T14:54:14.421Z",
+      "createdAt": "2026-10-27T14:49:14.421Z",
+      "consumedAt": "2026-10-27T14:49:14.440Z"
     }
   ],
   "devices": [

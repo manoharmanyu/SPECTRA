@@ -398,15 +398,147 @@ The platform is an investigative aid and should not replace expert forensic exam
 - [x] Local-network upload architecture.
 - [x] Initial image-forensics checks.
 - [x] Automated security-verification suite.
-- [ ] Advanced deepfake detection models.
-- [ ] Video and audio forensic analysis.
-- [ ] Explainable AI findings and confidence reporting.
-- [ ] Tamper-evident evidence audit trails.
-- [ ] Advanced case management and report export.
-- [ ] Production deployment hardening.
-- [ ] Independent security assessment.
+- [x] Advanced deepfake detection models & provider adapter interface.
+- [x] Video, audio, and image forensic analysis with streaming storage.
+- [x] Explainable AI findings, confidence reporting, and limitations.
+- [x] Tamper-evident evidence audit trails with SQLAlchemy & Alembic.
+- [x] FastAPI REST backend with n8n workflow integration.
+- [x] Automated security-verification suite (Node.js & Pytest).
+- [ ] Advanced case management and export PDF dossiers.
+- [ ] Production multi-region deployment hardening.
 
-*Roadmap items are subject to implementation and verification.*
+---
+
+## ⚡ FastAPI Media Forensics Backend (`backend/`)
+
+SPECTRA incorporates a high-performance **Python 3.11+ FastAPI REST Backend** for streaming media intake, deep forensic extraction, n8n workflow orchestration, and multi-detector execution.
+
+### 📐 Architecture
+- **Framework:** FastAPI, Pydantic v2, SQLAlchemy 2, Alembic
+- **Database:** PostgreSQL (with SQLite zero-config support for local testing)
+- **Streaming Storage:** Chunk-based streaming (64 KB) with SHA-256 calculation on the fly and strict size enforcement (`MAX_UPLOAD_SIZE_BYTES`, default 100 MB). Supports local mounted storage or S3-compatible object storage under UUID keys.
+- **Media Inspection:** 
+  - **ExifTool** for image/embedded metadata (dimensions, format, EXIF, IPTC/XMP, genuine GPS if present).
+  - **ffprobe** for audio/video stream tracks, codecs, durations, bitrates, and sample rates.
+  - **Pure-Python Fallbacks:** Pillow + native binary chunk parsers (JPEG SOF, PNG IHDR, WebP VP8X, WAV RIFF, MP4 atoms) when system CLI binaries are not installed.
+  - **C2PA / Content Credentials:** Detects JUMBF and C2PA manifest provenance.
+- **Orchestration:** Dispatches `{ "job_id": "...", "media_type": "image|audio|video" }` to `N8N_WEBHOOK_URL` with header `X-SPECTRA-WEBHOOK-TOKEN`. If n8n is offline or unconfigured, background worker automatically executes stages locally in standalone mode.
+
+---
+
+### 🚀 Quickstart & Setup Commands
+
+#### 1. Local Virtual Environment Setup
+```bash
+# Navigate to backend directory
+cd backend
+
+# Create virtual environment with Python 3.11
+python3.11 -m venv .venv
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run database migrations
+alembic upgrade head
+
+# Start the FastAPI server
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+```
+OpenAPI documentation is available at [http://localhost:8000/docs](http://localhost:8000/docs).
+
+#### 2. Running Automated Pytest Suite
+```bash
+cd backend
+pytest -v
+```
+
+#### 3. Docker Compose Setup (API + PostgreSQL + n8n)
+```bash
+# From repository root
+docker compose up -d --build
+```
+
+---
+
+### 📡 API Contract & Usage Examples
+
+#### 1. Liveness & Readiness Checks
+```bash
+# Health check (Liveness)
+curl -X GET http://localhost:8000/health
+
+# Storage & DB Readiness
+curl -X GET http://localhost:8000/ready
+```
+
+#### 2. Create Device Session
+```bash
+curl -X POST http://localhost:8000/api/v1/device-sessions \
+  -H "Content-Type: application/json" \
+  -d '{"device_name": "Field Officer iPhone 15", "device_fingerprint": "dev_fp_102"}'
+```
+
+#### 3. Multipart Media Upload
+```bash
+curl -X POST http://localhost:8000/api/v1/analyses \
+  -F "file=@/path/to/evidence.jpg" \
+  -F "source_origin=phone_simulator" \
+  -F "capture_session_id=optional-session-uuid"
+```
+**Response (202 Accepted):**
+```json
+{
+  "job_id": "b6a83120-7dfc-42cb-b169-826a7981d392",
+  "status": "queued",
+  "media_type": "image",
+  "status_url": "/api/v1/analyses/b6a83120-7dfc-42cb-b169-826a7981d392",
+  "report_url": "/api/v1/analyses/b6a83120-7dfc-42cb-b169-826a7981d392/report"
+}
+```
+
+#### 4. Poll Status & Detailed Report
+```bash
+# Check status summary
+curl -X GET http://localhost:8000/api/v1/analyses/b6a83120-7dfc-42cb-b169-826a7981d392
+
+# Retrieve final report (202 while processing, 200 when completed)
+curl -X GET http://localhost:8000/api/v1/analyses/b6a83120-7dfc-42cb-b169-826a7981d392/report
+```
+
+#### 5. Internal n8n Protected Stage Routes
+Requires `Authorization: Bearer SPECTRA_INTERNAL_TOKEN`:
+```bash
+# Stage 1: Metadata extraction
+curl -X POST http://localhost:8000/internal/analyses/JOB_ID/metadata \
+  -H "Authorization: Bearer spectra_internal_dev_secret_token_change_in_production"
+
+# Stage 2: AI / Deepfake detection
+curl -X POST http://localhost:8000/internal/analyses/JOB_ID/detect \
+  -H "Authorization: Bearer spectra_internal_dev_secret_token_change_in_production"
+
+# Stage 3: Finalize report
+curl -X POST http://localhost:8000/internal/analyses/JOB_ID/finalize \
+  -H "Authorization: Bearer spectra_internal_dev_secret_token_change_in_production"
+```
+
+---
+
+### 🔑 Provider Credentials Checklist
+
+| Provider / Setting | Environment Variable | Required? | Purpose |
+| :--- | :--- | :--- | :--- |
+| **Database** | `DATABASE_URL` | **Yes** | PostgreSQL or SQLite connection string |
+| **Internal Secret** | `SPECTRA_INTERNAL_TOKEN` | **Yes** | Constant-time bearer token for n8n stage calls |
+| **Webhook Secret** | `SPECTRA_WEBHOOK_TOKEN` | **Yes** | Sent in `X-SPECTRA-WEBHOOK-TOKEN` header to n8n |
+| **n8n Webhook URL** | `N8N_WEBHOOK_URL` | Optional | External workflow automation trigger |
+| **Hive AI Key** | `HIVE_API_KEY` | Optional | Deepfake image, audio & video detection API |
+| **Google Gemini Key** | `GEMINI_API_KEY` | Optional | Technical explanatory context summary only |
+
+*Note: If `HIVE_API_KEY` is not provided, the platform honestly marks detector findings as `not_assessed` with an explicit reason—it NEVER invents fake scores.*
+
+---
 
 ---
 
