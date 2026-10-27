@@ -276,18 +276,18 @@ async function runAllSecurityTests() {
   });
   assert(ownJobRes.status === 200 && ownJobRes.json?.job?.id === createdJobId, 'User can view own forensic job dossier', `status: ${ownJobRes.status}, body: ${JSON.stringify(ownJobRes.json)}`);
 
-  // Revoke device trust
-  const revokeRes = await request({ path: `/api/pairing/devices/${deviceId}/revoke`, method: 'POST' }, {}, {
+  // Disconnect device
+  const disconnectRes = await request({ path: `/api/pairing/devices/${deviceId}/disconnect`, method: 'POST' }, {}, {
     'x-session-id': adminSessionId
   });
-  assert(revokeRes.status === 200 && revokeRes.json?.device?.trustStatus === 'revoked', 'Device trust successfully revoked by administrator', `status: ${revokeRes.status}, body: ${JSON.stringify(revokeRes.json)}`);
+  assert(disconnectRes.status === 200 && disconnectRes.json?.success === true, 'Device successfully disconnected by administrator', `status: ${disconnectRes.status}, body: ${JSON.stringify(disconnectRes.json)}`);
 
-  // Verify revoked device cannot upload
+  // Verify disconnected device cannot upload
   const blockedUploadRes = await request({ path: '/api/upload', method: 'POST' }, postBody, {
     'Content-Type': `multipart/form-data; boundary=${boundary}`,
     'x-device-token': deviceToken
   });
-  assert(blockedUploadRes.status === 401 && blockedUploadRes.json?.error.includes('revoked'), 'Uploads from revoked device immediately rejected');
+  assert(blockedUploadRes.status === 401 && (blockedUploadRes.json?.error.includes('authorized') || blockedUploadRes.json?.error.includes('disconnected')), 'Uploads from disconnected device rejected');
 
   // -------------------------------------------------------------------------
   // TEST GROUP 8: LOCAL WI-FI NETWORK REACHABILITY & BLUETOOTH

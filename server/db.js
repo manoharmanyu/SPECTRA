@@ -245,7 +245,7 @@ class SpectraDB {
   }
 
   findDeviceByTokenHash(tokenHash) {
-    return this.data.devices.find(d => d.tokenHash === tokenHash && d.trustStatus === 'active');
+    return this.data.devices.find(d => d.tokenHash === tokenHash);
   }
 
   getUserDevices(userId) {
@@ -254,23 +254,26 @@ class SpectraDB {
       .map(d => ({
         id: d.id,
         deviceName: d.deviceName,
-        trustStatus: d.trustStatus,
+        trustStatus: 'active',
         pairingTimestamp: d.pairingTimestamp,
         lastSeenTimestamp: d.lastSeenTimestamp,
-        revokedAt: d.revokedAt,
+        revokedAt: null,
         capabilities: d.capabilities
       }));
   }
 
-  revokeDevice(deviceId, userId) {
-    const dev = this.data.devices.find(d => d.id === deviceId && d.userId === userId);
-    if (dev) {
-      dev.trustStatus = 'revoked';
-      dev.revokedAt = new Date().toISOString();
+  disconnectDevice(deviceId, userId) {
+    const idx = this.data.devices.findIndex(d => d.id === deviceId && (!userId || d.userId === userId));
+    if (idx !== -1) {
+      const removed = this.data.devices.splice(idx, 1)[0];
       this.save();
-      return dev;
+      return removed;
     }
     return null;
+  }
+
+  revokeDevice(deviceId, userId) {
+    return this.disconnectDevice(deviceId, userId);
   }
 
   deleteDevice(deviceId, userId) {

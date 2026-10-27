@@ -164,27 +164,29 @@ pairingRouter.get('/devices', requireAuth, (req, res) => {
   });
 });
 
-// POST /api/devices/:deviceId/revoke (Revoke trusted device)
-pairingRouter.post('/devices/:deviceId/revoke', requireAuth, (req, res) => {
+// POST /api/devices/:deviceId/disconnect (Disconnect paired device)
+const handleDeviceDisconnect = (req, res) => {
   const { deviceId } = req.params;
-  const revoked = db.revokeDevice(deviceId, req.user.id);
-  if (!revoked) {
+  const disconnected = db.disconnectDevice ? db.disconnectDevice(deviceId, req.user.id) : db.revokeDevice(deviceId, req.user.id);
+  if (!disconnected) {
     return res.status(404).json({ error: 'Device not found or not owned by user.' });
   }
 
-  // Broadcast revocation immediately over WebSocket
-  wsHub.broadcastToUser(req.user.id, 'device:revoked', {
-    deviceId: revoked.id,
-    deviceName: revoked.deviceName,
-    revokedAt: revoked.revokedAt
+  // Broadcast disconnect over WebSocket
+  wsHub.broadcastToUser(req.user.id, 'device:disconnected', {
+    deviceId: disconnected.id,
+    deviceName: disconnected.deviceName
   });
 
   return res.json({
     success: true,
-    message: `Trust revoked for device "${revoked.deviceName}".`,
-    device: revoked
+    message: `Device "${disconnected.deviceName}" disconnected.`,
+    device: disconnected
   });
-});
+};
+
+pairingRouter.post('/devices/:deviceId/disconnect', requireAuth, handleDeviceDisconnect);
+pairingRouter.post('/devices/:deviceId/revoke', requireAuth, handleDeviceDisconnect);
 
 // POST /api/pairing/devices/:deviceId/delete (Permanently delete device record)
 pairingRouter.post('/devices/:deviceId/delete', requireAuth, (req, res) => {
@@ -194,8 +196,8 @@ pairingRouter.post('/devices/:deviceId/delete', requireAuth, (req, res) => {
     return res.status(404).json({ error: 'Device not found or not owned by user.' });
   }
 
-  // Broadcast revocation immediately over WebSocket
-  wsHub.broadcastToUser(req.user.id, 'device:revoked', {
+  // Broadcast disconnect immediately over WebSocket
+  wsHub.broadcastToUser(req.user.id, 'device:disconnected', {
     deviceId: deleted.id,
     deviceName: deleted.deviceName
   });

@@ -942,8 +942,8 @@
         ws.onmessage = (event) => {
           try {
             const msg = JSON.parse(event.data);
-            if (msg.type === 'device:revoked') {
-              showToast('Device trust has been revoked by desktop administrator.', true);
+            if (msg.type === 'device:revoked' || msg.type === 'device:disconnected') {
+              showToast('Device has been disconnected by desktop administrator.', false);
               handleUnpair();
             }
           } catch(e) {}

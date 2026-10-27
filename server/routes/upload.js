@@ -25,8 +25,8 @@ export function requireDeviceOrSession(req, res, next) {
   if (deviceToken) {
     const tokenHash = crypto.createHash('sha256').update(deviceToken).digest('hex');
     const device = db.findDeviceByTokenHash(tokenHash) || db.data.devices.find(d => d.id === deviceToken || d.tokenHash === deviceToken);
-    if (!device || device.trustStatus !== 'active') {
-      return res.status(401).json({ error: 'Device is not authorized or trust has been revoked.' });
+    if (!device) {
+      return res.status(401).json({ error: 'Device is not authorized or has been disconnected.' });
     }
     const user = db.findUserById(device.userId);
     if (!user) {

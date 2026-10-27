@@ -4491,13 +4491,10 @@ function showVerdict(presetId) {
       if (!res.ok) return;
 
       const devices = data.devices || [];
-      const activeDevices = devices.filter(d => d.trustStatus === 'active');
-      const revokedDevices = devices.filter(d => d.trustStatus === 'revoked');
-      const activeCount = activeDevices.length;
-      const revokedCount = revokedDevices.length;
+      const activeCount = devices.length;
 
       // Update Header Badges
-      if (badge) badge.textContent = `${activeCount} active · ${revokedCount} revoked`;
+      if (badge) badge.textContent = `${activeCount} paired & trusted`;
       if (topBadge) {
         topBadge.textContent = activeCount;
         topBadge.style.display = activeCount > 0 ? 'inline-block' : 'none';
@@ -4512,8 +4509,8 @@ function showVerdict(presetId) {
       const sensorEl = document.getElementById('pairedSensorDisplay');
 
       if (activeCount > 0) {
-        const dev = activeDevices[0];
-        if (statusBadge) { statusBadge.textContent = `PAIRED & ACTIVE (${activeCount})`; statusBadge.className = 'paired-status-badge active'; }
+        const dev = devices[0];
+        if (statusBadge) { statusBadge.textContent = `PAIRED & TRUSTED (${activeCount})`; statusBadge.className = 'paired-status-badge active'; }
         if (statusPulse) { statusPulse.className = 'paired-pulse-dot active'; }
         if (deviceTitle) { deviceTitle.textContent = dev.deviceName; }
         if (transportEl) { transportEl.textContent = 'Direct Wi-Fi / Local Subnet'; }
@@ -4522,39 +4519,33 @@ function showVerdict(presetId) {
       } else {
         if (statusBadge) { statusBadge.textContent = 'STANDBY // 0 DEVICES PAIRED'; statusBadge.className = 'paired-status-badge standby'; }
         if (statusPulse) { statusPulse.className = 'paired-pulse-dot standby'; }
-        if (deviceTitle) { deviceTitle.textContent = 'Awaiting Device Connection (0 Active)'; }
+        if (deviceTitle) { deviceTitle.textContent = 'Awaiting Device Connection'; }
         if (transportEl) { transportEl.textContent = 'Local Subnet Listening (Port 5173 / 3001)'; }
-        if (heartbeatEl) { heartbeatEl.textContent = 'Ready for Local Pairing Handshake • 0 Live Peers'; }
-        if (sensorEl) { sensorEl.textContent = 'Sensor Matrix Inactive (0 Active Devices)'; }
+        if (heartbeatEl) { heartbeatEl.textContent = 'Ready for Local Pairing Handshake'; }
+        if (sensorEl) { sensorEl.textContent = 'Sensor Matrix Standby'; }
       }
 
       if (container) {
         if (devices.length === 0) {
-          container.innerHTML = '<div style="font-size:12px;color:#A0AEC0;text-align:center;padding:12px;">0 paired devices (0 active, 0 revoked). Scan the QR code or use the pairing code to pair a device.</div>';
+          container.innerHTML = '<div style="font-size:12px;color:#A0AEC0;text-align:center;padding:12px;">0 paired devices. Scan the QR code or use the pairing code to pair a device.</div>';
         } else {
           container.innerHTML = devices.map(d => `
             <div class="device-card-item">
               <div>
                 <div style="font-weight:700;font-size:13.5px;color:#FFFFFF;display:flex;align-items:center;gap:6px;">
                   <span>${d.deviceName}</span>
-                  <span style="font-size:10px;padding:1px 6px;border-radius:4px;${d.trustStatus === 'active' ? 'background:rgba(0,229,163,0.15);color:#00E5A3;border:1px solid rgba(0,229,163,0.3);' : 'background:rgba(255,59,92,0.15);color:#FF3B5C;border:1px solid rgba(255,59,92,0.3);'}">
-                    ${d.trustStatus.toUpperCase()}
+                  <span style="font-size:10px;padding:1px 6px;border-radius:4px;background:rgba(0,229,163,0.15);color:#00E5A3;border:1px solid rgba(0,229,163,0.3);">
+                    TRUSTED &amp; ACTIVE
                   </span>
                 </div>
                 <div style="font-size:11px;color:#A0AEC0;font-family:monospace;margin-top:2px;">
-                  Paired: ${new Date(d.pairingTimestamp).toLocaleDateString()} · Transport: Local Wi-Fi
+                  Paired: ${new Date(d.pairingTimestamp).toLocaleDateString()} · Transport: Direct Wi-Fi
                 </div>
               </div>
               <div style="display:flex;align-items:center;gap:8px;">
-                ${d.trustStatus === 'active' ? `
-                  <button class="admin-btn danger" onclick="revokeDevice('${d.id}')" style="padding:4px 10px;font-size:11px;">
-                    Revoke Trust
-                  </button>
-                ` : `
-                  <button class="admin-btn" onclick="removeDevice('${d.id}')" style="padding:4px 10px;font-size:11px;border-color:rgba(255,59,92,0.4);color:#FF3B5C;">
-                    Delete
-                  </button>
-                `}
+                <button class="admin-btn" onclick="disconnectDevice('${d.id}')" style="padding:4px 10px;font-size:11px;border-color:rgba(160,174,192,0.4);color:#CBD5E1;">
+                  Disconnect
+                </button>
               </div>
             </div>
           `).join('');
@@ -4790,21 +4781,22 @@ function showVerdict(presetId) {
     }
   }
 
-  window.revokeDevice = async function(deviceId) {
-    if (!confirm('Revoke trusted access for this mobile device? It will be blocked from uploading.')) return;
+  window.disconnectDevice = async function(deviceId) {
+    if (!confirm('Disconnect this mobile device from the session?')) return;
     try {
-      const res = await fetch(`/api/pairing/devices/${deviceId}/revoke`, { method: 'POST' });
+      const res = await fetch(`/api/pairing/devices/${deviceId}/disconnect`, { method: 'POST' });
       const data = await res.json();
       if (res.ok) {
-        showToast(data.message || 'Device trust revoked.');
+        showToast(data.message || 'Device disconnected.');
         fetchPairedDevices();
       } else {
-        showToast(data.error || 'Failed to revoke device.', true);
+        showToast(data.error || 'Failed to disconnect device.', true);
       }
     } catch(e) {
-      showToast('Error revoking device.', true);
+      showToast('Error disconnecting device.', true);
     }
   };
+  window.revokeDevice = window.disconnectDevice;
 
   // 2FA Security Modal Controls
   window.open2faModal = async function() {
