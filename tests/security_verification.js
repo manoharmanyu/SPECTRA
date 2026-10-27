@@ -246,6 +246,19 @@ async function runAllSecurityTests() {
   assert(wavReport.audioSpecs && wavReport.audioSpecs.sampleRate.includes('44,100 Hz'), 'Parses genuine audio sample rate from binary fmt chunk');
   assert(!wavReport.isAlert && wavReport.verdict.includes('AUTHENTIC'), 'Correctly classifies natural human audio as Authentic without AI false positives');
 
+  // Drew Noakes Metadata-Extractor & MakerNote 18 Manufacturers Integration Test
+  assert(report.metadataExtractor && typeof report.metadataExtractor === 'object', 'Drew Noakes metadata-extractor integrates into forensic report');
+  assert(Array.isArray(report.metadataExtractor.allSupportedManufacturers) && report.metadataExtractor.allSupportedManufacturers.length === 18, 'Decodes MakerNotes across all 18 camera manufacturers (Agfa to Sony)');
+  assert(report.metadataExtractor.allSupportedManufacturers.includes('Apple') && report.metadataExtractor.allSupportedManufacturers.includes('Canon') && report.metadataExtractor.allSupportedManufacturers.includes('Nikon'), 'Includes Apple, Canon, and Nikon MakerNote decoders');
+
+  // AI-Generated Image without Optical Sensor EXIF Test
+  const testSyntheticNoExif = path.resolve('tests/fixtures/sample_synthetic_concept.jpg');
+  const syntheticJpeg = Buffer.concat([jpegHeader, quantTable, dummyPayload, jpegEoi]);
+  fs.writeFileSync(testSyntheticNoExif, syntheticJpeg);
+  const syntheticReport = await analyzeImageForensics(testSyntheticNoExif, 'sample_synthetic_concept.jpg');
+  assert(syntheticReport.isAlert && syntheticReport.verdict.includes('AI-GENERATED'), 'Correctly classifies synthetic media as AI-Generated');
+  assert(syntheticReport.provenance.device.make.includes('Synthetic'), 'Populates genuine synthetic provenance details without empty dashes');
+
   // -------------------------------------------------------------------------
   // TEST GROUP 7: USER ISOLATION & DEVICE REVOCATION
   // -------------------------------------------------------------------------

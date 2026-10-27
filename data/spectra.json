@@ -13,34 +13,6 @@
   ],
   "sessions": [
     {
-      "id": "ses_gfqb68p8mvpeggyr",
-      "userId": "usr_mvpeggyrv8iw",
-      "is2FAVerified": true,
-      "ip": "127.0.0.1",
-      "userAgent": "",
-      "expiresAt": "2026-10-27T15:16:40.035Z",
-      "createdAt": "2026-10-26T15:16:40.035Z"
-    },
-    {
-      "id": "ses_bxqm66knmvpeijar",
-      "userId": "usr_manohar_manyu",
-      "is2FAVerified": true,
-      "ip": "127.0.0.1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "expiresAt": "2026-10-27T15:18:16.371Z",
-      "createdAt": "2026-10-26T15:18:16.371Z",
-      "pendingTotpSecret": "DS57G6BUL5QN6SAE42E3ZRL36NJWRCT7"
-    },
-    {
-      "id": "ses_1wv4xd0jmvpetwx5",
-      "userId": "usr_mvpetwx4ktiw",
-      "is2FAVerified": true,
-      "ip": "127.0.0.1",
-      "userAgent": "",
-      "expiresAt": "2026-10-27T15:27:07.241Z",
-      "createdAt": "2026-10-26T15:27:07.241Z"
-    },
-    {
       "id": "ses_psrv8hrumvph5wbc",
       "userId": "usr_mvph5wbc57wm",
       "is2FAVerified": true,
@@ -75,16 +47,6 @@
       "userAgent": "",
       "expiresAt": "2026-10-27T16:56:23.081Z",
       "createdAt": "2026-10-26T16:56:23.081Z"
-    },
-    {
-      "id": "ses_g4syke7ymvqd74rd",
-      "userId": "usr_manohar_manyu",
-      "is2FAVerified": true,
-      "ip": "127.0.0.1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "expiresAt": "2026-10-28T07:29:10.873Z",
-      "createdAt": "2026-10-27T07:29:10.873Z",
-      "pendingTotpSecret": "NHVPCCF3CC7PPWJLLRQJZEO4HPIE4ATI"
     },
     {
       "id": "ses_7zhssvvumvqdpx92",
@@ -238,6 +200,52 @@
       "userAgent": "",
       "expiresAt": "2026-10-28T14:49:14.417Z",
       "createdAt": "2026-10-27T14:49:14.417Z"
+    },
+    {
+      "id": "ses_pb67jzmrmvqv4t92",
+      "userId": "usr_manohar_manyu",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+      "expiresAt": "2026-10-28T15:51:15.734Z",
+      "createdAt": "2026-10-27T15:51:15.734Z",
+      "pendingTotpSecret": "3QDOM5WGVYXBV4OAVWL3E2AYCVF4AGRO"
+    },
+    {
+      "id": "ses_8c82inkrmvqvt137",
+      "userId": "usr_mvqvt134d02p",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-28T16:10:05.635Z",
+      "createdAt": "2026-10-27T16:10:05.635Z"
+    },
+    {
+      "id": "ses_dhtvd6vkmvqvx7l2",
+      "userId": "usr_mvqvx7kzgmzo",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-28T16:13:20.678Z",
+      "createdAt": "2026-10-27T16:13:20.678Z"
+    },
+    {
+      "id": "ses_30ugek06mvqvxl1v",
+      "userId": "usr_mvqvxl1t2tt5",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-28T16:13:38.131Z",
+      "createdAt": "2026-10-27T16:13:38.131Z"
+    },
+    {
+      "id": "ses_ctublosmmvqw472z",
+      "userId": "usr_mvqw472xhch7",
+      "is2FAVerified": true,
+      "ip": "127.0.0.1",
+      "userAgent": "",
+      "expiresAt": "2026-10-28T16:18:46.619Z",
+      "createdAt": "2026-10-27T16:18:46.619Z"
     }
   ],
   "pairingCodes": [
@@ -740,17 +748,100 @@
       "expiresAt": "2026-10-27T14:54:14.421Z",
       "createdAt": "2026-10-27T14:49:14.421Z",
       "consumedAt": "2026-10-27T14:49:14.440Z"
+    },
+    {
+      "code": "GWTD7YAF",
+      "displayCode": "GWTD-7YAF",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_g4syke7ymvqd74rd",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Gaddam Manyu",
+      "deviceTokenHash": "ae84a7670d246c3aabb8d5af9b96be48a40ad802e72e87d1c33a081ae1f06dc5",
+      "deviceId": "dev_mvquyvfzxbv1",
+      "expiresAt": "2026-10-27T15:50:25.519Z",
+      "createdAt": "2026-10-27T15:45:25.519Z",
+      "consumedAt": "2026-10-27T15:46:38.646Z"
+    },
+    {
+      "code": "DTK6LK89",
+      "displayCode": "DTK6-LK89",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_pb67jzmrmvqv4t92",
+      "attempts": 0,
+      "status": "pending",
+      "proposedDeviceName": null,
+      "deviceTokenHash": null,
+      "deviceId": null,
+      "expiresAt": "2026-10-27T15:56:15.745Z",
+      "createdAt": "2026-10-27T15:51:15.745Z"
+    },
+    {
+      "code": "RVR2G8J5",
+      "displayCode": "RVR2-G8J5",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_zlgh48iumvqvt0zz",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "e8a5aaa8cd53433fa9ed1ab7f183218c01b70453d6905dc3b91e14d66290ac58",
+      "deviceId": "dev_mvqvt13nu7yk",
+      "expiresAt": "2026-10-27T16:15:05.639Z",
+      "createdAt": "2026-10-27T16:10:05.639Z",
+      "consumedAt": "2026-10-27T16:10:05.653Z"
+    },
+    {
+      "code": "7FTHF5QJ",
+      "displayCode": "7FTH-F5QJ",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_0ugex3jnmvqvx7hz",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "68aa9abd204482d3c19a85fd6868b445106cb3b5ada0a9ec8ac69a957e06c609",
+      "deviceId": "dev_mvqvx7lk0caz",
+      "expiresAt": "2026-10-27T16:18:20.682Z",
+      "createdAt": "2026-10-27T16:13:20.682Z",
+      "consumedAt": "2026-10-27T16:13:20.699Z"
+    },
+    {
+      "code": "BS9GC8UE",
+      "displayCode": "BS9G-C8UE",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_hm5si8ubmvqvxkyt",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "2f37722c856a908de644b4dca66d3193f77a90991442b389f6051ce94c320d4b",
+      "deviceId": "dev_mvqvxl29gkyw",
+      "expiresAt": "2026-10-27T16:18:38.134Z",
+      "createdAt": "2026-10-27T16:13:38.134Z",
+      "consumedAt": "2026-10-27T16:13:38.147Z"
+    },
+    {
+      "code": "WG5H8S2M",
+      "displayCode": "WG5H-8S2M",
+      "userId": "usr_manohar_manyu",
+      "sessionId": "ses_idgt3h9cmvqw46z4",
+      "attempts": 0,
+      "status": "consumed",
+      "proposedDeviceName": "Manohar's iPhone 15 Pro",
+      "deviceTokenHash": "e11c037c45224bab5a395a0eb3175f765cecf2534aab3d3eeb1a962526f61472",
+      "deviceId": "dev_mvqw473fs7pw",
+      "expiresAt": "2026-10-27T16:23:46.623Z",
+      "createdAt": "2026-10-27T16:18:46.623Z",
+      "consumedAt": "2026-10-27T16:18:46.639Z"
     }
   ],
   "devices": [
     {
-      "id": "dev_mvqfswsd9ldf",
+      "id": "dev_mvquyvfzxbv1",
       "userId": "usr_manohar_manyu",
-      "deviceName": "Mac Client",
-      "tokenHash": "ac13444dacd0fc2db9b7b0180e5faf01d19fbc0c512d753842176e7a0496186c",
+      "deviceName": "Gaddam Manyu",
+      "tokenHash": "ae84a7670d246c3aabb8d5af9b96be48a40ad802e72e87d1c33a081ae1f06dc5",
       "trustStatus": "active",
-      "pairingTimestamp": "2026-10-27T08:42:06.205Z",
-      "lastSeenTimestamp": "2026-10-27T08:42:12.760Z",
+      "pairingTimestamp": "2026-10-27T15:46:38.639Z",
+      "lastSeenTimestamp": "2026-10-27T15:47:33.738Z",
       "revokedAt": null,
       "capabilities": [
         "capture",
@@ -760,6 +851,478 @@
     }
   ],
   "jobs": [
+    {
+      "id": "job_mvqv01z6hb8vg0",
+      "uploadId": "upl_mvqv01z6ca55",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T15:47:33.762Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvquyvfzxbv1",
+      "deviceName": "Gaddam Manyu",
+      "originalFilename": "IMG_edd558e6-1597-4c94-8442-b43f611adf06.jpg",
+      "storedFilename": "spectra_1793116053744_bde8ee48b88dd832.jpg",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/spectra_1793116053744_bde8ee48b88dd832.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 42449,
+      "mediaCategory": "IMAGE",
+      "sha256": "2d9ce2aa9683a5dc4fb542a83f2d64130f5c2771e1899d6b035257ee67f23022",
+      "forensicReport": {
+        "originalFilename": "IMG_edd558e6-1597-4c94-8442-b43f611adf06.jpg",
+        "detectedType": "image/jpeg",
+        "mediaCategory": "IMAGE",
+        "formatName": "JPEG Image",
+        "fileSize": 42449,
+        "fileSizeBytes": 42449,
+        "fileSizeFormatted": "0.04 MB",
+        "sha256": "2d9ce2aa9683a5dc4fb542a83f2d64130f5c2771e1899d6b035257ee67f23022",
+        "md5": "4d892fb29f4f16e35931a046fc43e88c",
+        "sha1": "db852a8d77b34bded1b3d56f4fe2babed4861ae8",
+        "isJpeg": true,
+        "isPng": false,
+        "isWebp": false,
+        "isVideo": false,
+        "isAudio": false,
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "fNumber": null,
+        "exposureTime": "1/1",
+        "isoRating": null,
+        "focalLength": null,
+        "colorSpace": null,
+        "hasGps": false,
+        "gpsLatitude": null,
+        "gpsLongitude": null,
+        "gpsAltitude": null,
+        "estimatedLocation": null,
+        "entropyScore": 100,
+        "aiMarkerDetected": false,
+        "aiSource": null,
+        "extractedPrompt": null,
+        "metadataTraces": [],
+        "imageSpecs": {
+          "width": 479,
+          "height": 638,
+          "channels": "RGB / YCbCr (3 Channels)",
+          "bitDepth": "8-bit per sample",
+          "resolutionFormatted": "479 x 638 px (0.75:1)"
+        },
+        "videoSpecs": null,
+        "audioSpecs": null,
+        "probability": "11.5%",
+        "verdict": "AUTHENTIC MEDIA (MINIMAL RISK / STRIPPED EXIF)",
+        "indicator": "Standard recompression profile with zero synthetic generative markers",
+        "isAlert": false,
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "status": "VERIFIED",
+            "value": "2d9ce2aa9683a5dc...",
+            "description": "Deterministic SHA-256 fingerprint generated upon intake."
+          },
+          {
+            "name": "IMAGE Container & Format Scan",
+            "status": "VERIFIED",
+            "value": "JPEG Image (0.04 MB)",
+            "description": "Validated binary header bytes against standard image container specifications."
+          },
+          {
+            "name": "Sensor Hardware & Provenance",
+            "status": "METADATA_STRIPPED",
+            "value": "Hardware Tags Stripped",
+            "description": "Media analyzed for optical and temporal sensor consistency."
+          },
+          {
+            "name": "Generative AI Footprint Detection",
+            "status": "NO_AI_MARKERS",
+            "value": "Zero Synthetic Markers Detected (Authentic Human Media)",
+            "description": "Exhaustive scan of container chunks and frequency spectrum confirmed absence of generative AI markers."
+          },
+          {
+            "name": "Agent-Reach Dissemination Scan",
+            "status": "PUBLIC_REPOSTS_FOUND",
+            "value": "4 Public Matches Found",
+            "description": "Correlated with public web repositories and social discussions."
+          }
+        ],
+        "analyzedAt": "2026-10-27T15:47:37.054Z",
+        "provenance": {
+          "mediaCategory": "IMAGE",
+          "formatName": "JPEG Image",
+          "originClassification": "AUTHENTIC_DIGITAL_MEDIA",
+          "device": {
+            "make": "Non-Camera / Web Media (No EXIF)",
+            "model": "Standard Web Image / Digital Raster",
+            "lens": "Not Recorded in Header",
+            "serialNumber": "Not Recorded (Privacy Protected)",
+            "shutterCount": null,
+            "software": "Standard Codec / Encoder (No Custom Software Tag)"
+          },
+          "makernote": {
+            "makernotePresent": false,
+            "manufacturerMatched": null,
+            "cameraMake": null,
+            "cameraModel": null,
+            "hardwareSerialNumber": null,
+            "lensModel": null,
+            "shutterCount": null,
+            "firmware": null,
+            "provenanceTier": "UNVERIFIED_GENERIC_CONTAINER"
+          },
+          "hardwareSensorProvenance": {
+            "manufacturer": null,
+            "isHardwareVerified": false,
+            "provenanceTier": "UNVERIFIED_GENERIC_CONTAINER",
+            "serialNumber": null,
+            "lensModel": null,
+            "shutterCount": null,
+            "firmware": null
+          },
+          "captureSettings": {
+            "aperture": "Not Recorded (No EXIF)",
+            "shutterSpeed": "1/1",
+            "iso": "Not Recorded",
+            "focalLength": "Res: 479 x 638 px (0.75:1)",
+            "colorProfile": "RGB / YCbCr (3 Channels)",
+            "whiteBalance": "Not Recorded",
+            "flashMode": "Not Recorded"
+          },
+          "dimensions": {
+            "width": 479,
+            "height": 638,
+            "channels": "RGB / YCbCr (3 Channels)",
+            "bitDepth": "8-bit per sample",
+            "resolutionFormatted": "479 x 638 px (0.75:1)"
+          },
+          "temporal": {
+            "capturedAt": "Not Recorded in Header",
+            "digitizedAt": "2026-10-27T15:47:37.054Z",
+            "timezone": "Local System Time",
+            "clockSkewSeconds": null
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "No GPS Coordinates Recorded (Privacy Preserved)",
+            "altitude": "Not Recorded",
+            "geofenceDescription": "No Embedded Geolocation Data",
+            "source": "Privacy Preserved"
+          },
+          "generativeDetails": null
+        },
+        "dissemination": {
+          "spreadClassification": "PUBLIC_DISSEMINATION_CONFIRMED",
+          "viralityIndex": "High (Distributed across Social Clusters)",
+          "recompressionGeneration": 1,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Twitter/X compression fingerprints",
+              "evidence": "Preserved lossless chroma"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Reddit repost markers",
+              "evidence": "Sensor noise intact"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachQuery": "IMG edd558e6 1597 4c94 8442 b43f611adf06",
+          "agentReachMatches": [
+            {
+              "title": "IMG_8442",
+              "url": "http://jola.comm.pl/4x4/2006_09_23/6.html",
+              "author": "Public Online Origin",
+              "snippet": "IMG_8442  | | | --- |  IMG_8442 (6/178)  IMG\\_8442 [Index](index.html) [<< Prev](5.html) [Next >>](7.html) |![IMG_8442](IMG_8442.JPG)| IMG\\_8442(6/178) [Index](index.html) [<< Prev...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "image_15.png | Servimg.com - Free image hosting service",
+              "url": "https://servimg.com/view/20001369/8442",
+              "author": "Public Online Origin",
+              "snippet": "image_15.png | Servimg.com - Free image hosting service  # image_15.png     Image url: https://servimg.com/view/20001369/8442 Direct links: https://i.servimg.com/u/f53/20/00/13/69/...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": null,
+              "url": "http://pds-imaging.jpl.nasa.gov/data/magellan/mg_0097_md5.txt",
+              "author": "Public Online Origin",
+              "snippet": "576d6af49550e3c539f675164be1a54f mg_0097/c115n112/c1f31.img dbe1b47295e550a56b9b20ced03993e5 mg_0097/c115n112/browse.img ccf37d77a6cd86904b1c633d3ed0b79a mg_0097/c115n112/c1f31.lbl...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "IMG file format - Macintosh Disk Image",
+              "url": "https://file-extensions.com/docs/img",
+              "author": "Public Online Origin",
+              "snippet": "A raw `.img` has no header of its own and no universal magic number; it is the medium copied straight through, so you identify it by the filesystem embedded inside. A raw optical i...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 4 public web/social intelligence records correlating with \"IMG edd558e6 1597 4c94 8442 b43f611adf06\"."
+        }
+      },
+      "completedAt": "2026-10-27T15:47:37.054Z"
+    },
+    {
+      "id": "job_mvquz4wo2z6tw4",
+      "uploadId": "upl_mvquz4woownr",
+      "status": "completed",
+      "progressPct": 100,
+      "createdAt": "2026-10-27T15:46:50.904Z",
+      "userId": "usr_manohar_manyu",
+      "deviceId": "dev_mvquyvfzxbv1",
+      "deviceName": "Gaddam Manyu",
+      "originalFilename": "wmremove-transformed.png",
+      "storedFilename": "spectra_1793116009913_d18fe2e52cfb0a04.png",
+      "storedPath": "/Users/manyugaddam/.gemini/antigravity/scratch/spectra/uploads/spectra_1793116009913_d18fe2e52cfb0a04.png",
+      "mimeType": "image/png",
+      "sizeBytes": 6463491,
+      "mediaCategory": "IMAGE",
+      "sha256": "47149b5b741746b4e72a7a609cd113e14b52fb169c8b33074de40e1e2937d059",
+      "forensicReport": {
+        "originalFilename": "wmremove-transformed.png",
+        "detectedType": "image/png",
+        "mediaCategory": "IMAGE",
+        "formatName": "Portable Network Graphics (PNG)",
+        "fileSize": 6463491,
+        "fileSizeBytes": 6463491,
+        "fileSizeFormatted": "6.16 MB",
+        "sha256": "47149b5b741746b4e72a7a609cd113e14b52fb169c8b33074de40e1e2937d059",
+        "md5": "051398e35cc1f80f296b3e8bea5253f2",
+        "sha1": "455b1b50174703c8d31b4ec6d750463f3a223be7",
+        "isJpeg": false,
+        "isPng": true,
+        "isWebp": false,
+        "isVideo": false,
+        "isAudio": false,
+        "cameraMake": null,
+        "cameraModel": null,
+        "softwareTag": null,
+        "dateTimeOriginal": null,
+        "fNumber": "f/9",
+        "exposureTime": "1/6",
+        "isoRating": null,
+        "focalLength": null,
+        "colorSpace": null,
+        "hasGps": false,
+        "gpsLatitude": null,
+        "gpsLongitude": null,
+        "gpsAltitude": null,
+        "estimatedLocation": null,
+        "entropyScore": 99,
+        "aiMarkerDetected": false,
+        "aiSource": null,
+        "extractedPrompt": null,
+        "metadataTraces": [],
+        "imageSpecs": {
+          "width": 1536,
+          "height": 2752,
+          "channels": "RGB Truecolor (24-bit)",
+          "bitDepth": "8-bit per channel",
+          "resolutionFormatted": "1536 x 2752 px (0.56:1)"
+        },
+        "videoSpecs": null,
+        "audioSpecs": null,
+        "probability": "11.5%",
+        "verdict": "AUTHENTIC MEDIA (MINIMAL RISK / STRIPPED EXIF)",
+        "indicator": "Standard recompression profile with zero synthetic generative markers",
+        "isAlert": false,
+        "signals": [
+          {
+            "name": "Cryptographic Integrity Check",
+            "status": "VERIFIED",
+            "value": "47149b5b741746b4...",
+            "description": "Deterministic SHA-256 fingerprint generated upon intake."
+          },
+          {
+            "name": "IMAGE Container & Format Scan",
+            "status": "VERIFIED",
+            "value": "Portable Network Graphics (PNG) (6.16 MB)",
+            "description": "Validated binary header bytes against standard image container specifications."
+          },
+          {
+            "name": "Sensor Hardware & Provenance",
+            "status": "METADATA_STRIPPED",
+            "value": "Hardware Tags Stripped",
+            "description": "Media analyzed for optical and temporal sensor consistency."
+          },
+          {
+            "name": "Generative AI Footprint Detection",
+            "status": "NO_AI_MARKERS",
+            "value": "Zero Synthetic Markers Detected (Authentic Human Media)",
+            "description": "Exhaustive scan of container chunks and frequency spectrum confirmed absence of generative AI markers."
+          },
+          {
+            "name": "Agent-Reach Dissemination Scan",
+            "status": "PUBLIC_REPOSTS_FOUND",
+            "value": "4 Public Matches Found",
+            "description": "Correlated with public web repositories and social discussions."
+          }
+        ],
+        "analyzedAt": "2026-10-27T15:46:54.516Z",
+        "provenance": {
+          "mediaCategory": "IMAGE",
+          "formatName": "Portable Network Graphics (PNG)",
+          "originClassification": "AUTHENTIC_DIGITAL_MEDIA",
+          "device": {
+            "make": "Non-Camera / Web Media (No EXIF)",
+            "model": "Standard Web Image / Digital Raster",
+            "lens": "Not Recorded in Header",
+            "serialNumber": "Not Recorded (Privacy Protected)",
+            "shutterCount": null,
+            "software": "Standard Codec / Encoder (No Custom Software Tag)"
+          },
+          "makernote": {
+            "makernotePresent": false,
+            "manufacturerMatched": null,
+            "cameraMake": null,
+            "cameraModel": null,
+            "hardwareSerialNumber": null,
+            "lensModel": null,
+            "shutterCount": null,
+            "firmware": null,
+            "provenanceTier": "UNVERIFIED_GENERIC_CONTAINER"
+          },
+          "hardwareSensorProvenance": {
+            "manufacturer": null,
+            "isHardwareVerified": false,
+            "provenanceTier": "UNVERIFIED_GENERIC_CONTAINER",
+            "serialNumber": null,
+            "lensModel": null,
+            "shutterCount": null,
+            "firmware": null
+          },
+          "captureSettings": {
+            "aperture": "f/9",
+            "shutterSpeed": "1/6",
+            "iso": "Not Recorded",
+            "focalLength": "Res: 1536 x 2752 px (0.56:1)",
+            "colorProfile": "RGB Truecolor (24-bit)",
+            "whiteBalance": "Not Recorded",
+            "flashMode": "Not Recorded"
+          },
+          "dimensions": {
+            "width": 1536,
+            "height": 2752,
+            "channels": "RGB Truecolor (24-bit)",
+            "bitDepth": "8-bit per channel",
+            "resolutionFormatted": "1536 x 2752 px (0.56:1)"
+          },
+          "temporal": {
+            "capturedAt": "Not Recorded in Header",
+            "digitizedAt": "2026-10-27T15:46:54.516Z",
+            "timezone": "Local System Time",
+            "clockSkewSeconds": null
+          },
+          "geolocation": {
+            "hasGpsCoordinates": false,
+            "coordinates": "No GPS Coordinates Recorded (Privacy Preserved)",
+            "altitude": "Not Recorded",
+            "geofenceDescription": "No Embedded Geolocation Data",
+            "source": "Privacy Preserved"
+          },
+          "generativeDetails": null
+        },
+        "dissemination": {
+          "spreadClassification": "PUBLIC_DISSEMINATION_CONFIRMED",
+          "viralityIndex": "High (Distributed across Social Clusters)",
+          "recompressionGeneration": 1,
+          "platforms": [
+            {
+              "name": "Direct Phone Ingestion",
+              "status": "ORIGIN_SOURCE",
+              "footprint": "Direct Wi-Fi Local Transport (No intermediate cloud relays)",
+              "evidence": "Verified peer session token & local socket"
+            },
+            {
+              "name": "WhatsApp Messenger",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero WhatsApp quantization signatures",
+              "evidence": "Original resolution preserved"
+            },
+            {
+              "name": "X (Twitter)",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Twitter/X compression fingerprints",
+              "evidence": "Preserved lossless chroma"
+            },
+            {
+              "name": "Reddit Communities",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Reddit repost markers",
+              "evidence": "Sensor noise intact"
+            },
+            {
+              "name": "Telegram Channel Broadcasts",
+              "status": "NOT_DETECTED",
+              "footprint": "Zero Telegram metadata tags",
+              "evidence": "Full EXIF integrity"
+            }
+          ],
+          "agentReachQuery": "wmremove transformed",
+          "agentReachMatches": [
+            {
+              "title": "wmremove-transformed | The Art of Lumonics",
+              "url": "https://lumonics.net/immersed/wmremove-transformed/",
+              "author": "Barry Raphael",
+              "snippet": "wmremove-transformed | The Art of Lumonics  # wmremove-transformed  ---...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "Wmremove-transformed (1) by cihann1905 on DeviantArt",
+              "url": "https://www.deviantart.com/cihann1905/art/Wmremove-transformed-%281%29-1327590540",
+              "author": "Public Online Origin",
+              "snippet": "Wmremove-transformed (1) by cihann1905 on DeviantArt  cihann1905 on DeviantArt https://www.deviantart.com/cihann1905/art/Wmremove-transformed-%281%29-1327590540 cihann1905  # Wmrem...",
+              "publishedAt": "2026-04-30T09:58:05.000Z",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "wmremove-transformed - OGS - Canada",
+              "url": "https://international.northeastern.edu/ogs-ca/canada/scams-and-safety/wmremove-transformed/",
+              "author": "Public Online Origin",
+              "snippet": "wmremove-transformed - OGS - Canada  # wmremove-transformed  #### Contact OGS   +1.617.373.2310 OGS Service Portal  #### Toronto Campus  #### 375 Queen St W Toronto, ON M5V 2A5 Can...",
+              "publishedAt": "Recent",
+              "reachScore": "High (Verified Search Index)"
+            },
+            {
+              "title": "wmremove-transformed.jpeg by galaxyspoon",
+              "url": "https://www.chart-minder.com/charts/galaxyspoon/wmremove-transformed-jpeg",
+              "author": "Public Online Origin",
+              "snippet": "wmremove-transformed.jpeg by galaxyspoon  ## By galaxyspoon  ### čepice  Fleur De Lis Floral Nordic Scandinavian Traditional  Grid: 43 × 43  Gauge: Custom — 18 sts × 18 rows / 4 in...",
+              "publishedAt": "2025-09-13T00:00:00.000Z",
+              "reachScore": "High (Verified Search Index)"
+            }
+          ],
+          "agentReachSummary": "Agent-Reach identified 4 public web/social intelligence records correlating with \"wmremove transformed\"."
+        }
+      },
+      "completedAt": "2026-10-27T15:46:54.516Z"
+    },
     {
       "id": "job_mvqft1vej8k5tz",
       "uploadId": "upl_mvqft1ve916h",
