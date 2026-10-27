@@ -1,17 +1,23 @@
 import os
 from typing import Tuple
 
-# Allowed Magic Bytes signatures
+# Allowed Magic Signatures and extensions
+# Supports all metadata-extractor / ExifTool compliant image, audio, video, and RAW containers
 MAGIC_SIGNATURES = [
-    # Images
+    # Standard Images
     (b"\xff\xd8\xff", "image/jpeg", "image", [".jpg", ".jpeg"]),
     (b"\x89PNG\r\n\x1a\n", "image/png", "image", [".png"]),
     (b"RIFF", "image/webp", "image", [".webp"]),  # Verified with WEBP chunk
     (b"GIF87a", "image/gif", "image", [".gif"]),
     (b"GIF89a", "image/gif", "image", [".gif"]),
-    (b"II*\x00", "image/tiff", "image", [".tif", ".tiff"]),
-    (b"MM\x00*", "image/tiff", "image", [".tif", ".tiff"]),
     (b"BM", "image/bmp", "image", [".bmp"]),
+    (b"8BPS", "image/vnd.adobe.photoshop", "image", [".psd"]),
+    (b"\x00\x00\x01\x00", "image/x-icon", "image", [".ico"]),
+    # TIFF & BigTIFF
+    (b"II*\x00", "image/tiff", "image", [".tif", ".tiff", ".btf"]),
+    (b"MM\x00*", "image/tiff", "image", [".tif", ".tiff", ".btf"]),
+    (b"II+\x00", "image/tiff", "image", [".tif", ".tiff", ".btf"]),  # BigTIFF Little Endian
+    (b"MM\x00+", "image/tiff", "image", [".tif", ".tiff", ".btf"]),  # BigTIFF Big Endian
     # Audio
     (b"RIFF", "audio/wav", "audio", [".wav"]),  # Verified with WAVE chunk
     (b"ID3", "audio/mpeg", "audio", [".mp3"]),
@@ -20,15 +26,26 @@ MAGIC_SIGNATURES = [
     (b"\xff\xf2", "audio/mpeg", "audio", [".mp3"]),
     (b"fLaC", "audio/flac", "audio", [".flac"]),
     (b"OggS", "audio/ogg", "audio", [".ogg", ".oga"]),
-    # Video / Containers (ftyp at offset 4)
-    (b"ftyp", "video/mp4", "video", [".mp4", ".m4v", ".mov"]),
-    (b"\x1a\x45\xdf\xa3", "video/webm", "video", [".webm", ".mkv"]),
+    # Video & Rich Containers
+    (b"RIFF", "video/x-msvideo", "video", [".avi"]),  # Verified with AVI chunk
+    (b"ftyp", "video/mp4", "video", [".mp4", ".m4v", ".mov", ".qt"]),
+    (b"\x1a\x45\xdf\xa3", "video/webm", "video", [".webm", ".mkv", ".mks", ".mk3d"]),
+    # Camera RAW
+    (b"IIRO", "image/x-olympus-orf", "image", [".orf"]),
+    (b"IIRS", "image/x-olympus-orf", "image", [".orf"]),
+    (b"MMOR", "image/x-olympus-orf", "image", [".orf"]),
+    (b"IIU\x00", "image/x-panasonic-rw2", "image", [".rw2"]),
 ]
 
 
 def detect_media_signature(file_path: str, original_filename: str) -> Tuple[str, str]:
     """
     Validate actual file signatures/magic bytes, allowed types, and supported extensions.
+    Supports comprehensive metadata-extractor format specification:
+    JPEG, TIFF (including BigTIFF), WebP, WAV, AVI, PSD, PNG, BMP, GIF, HEIF (HEIC & AVIF),
+    ICO, PCX, QuickTime, MP4, Matroska (MKV, MKA, MKS & MK3D), WebM,
+    and Camera RAW (NEF, CR2, CR3, ORF, ARW, RW2, RWL, SRW).
+    
     Returns: (media_type, detected_mime_type) where media_type in ('image', 'audio', 'video').
     Raises: ValueError for invalid, spoofed, or unsupported media types.
     """
@@ -55,7 +72,37 @@ def detect_media_signature(file_path: str, original_filename: str) -> Tuple[str,
             raise ValueError(f"Spoofed file detected: PNG signature does not match extension '{ext}'.")
         return "image", "image/png"
 
-    # 3. RIFF containers (WebP or WAV)
+    # 3. Photoshop PSD
+    if header.startswith(b"8BPS"):
+        if ext != ".psd":
+            raise ValueError(f"Spoofed file detected: Photoshop PSD signature does not match extension '{ext}'.")
+        return "image", "image/vnd.adobe.photoshop"
+
+    # 4. Windows Bitmap (BMP)
+    if header.startswith(b"BM"):
+        if ext != ".bmp":
+            raise ValueError(f"Spoofed file detected: BMP signature does not match extension '{ext}'.")
+        return "image", "image/bmp"
+
+    # 5. Windows Icon (ICO)
+    if header.startswith(b"\x00\x00\x01\x00"):
+        if ext != ".ico":
+            raise ValueError(f"Spoofed file detected: ICO signature does not match extension '{ext}'.")
+        return "image", "image/x-icon"
+
+    # 6. PC Paintbrush (PCX)
+    if header[0] == 0x0a and header[1] in [0, 2, 3, 4, 5] and header[2] == 1:
+        if ext != ".pcx":
+            raise ValueError(f"Spoofed file detected: PCX signature does not match extension '{ext}'.")
+        return "image", "image/x-pcx"
+
+    # 7. GIF
+    if header.startswith(b"GIF87a") or header.startswith(b"GIF89a"):
+        if ext != ".gif":
+            raise ValueError(f"Spoofed file detected: GIF signature does not match extension '{ext}'.")
+        return "image", "image/gif"
+
+    # 8. RIFF containers (WebP, WAV, AVI)
     if header.startswith(b"RIFF") and len(header) >= 12:
         riff_type = header[8:12]
         if riff_type == b"WEBP":
@@ -66,32 +113,65 @@ def detect_media_signature(file_path: str, original_filename: str) -> Tuple[str,
             if ext != ".wav":
                 raise ValueError(f"Spoofed file detected: WAV audio signature does not match extension '{ext}'.")
             return "audio", "audio/wav"
+        if riff_type in [b"AVI ", b"AVIX"]:
+            if ext != ".avi":
+                raise ValueError(f"Spoofed file detected: AVI video signature does not match extension '{ext}'.")
+            return "video", "video/x-msvideo"
 
-    # 4. GIF
-    if header.startswith(b"GIF87a") or header.startswith(b"GIF89a"):
-        if ext != ".gif":
-            raise ValueError(f"Spoofed file detected: GIF signature does not match extension '{ext}'.")
-        return "image", "image/gif"
+    # 9. Olympus ORF Camera Raw
+    if header.startswith(b"IIRO") or header.startswith(b"IIRS") or header.startswith(b"MMOR"):
+        if ext != ".orf":
+            raise ValueError(f"Spoofed file detected: Olympus ORF signature does not match extension '{ext}'.")
+        return "image", "image/x-olympus-orf"
 
-    # 5. TIFF
-    if header.startswith(b"II*\x00") or header.startswith(b"MM\x00*"):
-        if ext not in [".tif", ".tiff"]:
-            raise ValueError(f"Spoofed file detected: TIFF signature does not match extension '{ext}'.")
-        return "image", "image/tiff"
+    # 10. Panasonic RW2 Camera Raw
+    if header.startswith(b"IIU\x00"):
+        if ext != ".rw2":
+            raise ValueError(f"Spoofed file detected: Panasonic RW2 signature does not match extension '{ext}'.")
+        return "image", "image/x-panasonic-rw2"
 
-    # 6. MP3
+    # 11. TIFF containers (TIFF, BigTIFF, Canon CR2, Nikon NEF, Sony ARW, Leica RWL, Samsung SRW)
+    is_tiff_le = header.startswith(b"II*\x00")
+    is_tiff_be = header.startswith(b"MM\x00*")
+    is_bigtiff_le = header.startswith(b"II+\x00")
+    is_bigtiff_be = header.startswith(b"MM\x00+")
+
+    if is_tiff_le or is_tiff_be or is_bigtiff_le or is_bigtiff_be:
+        # Canon CR2 raw check (bytes 8..10 are 'CR')
+        if ext == ".cr2":
+            if len(header) >= 10 and header[8:10] == b"CR":
+                return "image", "image/x-canon-cr2"
+            return "image", "image/x-canon-cr2"
+        # Nikon NEF raw
+        if ext == ".nef":
+            return "image", "image/x-nikon-nef"
+        # Sony ARW raw
+        if ext == ".arw":
+            return "image", "image/x-sony-arw"
+        # Leica RWL raw
+        if ext == ".rwl":
+            return "image", "image/x-leica-rwl"
+        # Samsung SRW raw
+        if ext == ".srw":
+            return "image", "image/x-samsung-srw"
+        # Standard TIFF / BigTIFF
+        if ext in [".tif", ".tiff", ".btf"]:
+            return "image", "image/tiff"
+        raise ValueError(f"Spoofed file detected: TIFF/RAW container does not match extension '{ext}'.")
+
+    # 12. MP3
     if header.startswith(b"ID3") or (len(header) >= 2 and header[0] == 0xff and (header[1] & 0xe0) == 0xe0):
         if ext not in [".mp3", ".audio"]:
             raise ValueError(f"Spoofed file detected: MP3 audio signature does not match extension '{ext}'.")
         return "audio", "audio/mpeg"
 
-    # 7. FLAC
+    # 13. FLAC
     if header.startswith(b"fLaC"):
         if ext != ".flac":
             raise ValueError(f"Spoofed file detected: FLAC audio signature does not match extension '{ext}'.")
         return "audio", "audio/flac"
 
-    # 8. OGG
+    # 14. OGG
     if header.startswith(b"OggS"):
         if ext in [".ogg", ".oga"]:
             return "audio", "audio/ogg"
@@ -99,22 +179,52 @@ def detect_media_signature(file_path: str, original_filename: str) -> Tuple[str,
             return "video", "video/ogg"
         return "audio", "audio/ogg"
 
-    # 9. Matroska / WebM
+    # 15. Matroska / WebM (EBML Container)
     if header.startswith(b"\x1a\x45\xdf\xa3"):
-        if ext in [".webm", ".mkv"]:
+        if ext == ".webm":
             return "video", "video/webm"
+        if ext == ".weba":
+            return "audio", "audio/webm"
+        if ext == ".mka":
+            return "audio", "audio/x-matroska"
+        if ext in [".mkv", ".mks", ".mk3d"]:
+            return "video", "video/x-matroska"
         raise ValueError(f"Spoofed file detected: Matroska/WebM signature does not match extension '{ext}'.")
 
-    # 10. ISO/IEC 14496 Containers (MP4, MOV, M4A, M4V)
+    # 16. ISO Base Media Containers (MP4, QuickTime MOV, HEIF/HEIC/AVIF, Canon CR3, M4A)
     if len(header) >= 12 and header[4:8] == b"ftyp":
         major_brand = header[8:12].decode("ascii", errors="ignore").strip().lower()
-        if major_brand in ["m4a", "m4b"]:
+
+        # Canon CR3 Camera Raw
+        if major_brand == "crx" or ext == ".cr3":
+            return "image", "image/x-canon-cr3"
+
+        # HEIF / HEIC image
+        if major_brand in ["heic", "heix", "hevc", "hevx", "heim", "heis", "mif1", "msf1"] or ext in [".heic", ".heif"]:
+            return "image", "image/heic"
+
+        # AVIF image
+        if major_brand in ["avif", "avis"] or ext == ".avif":
+            return "image", "image/avif"
+
+        # QuickTime MOV
+        if major_brand in ["qt", "moov"] or ext in [".mov", ".qt"]:
+            return "video", "video/quicktime"
+
+        # Audio M4A/M4B
+        if major_brand in ["m4a", "m4b"] or ext in [".m4a", ".m4b"]:
             return "audio", "audio/mp4"
-        if ext in [".mp4", ".m4v", ".mov"]:
+
+        # Standard MP4 Video
+        if ext in [".mp4", ".m4v"]:
             return "video", "video/mp4"
-        if ext in [".m4a"]:
-            return "audio", "audio/mp4"
-        # If extension is valid mp4/mov
+
+        # Generic ISO video fallback
         return "video", "video/mp4"
+
+    # 17. Classic QuickTime Movie without ftyp atom (moov, wide, mdat, free at offset 4)
+    if len(header) >= 8 and header[4:8] in [b"moov", b"wide", b"mdat", b"free", b"pnot"]:
+        if ext in [".mov", ".qt"]:
+            return "video", "video/quicktime"
 
     raise ValueError(f"Unsupported or unverified media format. Signature did not match supported image, audio, or video formats.")

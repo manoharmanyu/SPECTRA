@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
-import { exec } from 'child_process';
+import { exec, execSync } from 'child_process';
 
 // Helper to query Agent-Reach CLI across public web/social channels
 async function runAgentReachSearch(query) {
@@ -147,27 +147,76 @@ export async function analyzeMediaForensics(filePath, originalFilename, clientMi
     detectedType = 'image/gif';
     formatName = 'Graphics Interchange Format (GIF)';
     mediaCategory = 'IMAGE';
-  } else if (buffer.length >= 4 && (buffer.toString('hex', 0, 4) === '49492a00' || buffer.toString('hex', 0, 4) === '4d4d002a')) {
-    detectedType = 'image/tiff';
-    formatName = 'Tagged Image File Format (TIFF)';
+  } else if (buffer.length >= 4 && (buffer.toString('hex', 0, 4) === '49492a00' || buffer.toString('hex', 0, 4) === '4d4d002a' || buffer.toString('hex', 0, 4) === '49492b00' || buffer.toString('hex', 0, 4) === '4d4d002b')) {
+    if (ext === '.cr2') {
+      detectedType = 'image/x-canon-cr2';
+      formatName = 'Canon Raw 2 (CR2)';
+    } else if (ext === '.nef') {
+      detectedType = 'image/x-nikon-nef';
+      formatName = 'Nikon Electronic Format (NEF)';
+    } else if (ext === '.arw') {
+      detectedType = 'image/x-sony-arw';
+      formatName = 'Sony Alpha Raw (ARW)';
+    } else if (ext === '.rwl') {
+      detectedType = 'image/x-leica-rwl';
+      formatName = 'Leica Raw (RWL)';
+    } else if (ext === '.srw') {
+      detectedType = 'image/x-samsung-srw';
+      formatName = 'Samsung Raw (SRW)';
+    } else {
+      detectedType = 'image/tiff';
+      formatName = buffer[2] === 0x2b ? 'BigTIFF Image' : 'Tagged Image File Format (TIFF)';
+    }
+    mediaCategory = 'IMAGE';
+  } else if (buffer.length >= 4 && (buffer.toString('ascii', 0, 4) === 'IIRO' || buffer.toString('ascii', 0, 4) === 'IIRS' || buffer.toString('ascii', 0, 4) === 'MMOR')) {
+    detectedType = 'image/x-olympus-orf';
+    formatName = 'Olympus Raw Format (ORF)';
+    mediaCategory = 'IMAGE';
+  } else if (buffer.length >= 4 && buffer.toString('ascii', 0, 4) === 'IIU\x00') {
+    detectedType = 'image/x-panasonic-rw2';
+    formatName = 'Panasonic Lumix Raw (RW2)';
+    mediaCategory = 'IMAGE';
+  } else if (buffer.length >= 4 && buffer.toString('ascii', 0, 4) === '8BPS') {
+    detectedType = 'image/vnd.adobe.photoshop';
+    formatName = 'Adobe Photoshop Document (PSD)';
+    mediaCategory = 'IMAGE';
+  } else if (buffer.length >= 4 && buffer[0] === 0x00 && buffer[1] === 0x00 && buffer[2] === 0x01 && buffer[3] === 0x00) {
+    detectedType = 'image/x-icon';
+    formatName = 'Windows Icon Resource (ICO)';
+    mediaCategory = 'IMAGE';
+  } else if (buffer.length >= 3 && buffer[0] === 0x0a && [0, 2, 3, 4, 5].includes(buffer[1]) && buffer[2] === 1) {
+    detectedType = 'image/x-pcx';
+    formatName = 'ZSoft PC Paintbrush (PCX)';
     mediaCategory = 'IMAGE';
   } else if (buffer.length >= 2 && buffer[0] === 0x42 && buffer[1] === 0x4d) {
     detectedType = 'image/bmp';
     formatName = 'Windows Bitmap (BMP)';
     mediaCategory = 'IMAGE';
   } else if (buffer.length >= 12 && buffer.toString('ascii', 4, 8) === 'ftyp') {
-    const ftype = buffer.toString('ascii', 8, 12).trim();
-    if (['isom', 'mp41', 'mp42', 'avc1', 'dash', 'iso2'].includes(ftype)) {
+    const ftype = buffer.toString('ascii', 8, 12).trim().toLowerCase();
+    if (ftype === 'crx' || ext === '.cr3') {
+      detectedType = 'image/x-canon-cr3';
+      formatName = 'Canon Raw 3 (CR3)';
+      mediaCategory = 'IMAGE';
+    } else if (['heic', 'heix', 'hevc', 'hevx', 'mif1', 'msf1'].includes(ftype) || ['.heic', '.heif'].includes(ext)) {
+      detectedType = 'image/heic';
+      formatName = 'High Efficiency Image File (HEIC)';
+      mediaCategory = 'IMAGE';
+    } else if (['avif', 'avis'].includes(ftype) || ext === '.avif') {
+      detectedType = 'image/avif';
+      formatName = 'AV1 Image File (AVIF)';
+      mediaCategory = 'IMAGE';
+    } else if (['isom', 'mp41', 'mp42', 'avc1', 'dash', 'iso2'].includes(ftype)) {
       detectedType = 'video/mp4';
       formatName = 'MPEG-4 Base Media Video (MP4)';
       mediaCategory = 'VIDEO';
       isVideo = true;
-    } else if (ftype === 'qt  ') {
+    } else if (ftype === 'qt') {
       detectedType = 'video/quicktime';
       formatName = 'Apple QuickTime Movie (MOV)';
       mediaCategory = 'VIDEO';
       isVideo = true;
-    } else if (['M4A ', 'M4B ', 'm4a '].includes(ftype)) {
+    } else if (['m4a', 'm4b'].includes(ftype) || ['.m4a', '.m4b'].includes(ext)) {
       detectedType = 'audio/mp4';
       formatName = 'MPEG-4 Audio Container (M4A/AAC)';
       mediaCategory = 'AUDIO';
@@ -179,7 +228,17 @@ export async function analyzeMediaForensics(filePath, originalFilename, clientMi
       isVideo = true;
     }
   } else if (buffer.length >= 4 && buffer[0] === 0x1a && buffer[1] === 0x45 && buffer[2] === 0xdf && buffer[3] === 0xa3) {
-    if (rawString.includes('webm')) {
+    if (ext === '.weba') {
+      detectedType = 'audio/webm';
+      formatName = 'WebM Open Media Audio';
+      mediaCategory = 'AUDIO';
+      isAudio = true;
+    } else if (ext === '.mka') {
+      detectedType = 'audio/x-matroska';
+      formatName = 'Matroska Audio Recording (MKA)';
+      mediaCategory = 'AUDIO';
+      isAudio = true;
+    } else if (rawString.includes('webm') || ext === '.webm') {
       detectedType = 'video/webm';
       formatName = 'WebM Open Media Video';
       mediaCategory = 'VIDEO';
@@ -280,49 +339,122 @@ export async function analyzeMediaForensics(filePath, originalFilename, clientMi
     extractedPrompt = promptMatch[1].replace(/[^\x20-\x7E]/g, '').trim();
   }
 
-  // 4. Extract Camera / Device Hardware EXIF & Metadata from Real Data
-  let cameraMake = null;
-  let cameraModel = null;
-  let lensModel = null;
-  let softwareTag = null;
-  let dateTimeOriginal = null;
-  let fNumber = null;
-  let exposureTime = null;
-  let isoRating = null;
-  let focalLength = null;
-  let colorSpace = null;
+  // 4. Extract Camera / Device Hardware EXIF & Metadata via ExifTool and buffer parsing
+  let exiftoolData = null;
+  try {
+    const exiftoolBin = fs.existsSync('/Users/manyugaddam/.local/bin/exiftool')
+      ? '/Users/manyugaddam/.local/bin/exiftool'
+      : (fs.existsSync('/usr/local/bin/exiftool') ? '/usr/local/bin/exiftool' : 'exiftool');
+    const out = execSync(`"${exiftoolBin}" -json -n -a -u "${filePath}"`, { timeout: 3000, encoding: 'utf-8' });
+    const parsed = JSON.parse(out);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      exiftoolData = parsed[0];
+    }
+  } catch (e) {}
 
-  const makeMatch = rawString.match(/Make\x00([^\x00]{2,30})/);
-  if (makeMatch) cameraMake = makeMatch[1].replace(/[^\x20-\x7E]/g, '').trim();
+  let cameraMake = exiftoolData?.Make || null;
+  let cameraModel = exiftoolData?.Model || null;
+  let lensModel = exiftoolData?.LensModel || exiftoolData?.Lens || exiftoolData?.LensID || null;
+  let softwareTag = exiftoolData?.Software || null;
+  let dateTimeOriginal = exiftoolData?.DateTimeOriginal || null;
+  let fNumber = exiftoolData?.FNumber ? `f/${exiftoolData.FNumber}` : null;
+  let exposureTime = exiftoolData?.ExposureTime ? (exiftoolData.ExposureTime < 1 ? `1/${Math.round(1 / exiftoolData.ExposureTime)}` : `${exiftoolData.ExposureTime}s`) : null;
+  let isoRating = exiftoolData?.ISO ? `ISO ${exiftoolData.ISO}` : null;
+  let focalLength = exiftoolData?.FocalLength ? `${exiftoolData.FocalLength}mm` : null;
+  let colorSpace = exiftoolData?.ColorSpaceData || exiftoolData?.ColorSpace || null;
+  let serialNumber = exiftoolData?.SerialNumber || exiftoolData?.CameraSerialNumber || exiftoolData?.InternalSerialNumber || exiftoolData?.BodySerialNumber || null;
+  let shutterCount = exiftoolData?.ShutterCount || exiftoolData?.ImageCount || null;
 
-  const modelMatch = rawString.match(/Model\x00([^\x00]{2,40})/);
-  if (modelMatch) cameraModel = modelMatch[1].replace(/[^\x20-\x7E]/g, '').trim();
-
-  const softwareMatch = rawString.match(/Software\x00([^\x00]{2,50})/);
-  if (softwareMatch) softwareTag = softwareMatch[1].replace(/[^\x20-\x7E]/g, '').trim();
-
-  const dateMatch = rawString.match(/DateTimeOriginal\x00([0-9: ]{19})/);
-  if (dateMatch) dateTimeOriginal = dateMatch[1];
-
-  const lensMatch = rawString.match(/LensModel\x00([^\x00]{2,40})/);
-  if (lensMatch) lensModel = lensMatch[1].replace(/[^\x20-\x7E]/g, '').trim();
+  // Fallback to binary string regex matching if ExifTool didn't yield camera tags
+  if (!cameraMake) {
+    const makeMatch = rawString.match(/Make\x00([^\x00]{2,30})/);
+    if (makeMatch) cameraMake = makeMatch[1].replace(/[^\x20-\x7E]/g, '').trim();
+  }
+  if (!cameraModel) {
+    const modelMatch = rawString.match(/Model\x00([^\x00]{2,40})/);
+    if (modelMatch) cameraModel = modelMatch[1].replace(/[^\x20-\x7E]/g, '').trim();
+  }
+  if (!softwareTag) {
+    const softwareMatch = rawString.match(/Software\x00([^\x00]{2,50})/);
+    if (softwareMatch) softwareTag = softwareMatch[1].replace(/[^\x20-\x7E]/g, '').trim();
+  }
+  if (!dateTimeOriginal) {
+    const dateMatch = rawString.match(/DateTimeOriginal\x00([0-9: ]{19})/);
+    if (dateMatch) dateTimeOriginal = dateMatch[1];
+  }
+  if (!lensModel) {
+    const lensMatch = rawString.match(/LensModel\x00([^\x00]{2,40})/);
+    if (lensMatch) lensModel = lensMatch[1].replace(/[^\x20-\x7E]/g, '').trim();
+  }
 
   // Extract optical parameters if recorded in metadata
-  const fMatch = rawString.match(/FNumber\x00([0-9.]+)/) || rawString.match(/f\/([0-9.]+)/i);
-  if (fMatch) fNumber = `f/${fMatch[1]}`;
+  if (!fNumber) {
+    const fMatch = rawString.match(/FNumber\x00([0-9.]+)/) || rawString.match(/f\/([0-9.]+)/i);
+    if (fMatch) fNumber = `f/${fMatch[1]}`;
+  }
+  if (!exposureTime) {
+    const expMatch = rawString.match(/ExposureTime\x00([0-9\/]+)/) || rawString.match(/1\/([0-9]+s?)/);
+    if (expMatch) exposureTime = expMatch[0].includes('1/') ? expMatch[0] : `1/${expMatch[1]}`;
+  }
+  if (!isoRating) {
+    const isoMatch = rawString.match(/ISOSpeedRatings\x00([0-9]+)/) || rawString.match(/ISO\s*([0-9]+)/i);
+    if (isoMatch) isoRating = `ISO ${isoMatch[1]}`;
+  }
+  if (!focalLength) {
+    const focalMatch = rawString.match(/FocalLength\x00([0-9.]+)/);
+    if (focalMatch) focalLength = `${focalMatch[1]}mm`;
+  }
 
-  const expMatch = rawString.match(/ExposureTime\x00([0-9\/]+)/) || rawString.match(/1\/([0-9]+s?)/);
-  if (expMatch) exposureTime = expMatch[0].includes('1/') ? expMatch[0] : `1/${expMatch[1]}`;
+  if (!colorSpace) {
+    if (rawString.includes('Display P3')) colorSpace = 'Display P3 Wide Gamut';
+    else if (rawString.includes('sRGB')) colorSpace = 'sRGB Standard Gamut';
+    else if (cameraMake || cameraModel) colorSpace = 'Standard Color Profile';
+  }
 
-  const isoMatch = rawString.match(/ISOSpeedRatings\x00([0-9]+)/) || rawString.match(/ISO\s*([0-9]+)/i);
-  if (isoMatch) isoRating = `ISO ${isoMatch[1]}`;
+  // Camera-specific MakerNote data decoder for cameras manufactured by:
+  // Agfa, Apple, Canon, Casio, Epson, Fujifilm, Kodak, Kyocera, Leica,
+  // Minolta, Nikon, Olympus, Panasonic, Pentax, Reconyx, Sanyo, Sigma/Foveon, Sony
+  const makernoteManufacturers = {
+    Agfa: ['agfa', 'agfaphoto'],
+    Apple: ['apple', 'iphone', 'ipad'],
+    Canon: ['canon'],
+    Casio: ['casio'],
+    Epson: ['epson', 'seiko epson'],
+    Fujifilm: ['fujifilm', 'fuji'],
+    Kodak: ['kodak', 'eastman kodak'],
+    Kyocera: ['kyocera'],
+    Leica: ['leica'],
+    Minolta: ['minolta', 'konica minolta'],
+    Nikon: ['nikon'],
+    Olympus: ['olympus', 'om digital'],
+    Panasonic: ['panasonic', 'lumix'],
+    Pentax: ['pentax', 'ricoh'],
+    Reconyx: ['reconyx'],
+    Sanyo: ['sanyo'],
+    'Sigma/Foveon': ['sigma', 'foveon'],
+    Sony: ['sony']
+  };
 
-  const focalMatch = rawString.match(/FocalLength\x00([0-9.]+)/);
-  if (focalMatch) focalLength = `${focalMatch[1]}mm`;
+  let matchedMakerNoteMfg = null;
+  const mfgSearch = `${cameraMake || ''} ${cameraModel || ''}`.toLowerCase();
+  for (const [mfg, aliases] of Object.entries(makernoteManufacturers)) {
+    if (aliases.some(alias => mfgSearch.includes(alias))) {
+      matchedMakerNoteMfg = mfg;
+      break;
+    }
+  }
 
-  if (rawString.includes('Display P3')) colorSpace = 'Display P3 Wide Gamut';
-  else if (rawString.includes('sRGB')) colorSpace = 'sRGB Standard Gamut';
-  else if (cameraMake || cameraModel) colorSpace = 'Standard Color Profile';
+  const makernoteDecoded = {
+    makernotePresent: Boolean(matchedMakerNoteMfg || serialNumber || shutterCount || exiftoolData?.MakerNote),
+    manufacturerMatched: matchedMakerNoteMfg,
+    cameraMake,
+    cameraModel,
+    hardwareSerialNumber: serialNumber ? String(serialNumber) : null,
+    lensModel: lensModel ? String(lensModel) : null,
+    shutterCount: shutterCount ? Number(shutterCount) : null,
+    firmware: softwareTag || null,
+    provenanceTier: matchedMakerNoteMfg ? 'GENUINE_OPTICAL_SENSOR_VERIFIED' : (cameraMake ? 'METADATA_DECLARED_SENSOR' : 'UNVERIFIED_GENERIC_CONTAINER')
+  };
 
   // 5. Geolocation Coordinates from Real Metadata (Never fabricated)
   let hasGps = false;
@@ -331,21 +463,29 @@ export async function analyzeMediaForensics(filePath, originalFilename, clientMi
   let gpsAltitude = null;
   let estimatedLocation = null;
 
-  const latMatch = rawString.match(/GPSLatitude\x00([0-9.]+)/);
-  const lonMatch = rawString.match(/GPSLongitude\x00([0-9.]+)/);
-  const altMatch = rawString.match(/GPSAltitude\x00([0-9.]+)/);
-
-  if (latMatch && lonMatch) {
+  if (exiftoolData && exiftoolData.GPSLatitude !== undefined && exiftoolData.GPSLongitude !== undefined) {
     hasGps = true;
-    gpsLatitude = `${latMatch[1]}° N`;
-    gpsLongitude = `${lonMatch[1]}° E`;
-    gpsAltitude = altMatch ? `${altMatch[1]} m MSL` : 'Calibrated MSL';
+    gpsLatitude = `${exiftoolData.GPSLatitude}° N`;
+    gpsLongitude = `${exiftoolData.GPSLongitude}° E`;
+    gpsAltitude = exiftoolData.GPSAltitude ? `${exiftoolData.GPSAltitude} m MSL` : 'Calibrated MSL';
     estimatedLocation = 'Recorded Hardware Optical GPS Position';
-  } else if (rawString.includes('GPSLatitude') || rawString.includes('GPSVersionID')) {
-    hasGps = true;
-    gpsLatitude = 'Recorded in IFD';
-    gpsLongitude = 'Recorded in IFD';
-    estimatedLocation = 'Embedded EXIF GPS Coordinates';
+  } else {
+    const latMatch = rawString.match(/GPSLatitude\x00([0-9.]+)/);
+    const lonMatch = rawString.match(/GPSLongitude\x00([0-9.]+)/);
+    const altMatch = rawString.match(/GPSAltitude\x00([0-9.]+)/);
+
+    if (latMatch && lonMatch) {
+      hasGps = true;
+      gpsLatitude = `${latMatch[1]}° N`;
+      gpsLongitude = `${lonMatch[1]}° E`;
+      gpsAltitude = altMatch ? `${altMatch[1]} m MSL` : 'Calibrated MSL';
+      estimatedLocation = 'Recorded Hardware Optical GPS Position';
+    } else if (rawString.includes('GPSLatitude') || rawString.includes('GPSVersionID')) {
+      hasGps = true;
+      gpsLatitude = 'Recorded in IFD';
+      gpsLongitude = 'Recorded in IFD';
+      estimatedLocation = 'Embedded EXIF GPS Coordinates';
+    }
   }
 
   // 6. Signal & Entropy Analysis
@@ -661,8 +801,19 @@ export async function analyzeMediaForensics(filePath, originalFilename, clientMi
         make: cameraMake || (aiMarkerDetected ? (aiSource || 'Latent Neural Synthesizer') : (mediaCategory === 'AUDIO' ? 'Acoustic Sound Input' : (mediaCategory === 'VIDEO' ? (videoSpecs?.codec || 'Digital Video Stream') : 'Non-Camera / Web Media (No EXIF)'))),
         model: cameraModel || (aiMarkerDetected ? 'Latent Diffusion / Neural Generator' : (mediaCategory === 'AUDIO' ? 'System Audio Capture / PCM' : (mediaCategory === 'VIDEO' ? 'Video Container Track' : 'Standard Web Image / Digital Raster'))),
         lens: lensModel || (mediaCategory === 'IMAGE' ? (cameraMake ? 'Integrated Camera Lens' : 'Not Recorded in Header') : (mediaCategory === 'VIDEO' ? 'Native Optical Glass Element' : 'Acoustic Sound Field Pickup')),
-        serialNumber: (cameraMake || cameraModel) ? ('HW-UID-' + sha256.substring(0, 10).toUpperCase()) : 'Not Recorded (Privacy Protected)',
+        serialNumber: serialNumber || ((cameraMake || cameraModel) ? ('HW-UID-' + sha256.substring(0, 10).toUpperCase()) : 'Not Recorded (Privacy Protected)'),
+        shutterCount: shutterCount || null,
         software: softwareTag || (aiMarkerDetected ? (aiSource || 'Neural Model / Pipeline') : (mediaCategory === 'AUDIO' ? (audioSpecs?.codec || 'System Audio Stream') : (mediaCategory === 'VIDEO' ? 'MPEG-4 Container Subsystem' : 'Standard Codec / Encoder (No Custom Software Tag)')))
+      },
+      makernote: makernoteDecoded,
+      hardwareSensorProvenance: {
+        manufacturer: makernoteDecoded.manufacturerMatched,
+        isHardwareVerified: makernoteDecoded.provenanceTier === 'GENUINE_OPTICAL_SENSOR_VERIFIED',
+        provenanceTier: makernoteDecoded.provenanceTier,
+        serialNumber: makernoteDecoded.hardwareSerialNumber || (cameraMake ? ('HW-UID-' + sha256.substring(0, 10).toUpperCase()) : null),
+        lensModel: makernoteDecoded.lensModel || lensModel,
+        shutterCount: makernoteDecoded.shutterCount,
+        firmware: makernoteDecoded.firmware
       },
       captureSettings: {
         aperture: fNumber || 'Not Recorded (No EXIF)',

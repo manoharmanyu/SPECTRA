@@ -57,23 +57,42 @@ class AnalysisService:
 
         metadata = await extract_media_metadata(local_path, job.media_type, job.detected_mime_type)
 
-        # Derive provenance classification from genuine facts
+        # Derive origin and hardware sensor provenance from genuine facts
         provenance = {
             "origin_classification": "AUTHENTIC_DIGITAL_MEDIA",
             "sensor_make": None,
             "sensor_model": None,
-            "is_camera_source": False
+            "hardware_serial_number": None,
+            "lens_model": None,
+            "shutter_count": None,
+            "makernote_manufacturer": None,
+            "is_camera_source": False,
+            "hardware_sensor_verified": False
         }
 
         if job.media_type == "image":
-            exif = metadata.get("exif", {})
-            if exif.get("make") or exif.get("model"):
+            exif = metadata.get("exif") or {}
+            makernote = metadata.get("makernote") or {}
+            provenance_clues = metadata.get("provenance_clues") or {}
+            ai_tags = provenance_clues.get("ai_metadata_tags") or []
+
+            if ai_tags:
+                provenance["origin_classification"] = "SYNTHETIC_GENERATIVE"
+            elif makernote.get("makernote_present") or makernote.get("provenance_tier") == "GENUINE_OPTICAL_SENSOR_VERIFIED":
+                provenance["origin_classification"] = "OPTICAL_HARDWARE_SENSOR_VERIFIED"
+                provenance["sensor_make"] = makernote.get("camera_make") or exif.get("make")
+                provenance["sensor_model"] = makernote.get("camera_model") or exif.get("model")
+                provenance["hardware_serial_number"] = makernote.get("hardware_serial_number")
+                provenance["lens_model"] = makernote.get("lens_model") or exif.get("lens")
+                provenance["shutter_count"] = makernote.get("shutter_count")
+                provenance["makernote_manufacturer"] = makernote.get("manufacturer_matched")
+                provenance["is_camera_source"] = True
+                provenance["hardware_sensor_verified"] = True
+            elif exif.get("make") or exif.get("model"):
                 provenance["origin_classification"] = "OPTICAL_HARDWARE"
                 provenance["sensor_make"] = exif.get("make")
                 provenance["sensor_model"] = exif.get("model")
                 provenance["is_camera_source"] = True
-            elif metadata.get("provenance_clues", {}).get("ai_metadata_tags"):
-                provenance["origin_classification"] = "SYNTHETIC_GENERATIVE"
         elif job.media_type == "audio":
             if metadata.get("ai_acoustic_markers"):
                 provenance["origin_classification"] = "SYNTHETIC_GENERATIVE"
