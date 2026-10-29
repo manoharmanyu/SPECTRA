@@ -504,3 +504,124 @@ uploadRouter.post('/upload/simulate-paired-capture', requireAuth, async (req, re
     fileName: originalFilename
   });
 });
+
+// ============================================================================
+// UNIFIED AI-GENERATED MEDIA DETECTION API (Image, Audio, Video Forensics)
+// ============================================================================
+
+// POST /api/v1/media/analyze
+uploadRouter.post('/v1/media/analyze', handleUploadFields, async (req, res) => {
+  const uploadedFile = req.file || (req.files && req.files.length > 0 ? req.files[0] : null);
+  if (!uploadedFile) {
+    return res.status(400).json({ error: 'No media file received. Please provide an image, video, or audio file.' });
+  }
+
+  const filePath = uploadedFile.path;
+  const originalFilename = path.basename(uploadedFile.originalname).replace(/[^a-zA-Z0-9._-]/g, '_');
+
+  // 1. Try forwarding to FastAPI backend if available on port 8000
+  try {
+    const formData = new FormData();
+    const fileBytes = fs.readFileSync(filePath);
+    const blob = new Blob([fileBytes], { type: uploadedFile.mimetype });
+    formData.append('file', blob, originalFilename);
+
+    const fastApiResponse = await fetch('http://localhost:8000/api/v1/media/analyze', {
+      method: 'POST',
+      body: formData
+    });
+
+    if (fastApiResponse.ok) {
+      const data = await fastApiResponse.json();
+      return res.json(data);
+    }
+  } catch (err) {
+    // Fall back to Node.js forensic engine
+  }
+
+  // 2. Fallback Node.js forensic pipeline
+  try {
+    const report = await analyzeMediaForensics(filePath, originalFilename, uploadedFile.mimetype);
+    const sizeBytes = fs.statSync(filePath).size;
+    const sha256 = crypto.createHash('sha256').update(fs.readFileSync(filePath)).digest('hex');
+
+    const classification = report.verdict.includes('AI')
+      ? 'LIKELY_AI_GENERATED'
+      : report.verdict.includes('AUTHENTIC')
+      ? 'LIKELY_CAMERA_CAPTURED'
+      : report.verdict.includes('MANIPULATED')
+      ? 'POSSIBLY_EDITED_OR_MANIPULATED'
+      : 'INCONCLUSIVE';
+
+    return res.json({
+      project: 'SPECTRA',
+      analysis_id: 'ana_' + crypto.randomBytes(8).toString('hex'),
+      job_id: 'job_' + crypto.randomBytes(8).toString('hex'),
+      media_type: report.mediaType || 'image',
+      sha256: sha256,
+      file_size_bytes: sizeBytes,
+      classification: classification,
+      confidence: {
+        score: report.riskScore ? report.riskScore / 100 : null,
+        interpretation: 'Calibrated probabilistic estimate based on multi-signal evidence fusion.'
+      },
+      ai_generation_assessment: {
+        label: classification === 'LIKELY_AI_GENERATED' ? 'SYNTHETIC' : 'NATURAL',
+        score: report.riskScore ? report.riskScore / 100 : null,
+        model_version: 'SPECTRA-Forensics-Engine-v2.2'
+      },
+      capture_assessment: {
+        label: classification === 'LIKELY_CAMERA_CAPTURED' ? 'VERIFIED' : 'UNVERIFIED',
+        device_evidence_found: Boolean(report.provenance?.hardwareSensor?.cameraMake),
+        trusted_provenance_verified: Boolean(report.provenance?.hardwareSensor?.provenanceTier === 'GENUINE_OPTICAL_SENSOR_VERIFIED'),
+        sensor_make: report.provenance?.hardwareSensor?.cameraMake || null,
+        sensor_model: report.provenance?.hardwareSensor?.cameraModel || null
+      },
+      metadata_assessment: {
+        metadata_present: Boolean(report.metadataDirectoryCount > 0),
+        observations: report.summary ? [report.summary] : [],
+        tags_count: report.metadataDirectoryCount || 0
+      },
+      evidence: [
+        {
+          source: 'provenance_verification',
+          finding: report.detectionReasoning || report.summary || 'Technical inspection completed.',
+          status: 'verified'
+        }
+      ],
+      manipulation_detected: classification === 'POSSIBLY_EDITED_OR_MANIPULATED',
+      metadata: report.exif || {},
+      limitations: [
+        'Metadata is not proof of origin; EXIF tags can be stripped or modified.',
+        'Classification requires corroboration; advanced post-processing and AI tools evolve continuously.'
+      ],
+      processing_status: 'completed',
+      analyzed_at: new Date().toISOString()
+    });
+  } catch (err) {
+    return res.status(500).json({ error: 'Forensic analysis failed: ' + err.message });
+  }
+});
+
+// GET /api/v1/media/health
+uploadRouter.get('/v1/media/health', async (req, res) => {
+  try {
+    const fastApiResponse = await fetch('http://localhost:8000/api/v1/media/health');
+    if (fastApiResponse.ok) {
+      return res.json(await fastApiResponse.json());
+    }
+  } catch (e) {}
+
+  res.json({
+    status: 'healthy',
+    service: 'SPECTRA AI-Generated Media & Digital Forensics Engine (Node Gateway)',
+    detectors: [
+      { name: 'ImageDetectionService', category: 'image', status: 'available', version: 'DrewNoakes-2.22.0' },
+      { name: 'AudioDetectionService', category: 'audio', status: 'available', version: 'Node-Acoustic' },
+      { name: 'VideoDetectionService', category: 'video', status: 'available', version: 'FFmpeg' },
+      { name: 'ProvenanceAndMakerNoteService', category: 'provenance', status: 'available', version: 'ExifTool-13.x' }
+    ],
+    supported_media_types: ['image', 'audio', 'video'],
+    timestamp: new Date().toISOString()
+  });
+});

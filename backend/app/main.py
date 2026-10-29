@@ -8,6 +8,7 @@ from app.database import engine, Base
 from app.api.v1.health import router as health_router
 from app.api.v1.sessions import router as sessions_router
 from app.api.v1.analyses import router as analyses_router
+from app.api.v1.media import router as media_router
 from app.api.internal.n8n import router as internal_router
 
 
@@ -44,4 +45,5 @@ app.add_middleware(
 app.include_router(health_router)  # /health, /ready
 app.include_router(sessions_router)  # /api/v1/device-sessions
 app.include_router(analyses_router)  # /api/v1/analyses
+app.include_router(media_router)  # /api/v1/media (AI-Generated Media Detection Engine)
 app.include_router(internal_router)  # /internal/analyses

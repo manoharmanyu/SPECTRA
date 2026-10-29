@@ -8,6 +8,11 @@ from app.media.inspector import (
     inspect_audio_fallback,
     inspect_video_fallback
 )
+from app.media.provenance import evaluate_media_provenance
+from app.media.pipelines.image import ImageDetectionService
+from app.media.pipelines.audio import AudioDetectionService
+from app.media.pipelines.video import VideoDetectionService
+from app.media.fusion import EvidenceFusionEngine
 
 
 async def extract_media_metadata(file_path: str, media_type: str, mime_type: str) -> Dict[str, Any]:
