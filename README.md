@@ -366,10 +366,10 @@ npm run dev
 - **Mobile Web Portal:** `http://<YOUR_LAN_IP>:5173/mobile.html` *(Printed automatically by `install.sh` / `setup.js`)*
 - **Forensic API Hub:** [http://localhost:3001/api/status](http://localhost:3001/api/status)
 
-#### Default Administrator Credentials:
-- **Username:** `manohar_manyu`
-- **Password:** `80081Abc@2005`
-*(You can update your credentials and configure TOTP 2FA in the **Identity Defense** modal upon login).*
+#### Initial Administrator Credentials:
+- **Username:** `admin` (or configured `SPECTRA_ADMIN_USERNAME`)
+- **Initial Password:** Generated randomly at intake and saved to `data/.initial_admin_credential` with restricted file permissions (`0o600`).
+- **Enforced Security Policy:** Administrator must change password upon initial login via `POST /api/auth/change-password` or the Identity Defense console modal. No static default credentials are ever hardcoded or permitted in production.
 
 ---
 
@@ -501,13 +501,35 @@ curl -X POST http://localhost:8000/api/v1/analyses \
 #### 4. Poll Status & Detailed Report
 ```bash
 # Check status summary
-curl -X GET http://localhost:8000/api/v1/analyses/b6a83120-7dfc-42cb-b169-826a7981d392
+curl -X GET http://localhost:8000/api/v1/analyses/b6a83120-7dfc-42cb-b169-826a7981d392 \
+  -H "X-User-Id: investigator_123"
 
 # Retrieve final report (202 while processing, 200 when completed)
-curl -X GET http://localhost:8000/api/v1/analyses/b6a83120-7dfc-42cb-b169-826a7981d392/report
+curl -X GET http://localhost:8000/api/v1/analyses/b6a83120-7dfc-42cb-b169-826a7981d392/report \
+  -H "X-User-Id: investigator_123"
+
+# Verify cryptographic chain-of-custody (tamper-evident SHA-256 ledger)
+curl -X GET http://localhost:8000/api/v1/analyses/b6a83120-7dfc-42cb-b169-826a7981d392/custody-chain \
+  -H "X-User-Id: investigator_123"
+
+# Download original preserved evidence (authorized investigator only)
+curl -X GET http://localhost:8000/api/v1/analyses/b6a83120-7dfc-42cb-b169-826a7981d392/evidence/download \
+  -H "X-User-Id: investigator_123" \
+  -o preserved_evidence.bin
 ```
 
-#### 5. Internal n8n Protected Stage Routes
+#### 5. Model Adapters & Pretrained Weights Configuration
+
+SPECTRA integrates real deepfake and synthetic media model adapters. If model weights are not downloaded, the engine honestly reports `NOT_CONFIGURED` with instructions rather than fabricating synthetic scores or heuristic predictions:
+
+| Model Architecture | Media Type | Environment Variable | Default Location |
+| :--- | :--- | :--- | :--- |
+| **XceptionNet** | Images / Faces | `XCEPTION_WEIGHTS_PATH` | `backend/app/media/weights/xception_deepfake.pth` |
+| **EfficientNet-B4** | Images / Comparison | `EFFICIENTNET_WEIGHTS_PATH` | `backend/app/media/weights/efficientnet_b4_deepfake.pth` |
+| **Wav2Vec 2.0** | Audio / Voice Synthesis | `WAV2VEC2_WEIGHTS_PATH` | `backend/app/media/weights/wav2vec2_deepfake` |
+| **CNN-LSTM** | Video / Temporal Sequences | `CNNLSTM_WEIGHTS_PATH` | `backend/app/media/weights/cnn_lstm_video.pt` |
+
+#### 6. Internal n8n Protected Stage Routes
 Requires `Authorization: Bearer SPECTRA_INTERNAL_TOKEN`:
 ```bash
 # Stage 1: Metadata extraction

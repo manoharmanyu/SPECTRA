@@ -46,14 +46,39 @@ async def run_cmd_json(args: list, timeout: float = 12.0) -> Optional[Any]:
     return None
 
 
+def resolve_binary(name: str) -> Optional[str]:
+    """
+    Platform-independent binary resolution supporting PATH, environment overrides,
+    and user-local directories without machine-specific hardcoded paths.
+    """
+    env_key = f"{name.upper().replace('-', '_')}_PATH"
+    env_path = os.environ.get(env_key)
+    if env_path and os.path.exists(env_path):
+        return env_path
+
+    found = shutil.which(name)
+    if found:
+        return found
+
+    home = os.path.expanduser("~")
+    candidates = [
+        os.path.join(home, ".local", "bin", name),
+        os.path.join("/usr", "local", "bin", name),
+        os.path.join("/usr", "bin", name),
+        os.path.join("/opt", "homebrew", "bin", name),
+    ]
+    for cand in candidates:
+        if os.path.exists(cand):
+            return cand
+    return None
+
+
 async def inspect_with_exiftool(file_path: str) -> Optional[Dict[str, Any]]:
     """
     Run ExifTool on media file to extract technical, embedded provenance, and MakerNote metadata.
     Supports all image, audio, video, container, and camera RAW formats.
     """
-    exiftool_bin = shutil.which("exiftool") or (
-        "/Users/manyugaddam/.local/bin/exiftool" if os.path.exists("/Users/manyugaddam/.local/bin/exiftool") else None
-    )
+    exiftool_bin = resolve_binary("exiftool")
     if not exiftool_bin:
         return None
 

@@ -102,25 +102,14 @@ dirs.forEach(dir => {
 const dbPath = path.join(__dirname, 'data', 'spectra.json');
 if (!fs.existsSync(dbPath)) {
   const defaultDb = {
-    users: [
-      {
-        id: "usr_manohar_manyu",
-        username: "manohar_manyu",
-        passwordHash: "4ad7ae903988237583d4bcda0db1544010d9503e68947e61c9c6b414227eec57ad3a4f64b10d2dd16577d5bbd9f9251e2d2563bbd59bf7e2e834f9cae92aabe8",
-        salt: "86a24962f988c843761fc4f618191b5a",
-        totpSecretEncrypted: null,
-        totpEnabled: false,
-        recoveryCodesHashed: [],
-        createdAt: new Date().toISOString()
-      }
-    ],
+    users: [],
     sessions: [],
     pairingCodes: [],
     devices: [],
     jobs: []
   };
   fs.writeFileSync(dbPath, JSON.stringify(defaultDb, null, 2), 'utf8');
-  log(`      ✓ Initialized new database at ${dbPath}`, colors.green);
+  log(`      ✓ Initialized new secure database container at ${dbPath}`, colors.green);
 } else {
   log(`      ✓ Verified existing database at ${dbPath}`, colors.green);
 }
@@ -178,8 +167,8 @@ log(`  - Desktop Workspace:  http://localhost:5173/`);
 log(`  - Mobile Camera Sync: http://${lanIp}:5173/mobile.html`);
 log(`  - Local Forensic API: http://localhost:3001/api/status`);
 log(`\n  Default Administrator Account:`, colors.magenta);
-log(`  - Username: manohar_manyu`);
-log(`  - Password: 80081Abc@2005`);
+log(`  - Username: admin (or configured SPECTRA_ADMIN_USERNAME)`);
+log(`  - Password: See data/.initial_admin_credential (Auto-generated secure password; change on first login)`);
 log(`======================================================================\n`, colors.green);
 
 if (autoStart) {

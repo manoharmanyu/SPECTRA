@@ -93,6 +93,11 @@ class EvidenceFusionEngine:
             limitations_list.append("Metadata is not proof of origin; EXIF tags can be stripped or modified.")
         if "Classification requires corroboration" not in limitations_list:
             limitations_list.append("Classification requires corroboration; advanced post-processing and AI tools evolve continuously.")
+        limitations_list.append(
+            "Forensic assessment is a technical evidentiary analysis and does not constitute guaranteed judicial admissibility. "
+            "Evidentiary admissibility requires compliance with applicable jurisdictional standards (e.g., Federal Rule of Evidence 702, "
+            "Daubert/Frye standards) and independent expert witness testimony."
+        )
 
         # Sanitize metadata to never expose internal server paths or sensitive filesystem locations
         sanitized_metadata = {}

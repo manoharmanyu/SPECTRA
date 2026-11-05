@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import { config } from './config.js';
 import { hashPassword } from './crypto.js';
 
@@ -70,15 +71,28 @@ class SpectraDB {
   }
 
   initDefaultUsers() {
-    // Seed default administrator if not present
-    const existing = this.findUserByUsername('manohar_manyu');
-    if (!existing) {
-      const { hash, salt } = hashPassword('80081Abc@2005');
+    // Check if administrator account exists or if legacy default credentials must be rotated
+    const adminUsername = process.env.SPECTRA_ADMIN_USERNAME || 'admin';
+    const legacyAdmin = this.findUserByUsername('manohar_manyu');
+    const existingAdmin = this.findUserByUsername(adminUsername) || legacyAdmin;
+
+    const LEGACY_DEFAULT_HASH = '4ad7ae903988237583d4bcda0db1544010d9503e68947e61c9c6b414227eec57ad3a4f64b10d2dd16577d5bbd9f9251e2d2563bbd59bf7e2e834f9cae92aabe8';
+
+    if (!existingAdmin) {
+      // Secure one-time initialization with cryptographically secure random password
+      const initPassword = process.env.SPECTRA_ADMIN_PASSWORD || (
+        process.env.NODE_ENV === 'test' 
+          ? 'TestAdmin_SecurePassword_2026!' 
+          : crypto.randomBytes(16).toString('base64url')
+      );
+      const { hash, salt } = hashPassword(initPassword);
       const adminUser = {
-        id: 'usr_manohar_manyu',
-        username: 'manohar_manyu',
+        id: 'usr_' + Date.now().toString(36) + Math.random().toString(36).substring(2, 6),
+        username: adminUsername,
         passwordHash: hash,
         salt: salt,
+        mustChangePassword: process.env.NODE_ENV !== 'test',
+        role: 'admin',
         totpSecretEncrypted: null,
         totpEnabled: false,
         recoveryCodesHashed: [],
@@ -86,6 +100,47 @@ class SpectraDB {
       };
       this.data.users.push(adminUser);
       this.save();
+
+      // Write one-time initialization credential file with restricted permissions (0o600)
+      if (process.env.NODE_ENV !== 'test') {
+        try {
+          const initCredPath = path.join(config.dataDir, '.initial_admin_credential');
+          const content = JSON.stringify({
+            username: adminUsername,
+            initialPassword: initPassword,
+            note: 'One-time secure initialization password. You must change this upon first login.',
+            createdAt: new Date().toISOString()
+          }, null, 2);
+          fs.writeFileSync(initCredPath, content, { mode: 0o600 });
+        } catch (e) {
+          // Silent or warning
+        }
+      }
+    } else if (existingAdmin.passwordHash === LEGACY_DEFAULT_HASH) {
+      // Invalidate exposed legacy default password immediately
+      const rotatedPass = process.env.SPECTRA_ADMIN_PASSWORD || (
+        process.env.NODE_ENV === 'test'
+          ? 'TestAdmin_SecurePassword_2026!'
+          : crypto.randomBytes(16).toString('base64url')
+      );
+      const { hash, salt } = hashPassword(rotatedPass);
+      existingAdmin.passwordHash = hash;
+      existingAdmin.salt = salt;
+      existingAdmin.mustChangePassword = process.env.NODE_ENV !== 'test';
+      this.save();
+
+      if (process.env.NODE_ENV !== 'test') {
+        try {
+          const initCredPath = path.join(config.dataDir, '.initial_admin_credential');
+          const content = JSON.stringify({
+            username: existingAdmin.username,
+            initialPassword: rotatedPass,
+            note: 'Rotated password replacing exposed default. You must change this upon first login.',
+            rotatedAt: new Date().toISOString()
+          }, null, 2);
+          fs.writeFileSync(initCredPath, content, { mode: 0o600 });
+        } catch (e) {}
+      }
     }
   }
 

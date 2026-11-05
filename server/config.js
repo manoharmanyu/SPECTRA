@@ -24,15 +24,34 @@ export function getLocalIpAddress() {
   return '127.0.0.1';
 }
 
+const INSECURE_DEFAULT_SECRETS = new Set([
+  'spectra_sec_session_32_bytes_token_key_auth',
+  'spectra_totp_aes_master_secret',
+  'spectra_internal_dev_secret_token_change_in_production',
+  'spectra_webhook_dev_token_change_in_production'
+]);
+
+const rawSessionSecret = process.env.SESSION_SECRET || 'spectra_sec_session_32_bytes_token_key_auth';
+const rawEncryptionSecret = process.env.ENCRYPTION_SECRET || 'spectra_totp_aes_master_secret';
+
+if (process.env.NODE_ENV === 'production') {
+  if (INSECURE_DEFAULT_SECRETS.has(rawSessionSecret) || rawSessionSecret.length < 32) {
+    throw new Error('FATAL SECURITY VIOLATION: Production startup rejected due to insecure or default SESSION_SECRET.');
+  }
+  if (INSECURE_DEFAULT_SECRETS.has(rawEncryptionSecret) || rawEncryptionSecret.length < 32) {
+    throw new Error('FATAL SECURITY VIOLATION: Production startup rejected due to insecure or default ENCRYPTION_SECRET.');
+  }
+}
+
 export const config = {
   port: parseInt(process.env.PORT || '3001', 10),
   host: process.env.HOST || '0.0.0.0',
   vitePort: parseInt(process.env.VITE_PORT || '5173', 10),
   dataDir: isVercel ? path.join('/tmp', 'data') : path.resolve(__dirname, '../data'),
   uploadsDir: isVercel ? path.join('/tmp', 'uploads') : path.resolve(__dirname, '../uploads'),
-  sessionSecret: process.env.SESSION_SECRET || 'spectra_sec_session_32_bytes_token_key_auth',
+  sessionSecret: rawSessionSecret,
   // 32-byte key for AES-256-GCM encryption of TOTP secrets at rest
-  encryptionKey: crypto.createHash('sha256').update(process.env.ENCRYPTION_SECRET || 'spectra_totp_aes_master_secret').digest(),
+  encryptionKey: crypto.createHash('sha256').update(rawEncryptionSecret).digest(),
   pairingCodeTtlMs: 5 * 60 * 1000, // 5 minutes
   maxPairingAttempts: 5,
   sessionTtlMs: 24 * 60 * 60 * 1000, // 24 hours

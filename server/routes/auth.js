@@ -1,7 +1,11 @@
 import express from 'express';
 import QRCode from 'qrcode';
+import fs from 'fs';
+import path from 'path';
 import { db } from '../db.js';
+import { config } from '../config.js';
 import {
+  hashPassword,
   verifyPassword,
   generateTotpSecret,
   verifyTotp,
@@ -140,11 +144,13 @@ authRouter.post('/login', (req, res) => {
     return res.json({
       success: true,
       require2FA: true,
+      mustChangePassword: Boolean(user.mustChangePassword),
       sessionId: partialSession.id,
       user: {
         id: user.id,
         username: user.username,
-        totpEnabled: true
+        totpEnabled: true,
+        mustChangePassword: Boolean(user.mustChangePassword)
       }
     });
   }
@@ -160,12 +166,64 @@ authRouter.post('/login', (req, res) => {
   return res.json({
     success: true,
     require2FA: false,
+    mustChangePassword: Boolean(user.mustChangePassword),
     sessionId: session.id,
     user: {
       id: user.id,
       username: user.username,
-      totpEnabled: false
+      totpEnabled: false,
+      mustChangePassword: Boolean(user.mustChangePassword)
     }
+  });
+});
+
+// POST /api/auth/change-password (Secure password replacement)
+authRouter.post('/change-password', requireAuth, (req, res) => {
+  const { currentPassword, newPassword } = req.body || {};
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({ error: 'Current password and new password are required.' });
+  }
+
+  const user = db.findUserById(req.user.id);
+  if (!user || !verifyPassword(currentPassword, user.passwordHash, user.salt)) {
+    return res.status(401).json({ error: 'Current password verification failed.' });
+  }
+
+  if (typeof newPassword !== 'string' || newPassword.length < 10) {
+    return res.status(400).json({ error: 'New password must be at least 10 characters long.' });
+  }
+
+  // Strong password requirements
+  const hasUpper = /[A-Z]/.test(newPassword);
+  const hasLower = /[a-z]/.test(newPassword);
+  const hasDigit = /[0-9]/.test(newPassword);
+  const hasSpecial = /[^A-Za-z0-9]/.test(newPassword);
+
+  if (!hasUpper || !hasLower || !hasDigit || !hasSpecial) {
+    return res.status(400).json({
+      error: 'New password must contain uppercase, lowercase, numbers, and special characters.'
+    });
+  }
+
+  const { hash, salt } = hashPassword(newPassword);
+  db.updateUser(user.id, {
+    passwordHash: hash,
+    salt: salt,
+    mustChangePassword: false,
+    passwordChangedAt: new Date().toISOString()
+  });
+
+  // Clean up initial one-time credential file if present
+  try {
+    const initCredPath = path.join(config.dataDir, '.initial_admin_credential');
+    if (fs.existsSync(initCredPath)) {
+      fs.unlinkSync(initCredPath);
+    }
+  } catch (e) {}
+
+  return res.json({
+    success: true,
+    message: 'Password successfully changed and updated.'
   });
 });
 
@@ -353,6 +411,7 @@ authRouter.get('/me', (req, res) => {
       id: user.id,
       username: user.username,
       totpEnabled: user.totpEnabled,
+      mustChangePassword: Boolean(user.mustChangePassword),
       createdAt: user.createdAt
     },
     devicesCount: devices.filter(d => d.trustStatus === 'active').length,

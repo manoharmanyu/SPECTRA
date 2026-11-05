@@ -13,6 +13,7 @@ class AnalysisJob(Base):
     __tablename__ = "analysis_jobs"
 
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(64), nullable=True, index=True)  # Authenticated investigator / user
     capture_session_id = Column(String(36), ForeignKey("device_sessions.id", ondelete="SET NULL"), nullable=True)
     source_origin = Column(String(64), default="web_upload", nullable=False)  # phone_simulator | web_upload
     source_device_id = Column(String(255), nullable=True)
@@ -26,6 +27,10 @@ class AnalysisJob(Base):
     sha256_hash = Column(String(64), nullable=False, index=True)
 
     status = Column(String(32), default="queued", nullable=False, index=True)  # queued | processing | completed | failed
+    retry_count = Column(Integer, default=0, nullable=False)
+    max_retries = Column(Integer, default=3, nullable=False)
+    locked_at = Column(DateTime(timezone=True), nullable=True)
+    locked_by = Column(String(64), nullable=True)
     error_message = Column(Text, nullable=True)
 
     assessment_label = Column(String(64), nullable=True)  # likely_ai_generated | likely_not_ai_detected | inconclusive | not_assessed

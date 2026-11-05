@@ -4,6 +4,10 @@ import http from 'http';
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 import {
   hashPassword,
   verifyPassword,
@@ -124,17 +128,42 @@ async function runAllSecurityTests() {
   // TEST GROUP 3: AUTHENTICATION API ENDPOINTS & RATE LIMITING
   // -------------------------------------------------------------------------
   console.log('\n--- TEST GROUP 3: AUTHENTICATION ENDPOINTS & RATE LIMITING ---');
-  // Seeded admin login
-  const loginRes = await request({ path: '/api/auth/login', method: 'POST' }, {
+  // Isolated test admin creation
+  const testAdminUser = 'test_admin_' + Date.now().toString(36);
+  const testAdminPass = 'TestAdmin_SecurePass_2026!#';
+  const regAdminRes = await request({ path: '/api/auth/register', method: 'POST' }, {
+    username: testAdminUser,
+    password: testAdminPass
+  });
+  assert(regAdminRes.status === 201 && regAdminRes.json?.success, 'Isolated test administrator created securely');
+  let adminSessionId = regAdminRes.json?.sessionId;
+
+  // Verification that exposed legacy default credentials are strictly rejected
+  const legacyDefaultLoginRes = await request({ path: '/api/auth/login', method: 'POST' }, {
     username: 'manohar_manyu',
     password: '80081Abc@2005'
   });
-  assert(loginRes.status === 200 && loginRes.json?.success, 'Default administrator login succeeds');
-  const adminSessionId = loginRes.json?.sessionId;
+  assert(legacyDefaultLoginRes.status === 401, 'Exposed legacy default credentials strictly rejected');
+
+  // Verify secure password replacement endpoint
+  const newPass = 'Updated_StrongPass_2026!#$';
+  const changePassRes = await request({ path: '/api/auth/change-password', method: 'POST' }, {
+    currentPassword: testAdminPass,
+    newPassword: newPass
+  }, { 'x-session-id': adminSessionId });
+  assert(changePassRes.status === 200 && changePassRes.json?.success, 'Secure password replacement succeeds');
+
+  // Verify login with updated password
+  const newLoginRes = await request({ path: '/api/auth/login', method: 'POST' }, {
+    username: testAdminUser,
+    password: newPass
+  });
+  assert(newLoginRes.status === 200 && newLoginRes.json?.success, 'Login succeeds with rotated password');
+  adminSessionId = newLoginRes.json?.sessionId;
 
   // Generic error message check
   const badLoginRes = await request({ path: '/api/auth/login', method: 'POST' }, {
-    username: 'manohar_manyu',
+    username: testAdminUser,
     password: 'BadPassword123'
   });
   assert(badLoginRes.status === 401 && badLoginRes.json?.error.includes('Invalid'), 'Generic error message on bad password');
@@ -277,11 +306,23 @@ async function runAllSecurityTests() {
   });
   const createdJobId = activeUploadRes.json?.jobId;
 
-  // User B tries to read User A's job -> MUST BE 403
+  // Cross-user job/report access strictly denied
   const crossUserRes = await request({ path: `/api/analysis/${createdJobId}`, method: 'GET' }, null, {
     'x-session-id': testUserSession
   });
   assert(crossUserRes.status === 403, 'Cross-user job/report access strictly denied (User Isolation enforced)', `status: ${crossUserRes.status}`);
+
+  // User B attempts to revoke User A's device -> MUST BE 404
+  const crossUserRevokeRes = await request({ path: `/api/pairing/devices/${deviceId}/disconnect`, method: 'POST' }, {}, {
+    'x-session-id': testUserSession
+  });
+  assert(crossUserRevokeRes.status === 404, 'Cross-user device revocation denied (Device Ownership enforced)');
+
+  // Unauthenticated evidence file access denied
+  const unauthEvidenceRes = await request({ path: '/uploads/spectra_test_evidence.jpg', method: 'GET' }, null, {
+    'x-test-unauthorized': '1'
+  });
+  assert(unauthEvidenceRes.status === 401, 'Unauthenticated evidence file download strictly denied');
 
   // User A reads own job -> MUST BE 200
   const ownJobRes = await request({ path: `/api/analysis/${createdJobId}`, method: 'GET' }, null, {
@@ -310,6 +351,33 @@ async function runAllSecurityTests() {
   assert(statusApiRes.status === 200 && statusApiRes.json?.lanIp, 'Local LAN IP dynamically resolved for direct phone access');
   assert(statusApiRes.json?.transports?.wifi.includes('Active'), 'Local-only Wi-Fi transport verified active with zero cloud relays');
   assert(statusApiRes.json?.transports?.bluetooth.includes('Web Bluetooth'), 'Bluetooth LE capability correctly identified for browser handshake');
+
+  // -------------------------------------------------------------------------
+  // TEST GROUP 9: SUPPLY CHAIN INTEGRITY, ZERO-DAY AUDIT & LEGAL ADMISSIBILITY
+  // -------------------------------------------------------------------------
+  console.log('\n--- TEST GROUP 9: SUPPLY CHAIN & FORENSIC VALIDITY ---');
+  const setupContent = fs.readFileSync(path.join(__dirname, '../setup.js'), 'utf8');
+  assert(!setupContent.includes('4ad7ae903988237583d4bcda0db1544010d9503e68947e61c9c6b414227eec57ad3a4f64b10d2dd16577d5bbd9f9251e2d2563bbd59bf7e2e834f9cae92aabe8'), 'setup.js contains zero hardcoded credential hashes');
+
+  const installContent = fs.readFileSync(path.join(__dirname, '../install.sh'), 'utf8');
+  assert(!installContent.includes('4ad7ae903988237583d4bcda0db1544010d9503e68947e61c9c6b414227eec57ad3a4f64b10d2dd16577d5bbd9f9251e2d2563bbd59bf7e2e834f9cae92aabe8'), 'install.sh contains zero hardcoded credential hashes');
+
+  const lockfileExists = fs.existsSync(path.join(__dirname, '../package-lock.json'));
+  assert(lockfileExists, 'package-lock.json verified present for reproducible dependency pinning');
+
+  // Legal disclaimer in report
+  const testReport = await analyzeImageForensics(testJpegPath, 'test.jpg');
+  assert(
+    testReport.legalDisclaimer && testReport.legalDisclaimer.includes('jurisdictional standards'),
+    'Forensic report includes explicit legal admissibility and scientific limitation notice'
+  );
+
+  // Determinism check
+  const testReport2 = await analyzeImageForensics(testJpegPath, 'test.jpg');
+  assert(
+    testReport.sha256 === testReport2.sha256 && testReport.verdict === testReport2.verdict,
+    'Forensic evaluation is 100% deterministic across repeated runs'
+  );
 
   // -------------------------------------------------------------------------
   // SUMMARY

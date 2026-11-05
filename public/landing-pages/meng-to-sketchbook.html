@@ -4796,13 +4796,7 @@ function showVerdict(presetId) {
       console.warn('Backend login notice:', err);
     }
 
-    if (user === 'manohar_manyu' && pass === '80081Abc@2005') {
-      setAdminAuthenticated(true);
-      showToast('Admin Access Granted. Welcome, Manohar Manyu.');
-      renderDashboardView();
-    } else {
-      showToast('Invalid credentials. Access restricted to authorized administrator.', true);
-    }
+    showToast('Invalid credentials. Access restricted to authorized administrator.', true);
   };
 
   window.handleAdminLogout = async function() {
@@ -5112,11 +5106,9 @@ function showVerdict(presetId) {
       const meRes = await fetch('/api/auth/me');
       const meData = await meRes.json();
       if (!meData.authenticated) {
-        await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: 'manohar_manyu', password: '80081Abc@2005' })
-        });
+        showToast('Please log in with your administrator credentials to pair devices.', true);
+        openAdminModal();
+        return;
       }
     } catch(e) {}
 
@@ -5512,13 +5504,9 @@ function showVerdict(presetId) {
       let meRes = await fetch('/api/auth/me');
       let meData = await meRes.json();
       if (!meData.authenticated) {
-        await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: 'manohar_manyu', password: '80081Abc@2005' })
-        });
-        meRes = await fetch('/api/auth/me');
-        meData = await meRes.json();
+        showToast('Please sign in to access Identity Defense and Security configuration.', true);
+        openAdminModal();
+        return;
       }
       const is2faActive = meData.user && meData.user.totpEnabled;
 

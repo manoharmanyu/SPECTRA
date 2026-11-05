@@ -3,17 +3,32 @@ import fs from 'fs';
 import path from 'path';
 import { exec, execSync } from 'child_process';
 
+function resolveBinary(name) {
+  const envVar = process.env[`${name.toUpperCase().replace(/-/g, '_')}_PATH`];
+  if (envVar && fs.existsSync(envVar)) return envVar;
+
+  const homedir = process.env.HOME || process.env.USERPROFILE || '';
+  const candidates = [
+    path.join(homedir, '.local', 'bin', name),
+    path.join('/usr', 'local', 'bin', name),
+    path.join('/usr', 'bin', name),
+    path.join('/opt', 'homebrew', 'bin', name)
+  ];
+  for (const cand of candidates) {
+    if (cand && fs.existsSync(cand)) return cand;
+  }
+  return name;
+}
+
 // Helper to query Agent-Reach CLI across public web/social channels
 async function runAgentReachSearch(query) {
   return new Promise((resolve) => {
     const cleanQuery = (query || '').replace(/[^a-zA-Z0-9 ._-]/g, ' ').substring(0, 70).trim();
     if (!cleanQuery) return resolve({ ok: false, items: [] });
 
-    const agentReachBin = fs.existsSync('/Users/manyugaddam/.local/bin/agent-reach')
-      ? '/Users/manyugaddam/.local/bin/agent-reach'
-      : 'agent-reach';
+    const agentReachBin = resolveBinary('agent-reach');
 
-    const cmd = `${agentReachBin} web search "${cleanQuery}" --limit 4`;
+    const cmd = `"${agentReachBin}" web search "${cleanQuery}" --limit 4`;
     exec(cmd, { timeout: 4500 }, (error, stdout) => {
       if (error || !stdout) {
         return resolve({ ok: false, items: [] });
@@ -34,10 +49,7 @@ async function runAgentReachSearch(query) {
  */
 export function runMetadataExtractor(filePath) {
   try {
-    const binPath = fs.existsSync('/Users/manyugaddam/.local/bin/metadata-extractor')
-      ? '/Users/manyugaddam/.local/bin/metadata-extractor'
-      : 'metadata-extractor';
-
+    const binPath = resolveBinary('metadata-extractor');
     const output = execSync(`"${binPath}" "${filePath}"`, { timeout: 5000, encoding: 'utf-8' });
     const lines = output.split('\n');
     const directories = {};
@@ -391,9 +403,7 @@ export async function analyzeMediaForensics(filePath, originalFilename, clientMi
 
   let exiftoolData = null;
   try {
-    const exiftoolBin = fs.existsSync('/Users/manyugaddam/.local/bin/exiftool')
-      ? '/Users/manyugaddam/.local/bin/exiftool'
-      : (fs.existsSync('/usr/local/bin/exiftool') ? '/usr/local/bin/exiftool' : 'exiftool');
+    const exiftoolBin = resolveBinary('exiftool');
     const out = execSync(`"${exiftoolBin}" -json -n -a -u "${filePath}"`, { timeout: 3000, encoding: 'utf-8' });
     const parsed = JSON.parse(out);
     if (Array.isArray(parsed) && parsed.length > 0) {
@@ -959,6 +969,8 @@ export async function analyzeMediaForensics(filePath, originalFilename, clientMi
         neuralSeed: '492817294812'
       } : null
     },
+
+    legalDisclaimer: 'Forensic assessment is a technical evidentiary evaluation and does not constitute guaranteed judicial admissibility. Evidentiary admissibility requires compliance with applicable jurisdictional standards (e.g., Federal Rule of Evidence 702, Daubert/Frye standards) and independent expert witness verification.',
 
     // Detailed Dissemination Specifications (Where Spread & Agent-Reach)
     dissemination: {

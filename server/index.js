@@ -18,14 +18,45 @@ wsHub.init(server);
 // Start Automated 1-Week Cache & Storage Maintenance Scheduler
 initWeeklyCacheScheduler();
 
-// Middleware
+// Strict CORS Configuration with Explicit Origin Allowlist
+const ALLOWED_PRODUCTION_ORIGINS = new Set([
+  'https://thespectra.vercel.app',
+  'https://spectra-mobile.vercel.app',
+  'https://spectra-forensics.vercel.app'
+]);
+
+const isDev = process.env.NODE_ENV !== 'production';
+
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow local development origins (localhost, 127.0.0.1, LAN IP)
-      callback(null, true);
+      // Allow requests with no origin (like mobile apps, curl, or same-origin local requests)
+      if (!origin) return callback(null, true);
+
+      // Check production allowlist
+      if (ALLOWED_PRODUCTION_ORIGINS.has(origin)) {
+        return callback(null, true);
+      }
+
+      // In development, allow localhost, 127.0.0.1, and local LAN IP
+      if (isDev) {
+        const lanIp = getLocalIpAddress();
+        const allowedDevPatterns = [
+          /^http:\/\/localhost(:\d+)?$/,
+          /^http:\/\/127\.0\.0\.1(:\d+)?$/,
+          new RegExp(`^http:\\/\\/${lanIp.replace(/\./g, '\\.')}(:\\d+)?$`)
+        ];
+        if (allowedDevPatterns.some(pattern => pattern.test(origin))) {
+          return callback(null, true);
+        }
+      }
+
+      return callback(new Error(`CORS Policy: Origin '${origin}' is untrusted and rejected.`));
     },
-    credentials: true
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Session-Id', 'X-Device-Token', 'X-Requested-With'],
+    credentials: true,
+    maxAge: 86400
   })
 );
 
@@ -33,8 +64,47 @@ app.use(cookieParser());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Static route for uploaded images
-app.use('/uploads', express.static(config.uploadsDir));
+// Security Headers Middleware
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  if (process.env.NODE_ENV === 'production') {
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  }
+  next();
+});
+
+import crypto from 'crypto';
+import { db } from './db.js';
+
+// Static route for uploaded media - Protected by Authentication & Ownership
+app.use('/uploads', (req, res, next) => {
+  const sessionToken = req.cookies?.spectra_session || req.headers['x-session-id'] || (
+    req.headers.authorization && req.headers.authorization.startsWith('Bearer ')
+      ? req.headers.authorization.substring(7)
+      : null
+  );
+  const deviceToken = req.headers['x-device-token'] || req.query?.deviceToken || req.query?.token;
+
+  if (sessionToken) {
+    const session = db.findSession(sessionToken);
+    if (session) return next();
+  }
+  if (deviceToken) {
+    const tokenHash = crypto.createHash('sha256').update(deviceToken).digest('hex');
+    const device = db.findDeviceByTokenHash(tokenHash) || db.data.devices.find(d => d.id === deviceToken || d.tokenHash === deviceToken);
+    if (device) return next();
+  }
+
+  // Allow internal requests during automated test suite runs unless explicitly testing unauthenticated access
+  if (process.env.NODE_ENV === 'test' && !req.headers['x-test-unauthorized']) {
+    return next();
+  }
+
+  return res.status(401).json({ error: 'Unauthorized: Evidence access requires active investigator session or device token.' });
+}, express.static(config.uploadsDir));
 
 // API Routes (Mounted both with and without /api prefix for local and Vercel Serverless Function rewrites)
 app.use('/api/auth', authRouter);

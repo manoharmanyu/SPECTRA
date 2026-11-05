@@ -4,7 +4,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.database import engine, Base
+from app.database import engine, Base, SessionLocal
+from app.models.analysis import AnalysisJob
 from app.api.v1.health import router as health_router
 from app.api.v1.sessions import router as sessions_router
 from app.api.v1.analyses import router as analyses_router
@@ -18,28 +19,69 @@ async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
     if settings.STORAGE_BACKEND == "local":
         os.makedirs(os.path.abspath(settings.LOCAL_STORAGE_PATH), exist_ok=True)
-    yield
-    # Shutdown logic if needed
 
+    # Job Reliability & Crash Recovery: Recover jobs interrupted during unexpected shutdown
+    db = SessionLocal()
+    try:
+        stranded_jobs = db.query(AnalysisJob).filter(AnalysisJob.status == "processing").all()
+        for j in stranded_jobs:
+            if j.retry_count < j.max_retries:
+                j.status = "queued"
+                j.retry_count += 1
+            else:
+                j.status = "failed"
+                j.error_message = "Analysis timed out or worker process restarted while processing."
+        if stranded_jobs:
+            db.commit()
+    except Exception:
+        db.rollback()
+    finally:
+        db.close()
+
+    yield
+    # Graceful shutdown cleanup if needed
+
+
+is_prod = settings.ENVIRONMENT.lower() == "production"
 
 app = FastAPI(
     title="SPECTRA Media Forensics API",
     description="High-integrity media intake, technical provenance extraction, and AI/deepfake detection API.",
     version="1.0.0",
-    docs_url="/docs",
-    redoc_url="/redoc",
-    openapi_url="/openapi.json",
+    docs_url=None if is_prod else "/docs",
+    redoc_url=None if is_prod else "/redoc",
+    openapi_url=None if is_prod else "/openapi.json",
     lifespan=lifespan
 )
 
-# Apply CORS only to configured frontend origins
+# Apply strict CORS only to configured frontend origins
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.allowed_origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=[
+        "Content-Type",
+        "Authorization",
+        "X-Session-Id",
+        "X-Device-Token",
+        "X-Spectra-Internal-Token",
+        "X-Spectra-Webhook-Token",
+        "X-Requested-With",
+        "X-User-Id"
+    ],
 )
+
+
+@app.middleware("http")
+async def add_security_headers(request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    if is_prod:
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    return response
 
 # Mount Routers
 app.include_router(health_router)  # /health, /ready

@@ -22,17 +22,121 @@ class AnalysisService:
         return db.query(AnalysisJob).filter(AnalysisJob.id == str(job_id)).first()
 
     @staticmethod
-    def log_audit(db: Session, job_id: Optional[str], event_type: str, details: Dict[str, Any], ip_address: Optional[str] = None):
+    def log_audit(
+        db: Session,
+        job_id: Optional[str],
+        event_type: str,
+        details: Dict[str, Any],
+        ip_address: Optional[str] = None,
+        actor_id: Optional[str] = "system",
+        actor_role: Optional[str] = "service"
+    ) -> AuditEvent:
+        """
+        Append a cryptographically chained, tamper-evident audit event record.
+        """
+        now = utc_now()
+        now_iso = now.isoformat()
+        
+        # Find preceding event for this job/evidence chain to link cryptographic hash
+        last_event = None
+        if job_id:
+            last_event = db.query(AuditEvent).filter(
+                AuditEvent.job_id == str(job_id)
+            ).order_by(AuditEvent.sequence_number.desc()).first()
+
+        if last_event:
+            prev_hash = last_event.entry_hash
+            sequence_number = last_event.sequence_number + 1
+        else:
+            prev_hash = "0" * 64
+            sequence_number = 1
+
+        entry_hash = AuditEvent.calculate_hash(
+            prev_hash=prev_hash,
+            sequence_number=sequence_number,
+            timestamp_iso=now_iso,
+            event_type=event_type,
+            actor_id=str(actor_id or "system"),
+            details=details or {}
+        )
+
         event = AuditEvent(
             id=str(uuid.uuid4()),
             job_id=str(job_id) if job_id else None,
+            evidence_id=str(job_id) if job_id else None,
+            sequence_number=sequence_number,
             event_type=event_type,
-            details=details,
+            actor_id=str(actor_id or "system"),
+            actor_role=str(actor_role or "service"),
+            details=details or {},
             ip_address=ip_address,
-            created_at=utc_now()
+            prev_hash=prev_hash,
+            entry_hash=entry_hash,
+            created_at=now
         )
         db.add(event)
         db.commit()
+        return event
+
+    @staticmethod
+    def verify_audit_chain(db: Session, job_id: str) -> Dict[str, Any]:
+        """
+        Cryptographically verifies the complete hash chain of custody for a given job.
+        Detects database record tampering, unauthorized modifications, or deleted logs.
+        """
+        events = db.query(AuditEvent).filter(
+            AuditEvent.job_id == str(job_id)
+        ).order_by(AuditEvent.sequence_number.asc()).all()
+
+        if not events:
+            return {
+                "intact": True,
+                "entries_verified": 0,
+                "message": "No audit records found for this identifier.",
+                "chain_head": None
+            }
+
+        expected_prev_hash = "0" * 64
+        for idx, ev in enumerate(events):
+            expected_seq = idx + 1
+            if ev.sequence_number != expected_seq:
+                return {
+                    "intact": False,
+                    "tampered_sequence": ev.sequence_number,
+                    "reason": f"Sequence discontinuity: expected {expected_seq}, found {ev.sequence_number}."
+                }
+            if ev.prev_hash != expected_prev_hash:
+                return {
+                    "intact": False,
+                    "tampered_sequence": ev.sequence_number,
+                    "reason": f"Prev_hash mismatch at sequence {ev.sequence_number}."
+                }
+
+            recomputed_hash = AuditEvent.calculate_hash(
+                prev_hash=ev.prev_hash,
+                sequence_number=ev.sequence_number,
+                timestamp_iso=ev.created_at.isoformat() if hasattr(ev.created_at, 'isoformat') else str(ev.created_at),
+                event_type=ev.event_type,
+                actor_id=ev.actor_id or "system",
+                details=ev.details or {}
+            )
+
+            if ev.entry_hash != recomputed_hash:
+                return {
+                    "intact": False,
+                    "tampered_sequence": ev.sequence_number,
+                    "reason": f"Cryptographic integrity violation: entry hash mismatch at sequence {ev.sequence_number}."
+                }
+
+            expected_prev_hash = ev.entry_hash
+
+        return {
+            "intact": True,
+            "entries_verified": len(events),
+            "chain_root": events[0].entry_hash,
+            "chain_head": events[-1].entry_hash,
+            "message": "Cryptographic chain of custody verified intact with zero tampering detected."
+        }
 
     @classmethod
     async def execute_metadata_stage(cls, db: Session, job_id: str) -> Dict[str, Any]:

@@ -509,8 +509,8 @@ uploadRouter.post('/upload/simulate-paired-capture', requireAuth, async (req, re
 // UNIFIED AI-GENERATED MEDIA DETECTION API (Image, Audio, Video Forensics)
 // ============================================================================
 
-// POST /api/v1/media/analyze
-uploadRouter.post('/v1/media/analyze', handleUploadFields, async (req, res) => {
+// POST /api/v1/media/analyze (Requires Investigator Authentication or Paired Device)
+uploadRouter.post('/v1/media/analyze', requireDeviceOrSession, handleUploadFields, async (req, res) => {
   const uploadedFile = req.file || (req.files && req.files.length > 0 ? req.files[0] : null);
   if (!uploadedFile) {
     return res.status(400).json({ error: 'No media file received. Please provide an image, video, or audio file.' });
@@ -518,6 +518,7 @@ uploadRouter.post('/v1/media/analyze', handleUploadFields, async (req, res) => {
 
   const filePath = uploadedFile.path;
   const originalFilename = path.basename(uploadedFile.originalname).replace(/[^a-zA-Z0-9._-]/g, '_');
+  const userId = req.user?.id || 'anonymous_investigator';
 
   // 1. Try forwarding to FastAPI backend if available on port 8000
   try {
@@ -526,8 +527,17 @@ uploadRouter.post('/v1/media/analyze', handleUploadFields, async (req, res) => {
     const blob = new Blob([fileBytes], { type: uploadedFile.mimetype });
     formData.append('file', blob, originalFilename);
 
+    const headers = {};
+    if (req.user?.id) {
+      headers['X-User-Id'] = req.user.id;
+    }
+    if (req.headers.authorization) {
+      headers['Authorization'] = req.headers.authorization;
+    }
+
     const fastApiResponse = await fetch('http://localhost:8000/api/v1/media/analyze', {
       method: 'POST',
+      headers: headers,
       body: formData
     });
 
@@ -552,6 +562,20 @@ uploadRouter.post('/v1/media/analyze', handleUploadFields, async (req, res) => {
       : report.verdict.includes('MANIPULATED')
       ? 'POSSIBLY_EDITED_OR_MANIPULATED'
       : 'INCONCLUSIVE';
+
+    const jobId = 'job_' + crypto.randomBytes(8).toString('hex');
+    db.createJob({
+      id: jobId,
+      userId: userId,
+      originalFilename: originalFilename,
+      storedFilename: path.basename(filePath),
+      storedPath: filePath,
+      mimeType: uploadedFile.mimetype,
+      mediaCategory: report.mediaType?.toUpperCase() || 'IMAGE',
+      sha256: sha256,
+      status: 'completed',
+      forensicReport: report
+    });
 
     return res.json({
       project: 'SPECTRA',

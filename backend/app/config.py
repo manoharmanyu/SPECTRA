@@ -1,6 +1,12 @@
 from typing import List, Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import Field
+from pydantic import Field, model_validator
+
+
+INSECURE_INTERNAL_TOKENS = {
+    "spectra_internal_dev_secret_token_change_in_production",
+    "spectra_webhook_dev_token_change_in_production"
+}
 
 
 class Settings(BaseSettings):
@@ -45,6 +51,29 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore"
     )
+
+    @model_validator(mode="after")
+    def validate_production_secrets(self) -> "Settings":
+        if self.ENVIRONMENT.lower() == "production":
+            if (
+                self.SPECTRA_INTERNAL_TOKEN in INSECURE_INTERNAL_TOKENS
+                or len(self.SPECTRA_INTERNAL_TOKEN) < 32
+            ):
+                raise ValueError(
+                    "FATAL SECURITY VIOLATION: Production startup rejected due to insecure or default SPECTRA_INTERNAL_TOKEN."
+                )
+            if (
+                self.SPECTRA_WEBHOOK_TOKEN in INSECURE_INTERNAL_TOKENS
+                or len(self.SPECTRA_WEBHOOK_TOKEN) < 32
+            ):
+                raise ValueError(
+                    "FATAL SECURITY VIOLATION: Production startup rejected due to insecure or default SPECTRA_WEBHOOK_TOKEN."
+                )
+            if self.DATABASE_URL.startswith("sqlite"):
+                raise ValueError(
+                    "PRODUCTION WARNING: SQLite is not supported for high-concurrency production deployments. Use PostgreSQL."
+                )
+        return self
 
     @property
     def allowed_origins(self) -> List[str]:

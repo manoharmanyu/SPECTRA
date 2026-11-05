@@ -94,25 +94,14 @@ if [ ! -f "data/spectra.json" ]; then
     echo -e "      ${YELLOW}!${NC} Initializing fresh database container at data/spectra.json..."
     cat << 'EOF' > data/spectra.json
 {
-  "users": [
-    {
-      "id": "usr_manohar_manyu",
-      "username": "manohar_manyu",
-      "passwordHash": "4ad7ae903988237583d4bcda0db1544010d9503e68947e61c9c6b414227eec57ad3a4f64b10d2dd16577d5bbd9f9251e2d2563bbd59bf7e2e834f9cae92aabe8",
-      "salt": "86a24962f988c843761fc4f618191b5a",
-      "totpSecretEncrypted": null,
-      "totpEnabled": false,
-      "recoveryCodesHashed": [],
-      "createdAt": "2026-10-26T10:01:28.784Z"
-    }
-  ],
+  "users": [],
   "sessions": [],
   "pairingCodes": [],
   "devices": [],
   "jobs": []
 }
 EOF
-    echo -e "      ${GREEN}✓${NC} Default administrator profile configured."
+    echo -e "      ${GREEN}✓${NC} Secure database container initialized."
 else
     echo -e "      ${GREEN}✓${NC} Existing database found at data/spectra.json"
 fi
@@ -162,8 +151,8 @@ echo -e "  - Mobile Web Portal:  ${CYAN}http://${LAN_IP}:5173/mobile.html${NC}"
 echo -e "  - Forensic API Hub:   ${CYAN}http://localhost:3001/api/status${NC}"
 
 echo -e "\n${MAGENTA}Default Administrator Account:${NC}"
-echo -e "  - Username: ${BOLD}manohar_manyu${NC}"
-echo -e "  - Password: ${BOLD}80081Abc@2005${NC} (Change via the Identity Defense modal)"
+echo -e "  - Username: ${BOLD}admin${NC} (or your SPECTRA_ADMIN_USERNAME)"
+echo -e "  - Password: ${BOLD}Generated in data/.initial_admin_credential${NC} (Must change on first login)"
 echo -e "${GREEN}======================================================================${NC}\n"
 
 if [ "$AUTO_START" = true ]; then

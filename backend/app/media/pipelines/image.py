@@ -6,6 +6,10 @@ import numpy as np
 
 from app.media.inspector import inspect_with_exiftool, decode_camera_makernotes
 from app.media.provenance import evaluate_media_provenance
+from app.media.models.prnu import SensorPRNUAnalyzer
+from app.media.models.quantization import JPEGQuantizationAnalyzer
+from app.media.models.face_analyzer import FaceRegionAnalyzer
+from app.media.registry import registry
 
 
 class ImageDetectionService:
@@ -68,10 +72,10 @@ class ImageDetectionService:
     @classmethod
     def compute_spatial_noise_residuals(cls, img: Image.Image) -> Dict[str, Any]:
         """
-        Analyzes high-frequency spatial residuals to measure physical sensor noise (PRNU)
-        versus latent diffusion synthetic residuals.
-        Optical sensors produce characteristic photon shot noise and silicon PRNU.
-        Generative models produce unnaturally oversmoothed or checkerboard-quantized residuals.
+        Analyzes high-frequency spatial noise residuals to measure natural optical shot noise
+        versus latent diffusion synthetic residuals and oversmoothed textures.
+        NOTE: This evaluates spatial texture noise variance; true camera sensor PRNU verification
+        requires enrolled physical calibration frames (implemented in SensorPRNUAnalyzer).
         """
         try:
             # Resize if huge to bound memory
@@ -185,6 +189,7 @@ class ImageDetectionService:
                 ela_res = cls.compute_error_level_analysis(pil_img)
                 noise_res = cls.compute_spatial_noise_residuals(pil_img)
                 tiled_res = cls.analyze_tiled_patches(pil_img)
+                face_res = FaceRegionAnalyzer.analyze_faces(pil_img)
         except Exception as e:
             return {
                 "status": "failed",
@@ -199,7 +204,24 @@ class ImageDetectionService:
         # 3. Evaluate Provenance (C2PA, AI prompt tags, MakerNotes)
         provenance = evaluate_media_provenance(file_path, raw_exif, makernote_res)
 
-        # 4. Formulate Evidence Items
+        # 4. JPEG Quantization Analysis
+        quant_res = JPEGQuantizationAnalyzer.analyze_jpeg_compression(file_path)
+
+        # 5. Genuine Sensor PRNU Correlation Module
+        c_make = makernote_res.get("camera_make") or raw_exif.get("Make")
+        c_model = makernote_res.get("camera_model") or raw_exif.get("Model")
+        with Image.open(file_path) as current_pil:
+            prnu_res = SensorPRNUAnalyzer.evaluate_sensor_prnu_correlation(
+                img=current_pil,
+                camera_make=str(c_make) if c_make else None,
+                camera_model=str(c_model) if c_model else None
+            )
+
+        # 6. Execute Neural Model Registry
+        with Image.open(file_path) as current_pil:
+            detector_reports = await registry.execute_image_detectors(current_pil, file_path, raw_exif)
+
+        # 7. Formulate Evidence Items
         # A. Provenance
         if provenance["c2pa"]["manifest_store_found"]:
             evidence_items.append({
@@ -279,12 +301,51 @@ class ImageDetectionService:
                 "score": 0.12
             })
 
+        # E. JPEG Quantization Table Analysis
+        if quant_res.get("quantization_present"):
+            evidence_items.append({
+                "source": "jpeg_quantization_analysis",
+                "finding": quant_res.get("summary", "DQT Quantization tables evaluated."),
+                "status": "verified",
+                "score": 0.85 if quant_res.get("is_non_standard_synthetic") else 0.15
+            })
+
+        # F. Genuine Sensor PRNU Status
+        evidence_items.append({
+            "source": "sensor_prnu_analysis",
+            "finding": prnu_res.get("explanation", "PRNU analysis evaluated."),
+            "status": "verified" if prnu_res.get("sensor_match_verified") else "inconclusive"
+        })
+        if prnu_res.get("limitations"):
+            limitations.extend(prnu_res["limitations"])
+
+        # G. Face Region Analysis
+        if face_res.get("faces_detected_count", 0) > 0:
+            evidence_items.append({
+                "source": "face_region_analysis",
+                "finding": face_res.get("summary", "Face regions examined."),
+                "status": "verified",
+                "score": 0.85 if face_res.get("face_swap_indicator_detected") else 0.15
+            })
+
+        # H. Neural Model Registry findings
+        for rep in detector_reports:
+            if rep.status == "available" and rep.raw_score is not None:
+                evidence_items.append({
+                    "source": rep.provider_name,
+                    "finding": f"{rep.model_identifier} predicted {rep.prediction} (score: {rep.raw_score}).",
+                    "status": "verified",
+                    "score": rep.raw_score
+                })
+            elif rep.status == "not_configured":
+                limitations.append(f"{rep.provider_name}: {rep.failure_reason or 'Weights not configured'}")
+
         # Determine preliminary pipeline decision
         is_ai_provenance = provenance["provenance_status"] == "VALID_AI_PROVENANCE"
         is_capture_provenance = provenance["provenance_status"] in ["VALID_CAPTURE_PROVENANCE", "UNVERIFIED_CAPTURE_PROVENANCE"]
         has_ai_metadata = len(provenance["ai_signatures"]) > 0
-        has_splice = ela_res.get("suspected_splice_detected", False) or tiled_res.get("localized_anomaly_found", False)
-        is_synthetic_noise = noise_res.get("is_synthetic_residual_pattern", False)
+        has_splice = ela_res.get("suspected_splice_detected", False) or tiled_res.get("localized_anomaly_found", False) or face_res.get("face_swap_indicator_detected", False)
+        is_synthetic_noise = noise_res.get("is_synthetic_residual_pattern", False) or quant_res.get("is_non_standard_synthetic", False)
 
         if is_ai_provenance or has_ai_metadata:
             classification = "LIKELY_AI_GENERATED"
@@ -343,7 +404,11 @@ class ImageDetectionService:
             "ela": ela_res,
             "noise_residuals": noise_res,
             "tiling": tiled_res,
+            "quantization": quant_res,
+            "prnu": prnu_res,
+            "face_analysis": face_res,
+            "detector_reports": [r.model_dump() for r in detector_reports],
             "metadata_present": metadata_present,
             "evidence": evidence_items,
-            "limitations": limitations
+            "limitations": list(dict.fromkeys(limitations))
         }

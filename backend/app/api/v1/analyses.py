@@ -1,7 +1,7 @@
 import os
 import uuid
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Optional, Dict, Any
 from fastapi import (
     APIRouter,
     UploadFile,
@@ -14,10 +14,11 @@ from fastapi import (
     Request,
     status
 )
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 from app.config import settings
-from app.database import get_db
+from app.database import get_db, SessionLocal
 from app.models.analysis import AnalysisJob
 from app.schemas.analysis import (
     AnalysisCreateResponse,
@@ -28,22 +29,26 @@ from app.storage import get_storage
 from app.media import detect_media_signature
 from app.services.webhook_service import dispatch_n8n_webhook
 from app.services.analysis_service import AnalysisService
-from app.api.deps import get_client_ip
+from app.api.deps import get_client_ip, get_current_user_context, enforce_job_ownership
 
 router = APIRouter(prefix="/api/v1/analyses", tags=["Analyses"])
 
 
-async def run_standalone_pipeline(job_id: str, db: Session):
+async def run_standalone_pipeline_worker(job_id: str):
     """
-    Background worker that executes stages locally when n8n is not active
-    or as a fallback mechanism.
+    Durable background worker with independent DB session lifecycle.
+    Executes stages locally when n8n is not active or as a fallback mechanism.
+    Guarantees session cleanup and prevents connection leaks.
     """
+    db = SessionLocal()
     try:
         await AnalysisService.execute_metadata_stage(db, job_id)
         await AnalysisService.execute_detect_stage(db, job_id)
         await AnalysisService.execute_finalize_stage(db, job_id)
     except Exception as e:
         AnalysisService.execute_failed_stage(db, job_id, str(e), stage_name="standalone_runner")
+    finally:
+        db.close()
 
 
 @router.post("", response_model=AnalysisCreateResponse, status_code=status.HTTP_202_ACCEPTED)
@@ -55,12 +60,15 @@ async def create_analysis(
     source_device_id: Optional[str] = Form(None),
     source_origin: Optional[str] = Form("web_upload"),
     client_captured_at: Optional[str] = Form(None),
+    user_id: Optional[str] = Form(None),
+    user_context: Dict[str, Any] = Depends(get_current_user_context),
     db: Session = Depends(get_db)
 ):
     """
     Multipart upload of image, audio, or video media.
     Stores file safely under generated UUID key, computes SHA-256, validates signatures,
     creates DB record, and dispatches to n8n workflow. Returns HTTP 202 Accepted.
+    Object-level ownership is linked to authenticated investigator.
     """
     if not file or not file.filename:
         raise HTTPException(
@@ -106,9 +114,13 @@ async def create_analysis(
         except Exception:
             pass
 
-    # Create DB Job Record
+    # Resolve owner
+    owner_id = user_id or (user_context.get("id") if user_context.get("id") != "anonymous_guest" else None)
+
+    # Create DB Job Record with ownership
     job = AnalysisJob(
         id=job_id,
+        user_id=owner_id,
         capture_session_id=capture_session_id if capture_session_id else None,
         source_origin=source_origin or "web_upload",
         source_device_id=source_device_id,
@@ -119,25 +131,31 @@ async def create_analysis(
         storage_key=storage_key,
         size_bytes=size_bytes,
         sha256_hash=sha256_hash,
-        status="queued"
+        status="queued",
+        retry_count=0,
+        max_retries=3
     )
     db.add(job)
     db.commit()
     db.refresh(job)
 
-    # Log audit event
+    # Log initial tamper-evident intake audit event (Chain of Custody sequence 1)
     AnalysisService.log_audit(
         db=db,
         job_id=job.id,
-        event_type="upload",
+        event_type="evidence_intake",
         details={
             "original_filename": file.filename,
             "media_type": media_type,
             "mime": detected_mime,
             "size_bytes": size_bytes,
-            "sha256": sha256_hash
+            "sha256": sha256_hash,
+            "storage_key": storage_key,
+            "source_origin": source_origin
         },
-        ip_address=get_client_ip(request)
+        ip_address=get_client_ip(request),
+        actor_id=owner_id or "system",
+        actor_role=user_context.get("role", "investigator")
     )
 
     # Dispatch to n8n webhook
@@ -146,12 +164,14 @@ async def create_analysis(
         db=db,
         job_id=job.id,
         event_type="n8n_dispatched",
-        details={"dispatched": dispatched, "n8n_url": settings.N8N_WEBHOOK_URL}
+        details={"dispatched": dispatched, "n8n_url": settings.N8N_WEBHOOK_URL},
+        actor_id="system_orchestrator",
+        actor_role="service"
     )
 
-    # If n8n was not dispatched or standalone pipeline is enabled, trigger background pipeline
+    # Trigger background pipeline with independent session worker
     if not dispatched or settings.STANDALONE_PIPELINE:
-        background_tasks.add_task(run_standalone_pipeline, job.id, db)
+        background_tasks.add_task(run_standalone_pipeline_worker, job.id)
 
     status_url = f"/api/v1/analyses/{job.id}"
     report_url = f"/api/v1/analyses/{job.id}/report"
@@ -166,9 +186,14 @@ async def create_analysis(
 
 
 @router.get("/{job_id}", response_model=AnalysisStatusResponse)
-def get_analysis_status(job_id: str, db: Session = Depends(get_db)):
+def get_analysis_status(
+    job_id: str,
+    user_context: Dict[str, Any] = Depends(get_current_user_context),
+    db: Session = Depends(get_db)
+):
     """
     Get current processing status and safe summary of an analysis job.
+    Object-level authorization enforced.
     """
     job = AnalysisService.get_job(db, job_id)
     if not job:
@@ -176,6 +201,9 @@ def get_analysis_status(job_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Analysis job '{job_id}' not found."
         )
+
+    # Enforce Object-Level Authorization
+    enforce_job_ownership(job.user_id, user_context)
 
     summary = None
     if job.assessment_label:
@@ -202,9 +230,15 @@ def get_analysis_status(job_id: str, db: Session = Depends(get_db)):
 
 
 @router.get("/{job_id}/report")
-def get_analysis_report(job_id: str, response: Response, db: Session = Depends(get_db)):
+def get_analysis_report(
+    job_id: str,
+    response: Response,
+    user_context: Dict[str, Any] = Depends(get_current_user_context),
+    db: Session = Depends(get_db)
+):
     """
     Get the detailed forensic report. Returns HTTP 202 while queued or processing.
+    Object-level authorization enforced.
     """
     job = AnalysisService.get_job(db, job_id)
     if not job:
@@ -212,6 +246,9 @@ def get_analysis_report(job_id: str, response: Response, db: Session = Depends(g
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Analysis job '{job_id}' not found."
         )
+
+    # Enforce Object-Level Authorization
+    enforce_job_ownership(job.user_id, user_context)
 
     if job.status in ("queued", "processing"):
         response.status_code = status.HTTP_202_ACCEPTED
@@ -244,15 +281,80 @@ def get_analysis_report(job_id: str, response: Response, db: Session = Depends(g
     )
 
 
+@router.get("/{job_id}/custody-chain")
+def get_custody_chain(
+    job_id: str,
+    user_context: Dict[str, Any] = Depends(get_current_user_context),
+    db: Session = Depends(get_db)
+):
+    """
+    Cryptographically verifies and retrieves the tamper-evident chain of custody for this evidence.
+    """
+    job = AnalysisService.get_job(db, job_id)
+    if not job:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Analysis job not found.")
+
+    enforce_job_ownership(job.user_id, user_context)
+    return AnalysisService.verify_audit_chain(db, job.id)
+
+
+@router.get("/{job_id}/evidence/download")
+def download_evidence_file(
+    job_id: str,
+    request: Request,
+    user_context: Dict[str, Any] = Depends(get_current_user_context),
+    db: Session = Depends(get_db)
+):
+    """
+    Secure, authorized download of original preserved evidence.
+    Strictly enforces object-level access control and logs an access event in the chain of custody.
+    """
+    job = AnalysisService.get_job(db, job_id)
+    if not job:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Analysis job not found.")
+
+    enforce_job_ownership(job.user_id, user_context)
+
+    storage = get_storage()
+    local_path = storage.get_local_path(job.storage_key)
+    if not os.path.exists(local_path):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Preserved evidence file not found in storage.")
+
+    # Record access in tamper-evident audit chain
+    AnalysisService.log_audit(
+        db=db,
+        job_id=job.id,
+        event_type="evidence_accessed",
+        details={"action": "evidence_download", "filename": job.original_filename},
+        ip_address=get_client_ip(request),
+        actor_id=user_context.get("id"),
+        actor_role=user_context.get("role")
+    )
+
+    return FileResponse(
+        path=local_path,
+        media_type=job.detected_mime_type,
+        filename=job.original_filename
+    )
+
+
 @router.post("/{job_id}/retry", response_model=AnalysisCreateResponse)
 async def retry_analysis(
     job_id: str,
     background_tasks: BackgroundTasks,
+    user_context: Dict[str, Any] = Depends(get_current_user_context),
     db: Session = Depends(get_db)
 ):
     """
     Safely redispatch eligible queued/failed jobs.
+    Object-level authorization enforced.
     """
+    target_job = AnalysisService.get_job(db, job_id)
+    if not target_job:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found.")
+
+    enforce_job_ownership(target_job.user_id, user_context)
+
     try:
         job = await AnalysisService.retry_job(db, job_id)
     except ValueError as e:
@@ -261,7 +363,7 @@ async def retry_analysis(
     # Dispatch to webhook or standalone
     dispatched = await dispatch_n8n_webhook(job.id, job.media_type)
     if not dispatched or settings.STANDALONE_PIPELINE:
-        background_tasks.add_task(run_standalone_pipeline, job.id, db)
+        background_tasks.add_task(run_standalone_pipeline_worker, job.id)
 
     return AnalysisCreateResponse(
         job_id=job.id,

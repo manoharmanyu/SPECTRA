@@ -8,9 +8,15 @@ from sqlalchemy.orm import sessionmaker
 # Ensure backend root is on sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from app.main import app
+import app.database
+import app.api.v1.analyses
+import app.api.v1.media
+from app.main import app as fastapi_app
 from app.config import settings
 from app.database import Base, get_db
+from app.models.analysis import AnalysisJob, AnalysisStageOutput
+from app.models.session import DeviceSession
+from app.models.audit import AuditEvent
 
 TEST_DATABASE_URL = "sqlite:///./test_spectra.db"
 test_engine = create_engine(TEST_DATABASE_URL, connect_args={"check_same_thread": False})
@@ -19,8 +25,20 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_db():
+    if os.path.exists("./test_spectra.db"):
+        try:
+            os.remove("./test_spectra.db")
+        except OSError:
+            pass
     Base.metadata.create_all(bind=test_engine)
+    orig_session_local = app.database.SessionLocal
+    app.database.SessionLocal = TestingSessionLocal
+    app.api.v1.analyses.SessionLocal = TestingSessionLocal
+    app.api.v1.media.SessionLocal = TestingSessionLocal
     yield
+    app.database.SessionLocal = orig_session_local
+    app.api.v1.analyses.SessionLocal = orig_session_local
+    app.api.v1.media.SessionLocal = orig_session_local
     Base.metadata.drop_all(bind=test_engine)
     if os.path.exists("./test_spectra.db"):
         try:
@@ -46,10 +64,10 @@ def client(db_session):
         finally:
             pass
 
-    app.dependency_overrides[get_db] = override_get_db
-    with TestClient(app) as test_client:
+    fastapi_app.dependency_overrides[get_db] = override_get_db
+    with TestClient(fastapi_app) as test_client:
         yield test_client
-    app.dependency_overrides.clear()
+    fastapi_app.dependency_overrides.clear()
 
 
 @pytest.fixture

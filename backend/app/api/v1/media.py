@@ -3,7 +3,7 @@ import time
 import uuid
 import shutil
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Optional, Dict, Any
 from fastapi import (
     APIRouter,
     UploadFile,
@@ -13,6 +13,7 @@ from fastapi import (
     Depends,
     HTTPException,
     BackgroundTasks,
+    Request,
     status
 )
 from sqlalchemy.orm import Session
@@ -20,22 +21,56 @@ import PIL
 import numpy as np
 
 from app.config import settings
-from app.database import get_db
+from app.database import get_db, SessionLocal
 from app.models.analysis import AnalysisJob
 from app.storage import get_storage
 from app.media.detector import detect_media_signature
-from app.media.inspector import inspect_with_exiftool
+from app.media.inspector import inspect_with_exiftool, resolve_binary
 from app.media.pipelines.image import ImageDetectionService
 from app.media.pipelines.audio import AudioDetectionService
 from app.media.pipelines.video import VideoDetectionService
 from app.media.fusion import EvidenceFusionEngine
+from app.services.analysis_service import AnalysisService
+from app.api.deps import get_client_ip, get_current_user_context, enforce_job_ownership
 from app.schemas.media_detection import (
     MediaDetectionResponse,
     DetectorHealthResponse,
     DetectorHealthItem
 )
 
+# Decompression bomb mitigation
+PIL.Image.MAX_IMAGE_PIXELS = 50_000_000
+
 router = APIRouter(prefix="/api/v1/media", tags=["Media Detection Engine"])
+
+
+async def execute_media_pipeline_worker(
+    analysis_id: str,
+    local_path: str,
+    original_filename: str,
+    media_type: str,
+    detected_mime: str,
+    size_bytes: int,
+    sha256_hash: str
+):
+    """
+    Independent background worker for async media analysis.
+    Uses its own isolated SessionLocal to guarantee safe DB session lifecycle.
+    """
+    db = SessionLocal()
+    try:
+        await execute_media_pipeline(
+            analysis_id=analysis_id,
+            local_path=local_path,
+            original_filename=original_filename,
+            media_type=media_type,
+            detected_mime=detected_mime,
+            size_bytes=size_bytes,
+            sha256_hash=sha256_hash,
+            db=db
+        )
+    finally:
+        db.close()
 
 
 async def execute_media_pipeline(
@@ -98,9 +133,11 @@ async def execute_media_pipeline(
     summary="Analyze media for AI generation, manipulation, or conventional capture"
 )
 async def analyze_media(
+    request: Request,
     background_tasks: BackgroundTasks,
     file: UploadFile = File(..., description="Multipart image, audio, or video file"),
     async_mode: bool = Query(False, description="Whether to execute asynchronously and return 202 status"),
+    user_context: Dict[str, Any] = Depends(get_current_user_context),
     db: Session = Depends(get_db)
 ):
     """
@@ -148,9 +185,28 @@ async def analyze_media(
         await storage.delete(storage_key)
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=str(e))
 
+    # Decompression bomb and extreme dimension mitigation
+    if media_type == "image":
+        try:
+            with PIL.Image.open(local_path) as test_img:
+                w, h = test_img.size
+                if w > 8192 or h > 8192:
+                    await storage.delete(storage_key)
+                    raise HTTPException(
+                        status_code=status.HTTP_400_BAD_REQUEST,
+                        detail=f"Image dimensions ({w}x{h}) exceed maximum allowed dimension limit of 8192x8192."
+                    )
+        except HTTPException:
+            raise
+        except Exception:
+            pass
+
+    owner_id = user_context.get("id") if user_context.get("id") != "anonymous_guest" else None
+
     # Create AnalysisJob DB record
     job = AnalysisJob(
         id=analysis_id,
+        user_id=owner_id,
         source_origin="media_analyze_api",
         media_type=media_type,
         detected_mime_type=detected_mime,
@@ -159,23 +215,42 @@ async def analyze_media(
         size_bytes=size_bytes,
         sha256_hash=sha256_hash,
         status="processing" if async_mode else "completed",
+        retry_count=0,
+        max_retries=3,
         created_at=datetime.now(timezone.utc)
     )
     db.add(job)
     db.commit()
 
+    # Log initial tamper-evident audit event (Chain of Custody sequence 1)
+    AnalysisService.log_audit(
+        db=db,
+        job_id=job.id,
+        event_type="evidence_intake",
+        details={
+            "original_filename": file.filename,
+            "media_type": media_type,
+            "mime": detected_mime,
+            "size_bytes": size_bytes,
+            "sha256": sha256_hash,
+            "storage_key": storage_key
+        },
+        ip_address=get_client_ip(request),
+        actor_id=owner_id or "system",
+        actor_role=user_context.get("role", "investigator")
+    )
+
     if async_mode:
-        # Launch background processing
+        # Launch durable background processing with independent SessionLocal worker
         background_tasks.add_task(
-            execute_media_pipeline,
+            execute_media_pipeline_worker,
             analysis_id,
             local_path,
             file.filename,
             media_type,
             detected_mime,
             size_bytes,
-            sha256_hash,
-            db
+            sha256_hash
         )
         return MediaDetectionResponse(
             project="SPECTRA",
@@ -210,9 +285,14 @@ async def analyze_media(
     response_model=MediaDetectionResponse,
     summary="Retrieve the status and detailed report of an analysis job"
 )
-async def get_analysis_status(analysis_id: str, db: Session = Depends(get_db)):
+async def get_analysis_status(
+    analysis_id: str,
+    user_context: Dict[str, Any] = Depends(get_current_user_context),
+    db: Session = Depends(get_db)
+):
     """
     Polls the status or retrieves the completed forensic report by analysis_id.
+    Enforces object-level authorization.
     """
     job = db.query(AnalysisJob).filter(AnalysisJob.id == str(analysis_id)).first()
     if not job:
@@ -220,6 +300,9 @@ async def get_analysis_status(analysis_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Analysis ID '{analysis_id}' not found."
         )
+
+    # Object-level authorization
+    enforce_job_ownership(job.user_id, user_context)
 
     if job.status == "completed" and job.final_report:
         return MediaDetectionResponse(**job.final_report)
@@ -280,9 +363,7 @@ async def detector_health():
     ))
 
     # 4. Provenance & ExifTool
-    exiftool_bin = shutil.which("exiftool") or (
-        "/Users/manyugaddam/.local/bin/exiftool" if os.path.exists("/Users/manyugaddam/.local/bin/exiftool") else None
-    )
+    exiftool_bin = resolve_binary("exiftool")
     detectors.append(DetectorHealthItem(
         name="ProvenanceAndMakerNoteService",
         category="provenance",
