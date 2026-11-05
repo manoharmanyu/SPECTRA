@@ -5913,8 +5913,12 @@ function showVerdict(presetId) {
         }
       };
 
+      spectraWs.onerror = () => {
+        // Silently handle proxy/serverless WebSocket unreachability, HTTP polling remains active
+      };
+
       spectraWs.onclose = () => {
-        setTimeout(initSpectraWebSocket, 3500);
+        setTimeout(initSpectraWebSocket, 10000);
       };
     } catch (e) {
       console.error('WebSocket connection failed, relying on HTTP polling sync:', e);

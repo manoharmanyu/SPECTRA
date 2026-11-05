@@ -54,10 +54,11 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Apply strict CORS only to configured frontend origins
+# Apply strict CORS with Cloudflare & Vercel edge domain pattern matching
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.allowed_origins,
+    allow_origin_regex=r"^https://.*(\.vercel\.app|\.pages\.dev|\.trycloudflare\.com|\.workers\.dev)$|http://(localhost|127\.0\.0\.1)(:\d+)?",
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=[
@@ -77,7 +78,7 @@ app.add_middleware(
 async def add_security_headers(request, call_next):
     response = await call_next(request)
     response.headers["X-Content-Type-Options"] = "nosniff"
-    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     if is_prod:
         response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"

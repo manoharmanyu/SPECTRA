@@ -12,18 +12,27 @@ import { initWeeklyCacheScheduler, runWeeklyCacheCleanup, getCacheStatus } from 
 const app = express();
 const server = http.createServer(app);
 
+// Enable Reverse Proxy Trust for Cloudflare and Vercel edge networks
+app.set('trust proxy', 1);
+
 // Initialize WebSocket Hub on same HTTP server
 wsHub.init(server);
 
 // Start Automated 1-Week Cache & Storage Maintenance Scheduler
 initWeeklyCacheScheduler();
 
-// Strict CORS Configuration with Explicit Origin Allowlist
+// Strict CORS Configuration with Explicit Origin Allowlist & Cloudflare Edge Support
 const ALLOWED_PRODUCTION_ORIGINS = new Set([
   'https://thespectra.vercel.app',
   'https://spectra-mobile.vercel.app',
   'https://spectra-forensics.vercel.app'
 ]);
+
+const CLOUDFLARE_DOMAIN_PATTERNS = [
+  /^https:\/\/[a-zA-Z0-9-]+\.pages\.dev$/,
+  /^https:\/\/[a-zA-Z0-9-]+\.workers\.dev$/,
+  /^https:\/\/[a-zA-Z0-9-]+\.trycloudflare\.com$/
+];
 
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -35,6 +44,11 @@ app.use(
 
       // Check production allowlist
       if (ALLOWED_PRODUCTION_ORIGINS.has(origin)) {
+        return callback(null, true);
+      }
+
+      // Check Cloudflare Edge domains
+      if (CLOUDFLARE_DOMAIN_PATTERNS.some(pattern => pattern.test(origin))) {
         return callback(null, true);
       }
 
@@ -64,10 +78,10 @@ app.use(cookieParser());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Security Headers Middleware
+// Security Headers Middleware (Supports Same-Origin Iframes for Scene.tsx)
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   if (process.env.NODE_ENV === 'production') {
