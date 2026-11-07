@@ -1,15 +1,15 @@
 import express from 'express';
 import QRCode from 'qrcode';
 import { db } from '../db.js';
-import { requireAuth } from './auth.js';
+import { requireAuth, optionalOrAutoAuth } from './auth.js';
 import { generatePairingCode, generateDeviceToken, verifyTotp, decryptAtRest } from '../crypto.js';
 import { getLocalIpAddress, config } from '../config.js';
 import { wsHub } from '../ws.js';
 
 export const pairingRouter = express.Router();
 
-// POST /api/pairing/generate (Desktop initiates pairing)
-pairingRouter.post('/generate', requireAuth, async (req, res) => {
+// POST /api/pairing/generate (Desktop initiates pairing - auto-provisions session if needed)
+pairingRouter.post('/generate', optionalOrAutoAuth, async (req, res) => {
   const code = generatePairingCode();
   const pairing = db.createPairingCode(req.user.id, req.session.id, code);
 

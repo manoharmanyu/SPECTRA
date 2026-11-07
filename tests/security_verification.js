@@ -5,6 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import { fileURLToPath } from 'url';
+import { server } from '../server/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -82,8 +83,19 @@ async function runAllSecurityTests() {
   console.log('🔒 SPECTRA FORENSICS — SECURITY & COMPLIANCE TEST SUITE');
   console.log('======================================================\n');
 
-  // Wait 200ms for server to initialize
-  await new Promise(r => setTimeout(r, 200));
+  // Start HTTP and WebSocket test server if not already running
+  let localServer = null;
+  if (!server.listening) {
+    await new Promise((resolve, reject) => {
+      localServer = server.listen(3001, '127.0.0.1', (err) => {
+        if (err) return reject(err);
+        resolve();
+      });
+    });
+  }
+
+  // Wait 100ms for sockets to initialize
+  await new Promise(r => setTimeout(r, 100));
 
   // -------------------------------------------------------------------------
   // TEST GROUP 1: PASSWORD HASHING & CRYPTOGRAPHY
@@ -176,6 +188,20 @@ async function runAllSecurityTests() {
   });
   assert(regRes.status === 201 && regRes.json?.user?.id.startsWith('usr_'), 'Unique immutable user ID assigned upon registration');
   const testUserSession = regRes.json?.sessionId;
+
+  // Verify 2FA API Setup and Verification Endpoints
+  const twoFaSetupRes = await request({ path: '/api/auth/2fa/setup', method: 'POST' }, {}, {
+    'x-session-id': testUserSession
+  });
+  assert(twoFaSetupRes.status === 200 && twoFaSetupRes.json?.secret && twoFaSetupRes.json?.qrCode, '2FA API endpoint generates secret and QR code data URL');
+
+  const setupTotpCode = generateTotp(twoFaSetupRes.json.secret);
+  const twoFaVerifyRes = await request({ path: '/api/auth/2fa/verify-setup', method: 'POST' }, {
+    token: setupTotpCode
+  }, {
+    'x-session-id': testUserSession
+  });
+  assert(twoFaVerifyRes.status === 200 && twoFaVerifyRes.json?.recoveryCodes?.length === 10, '2FA setup verification succeeds and returns 10 single-use recovery codes');
 
   // -------------------------------------------------------------------------
   // TEST GROUP 4: UNIQUE PAIRING CODE GENERATION & EXPIRATION
@@ -406,6 +432,10 @@ async function runAllSecurityTests() {
       });
     }
   } catch(e) {}
+
+  if (localServer) {
+    await new Promise(r => localServer.close(r));
+  }
 
   if (failed > 0) {
     process.exit(1);
