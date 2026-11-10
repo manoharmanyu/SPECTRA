@@ -1,12 +1,27 @@
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
+import pg from 'pg';
 import { config } from './config.js';
 import { hashPassword } from './crypto.js';
 
 const DB_FILE = process.env.SPECTRA_DB_FILE || (process.env.NODE_ENV === 'test' 
   ? path.join(config.dataDir, 'spectra_test.json') 
   : path.join(config.dataDir, 'spectra.json'));
+
+let pgPool = null;
+if (process.env.DATABASE_URL && (process.env.DATABASE_URL.startsWith('postgres://') || process.env.DATABASE_URL.startsWith('postgresql://'))) {
+  try {
+    pgPool = new pg.Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: process.env.DATABASE_URL.includes('localhost') || process.env.DATABASE_URL.includes('127.0.0.1')
+        ? false
+        : { rejectUnauthorized: false }
+    });
+  } catch (e) {
+    console.warn('PostgreSQL pool init warning:', e.message);
+  }
+}
 
 function ensureDirectories() {
   try {
@@ -31,8 +46,34 @@ class SpectraDB {
       devices: [],
       jobs: []
     };
+    this.initPg();
     this.load();
     this.initDefaultUsers();
+  }
+
+  async initPg() {
+    if (!pgPool) return;
+    try {
+      await pgPool.query(`
+        CREATE TABLE IF NOT EXISTS spectra_kv_store (
+          key VARCHAR(64) PRIMARY KEY,
+          data JSONB NOT NULL,
+          updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+        )
+      `);
+      const res = await pgPool.query(`SELECT data FROM spectra_kv_store WHERE key = 'spectra_main_state'`);
+      if (res.rows && res.rows.length > 0 && res.rows[0].data) {
+        const remoteData = res.rows[0].data;
+        if (remoteData.users) this.data.users = remoteData.users;
+        if (remoteData.sessions) this.data.sessions = remoteData.sessions;
+        if (remoteData.pairingCodes) this.data.pairingCodes = remoteData.pairingCodes;
+        if (remoteData.devices) this.data.devices = remoteData.devices;
+        if (remoteData.jobs) this.data.jobs = remoteData.jobs;
+        this.saveToFile();
+      }
+    } catch (e) {
+      console.warn('PostgreSQL sync initialization notice:', e.message);
+    }
   }
 
   load() {
@@ -63,6 +104,20 @@ class SpectraDB {
   }
 
   save() {
+    this.saveToFile();
+    if (pgPool) {
+      pgPool.query(
+        `INSERT INTO spectra_kv_store (key, data, updated_at) 
+         VALUES ('spectra_main_state', $1, NOW())
+         ON CONFLICT (key) DO UPDATE SET data = EXCLUDED.data, updated_at = NOW()`,
+        [this.data]
+      ).catch(e => {
+        // Asynchronous DB log without blocking caller
+      });
+    }
+  }
+
+  saveToFile() {
     try {
       fs.writeFileSync(DB_FILE, JSON.stringify(this.data, null, 2), 'utf8');
     } catch (e) {
@@ -155,7 +210,7 @@ class SpectraDB {
     return this.data.users.find(u => u.username.toLowerCase() === lower);
   }
 
-  createUser(username, password) {
+  createUser(username, password, role = 'investigator') {
     const existing = this.findUserByUsername(username);
     if (existing) {
       throw new Error('User already exists');
@@ -164,6 +219,7 @@ class SpectraDB {
     const user = {
       id: 'usr_' + Date.now().toString(36) + Math.random().toString(36).substring(2, 6),
       username: username.trim(),
+      role: role,
       passwordHash: hash,
       salt: salt,
       totpSecretEncrypted: null,
@@ -174,6 +230,25 @@ class SpectraDB {
     this.data.users.push(user);
     this.save();
     return user;
+  }
+
+  createGuestUser() {
+    const randomSuffix = crypto.randomBytes(6).toString('hex');
+    const guestUser = {
+      id: 'usr_guest_' + randomSuffix,
+      username: 'guest_' + randomSuffix,
+      role: 'guest',
+      passwordHash: null,
+      salt: null,
+      totpSecretEncrypted: null,
+      totpEnabled: false,
+      recoveryCodesHashed: [],
+      isGuest: true,
+      createdAt: new Date().toISOString()
+    };
+    this.data.users.push(guestUser);
+    this.save();
+    return guestUser;
   }
 
   updateUser(id, updates) {

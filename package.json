@@ -10,13 +10,16 @@
     "start": "node server/index.js",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "bench": "node tests/benchmark_load.js",
     "test": "node tests/security_verification.js"
   },
   "dependencies": {
+    "@types/pg": "^8.23.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "express": "^5.3.0",
     "multer": "^2.5.0",
+    "pg": "^8.23.1",
     "qrcode": "^1.5.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

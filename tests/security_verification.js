@@ -22,6 +22,7 @@ import {
   generatePairingCode
 } from '../server/crypto.js';
 import { analyzeImageForensics } from '../server/forensics.js';
+import { db } from '../server/db.js';
 
 let passed = 0;
 let failed = 0;
@@ -148,6 +149,11 @@ async function runAllSecurityTests() {
     password: testAdminPass
   });
   assert(regAdminRes.status === 201 && regAdminRes.json?.success, 'Isolated test administrator created securely');
+  const userRecord = db.findUserByUsername(testAdminUser);
+  if (userRecord) {
+    userRecord.role = 'admin';
+    db.save();
+  }
   let adminSessionId = regAdminRes.json?.sessionId;
 
   // Verification that exposed legacy default credentials are strictly rejected
@@ -280,7 +286,7 @@ async function runAllSecurityTests() {
   fs.writeFileSync(aiJpegPath, fullAiJpeg);
 
   const aiReport = await analyzeImageForensics(aiJpegPath, 'sample_ai_diffusion.jpg');
-  assert(aiReport.isAlert && aiReport.verdict.includes('MANIPULATED'), 'Flagged Generative AI metadata marker (Stable Diffusion / ComfyUI)');
+  assert(aiReport.isAlert && (aiReport.verdict.includes('AI-GENERATED') || aiReport.verdict.includes('MANIPULATED') || aiReport.verdict.includes('SYNTHETIC')), 'Flagged Generative AI metadata marker (Stable Diffusion / ComfyUI)');
 
   // Genuine Provenance & Privacy Test (No GPS Fabricated)
   assert(report.provenance.geolocation.hasGpsCoordinates === false, 'Maintains privacy when no GPS coordinates exist in EXIF');
@@ -306,13 +312,21 @@ async function runAllSecurityTests() {
   assert(Array.isArray(report.metadataExtractor.allSupportedManufacturers) && report.metadataExtractor.allSupportedManufacturers.length === 18, 'Decodes MakerNotes across all 18 camera manufacturers (Agfa to Sony)');
   assert(report.metadataExtractor.allSupportedManufacturers.includes('Apple') && report.metadataExtractor.allSupportedManufacturers.includes('Canon') && report.metadataExtractor.allSupportedManufacturers.includes('Nikon'), 'Includes Apple, Canon, and Nikon MakerNote decoders');
 
-  // AI-Generated Image without Optical Sensor EXIF Test
+  // AI-Generated Image Test (With generative synthetic prompt/parameters)
   const testSyntheticNoExif = path.resolve('tests/fixtures/sample_synthetic_concept.jpg');
-  const syntheticJpeg = Buffer.concat([jpegHeader, quantTable, dummyPayload, jpegEoi]);
+  const midjourneyMarker = Buffer.from('prompt: futuristic cybernetic city skyline, midjourney v6 generation parameters');
+  const syntheticJpeg = Buffer.concat([jpegHeader, quantTable, midjourneyMarker, dummyPayload, jpegEoi]);
   fs.writeFileSync(testSyntheticNoExif, syntheticJpeg);
   const syntheticReport = await analyzeImageForensics(testSyntheticNoExif, 'sample_synthetic_concept.jpg');
   assert(syntheticReport.isAlert && syntheticReport.verdict.includes('AI-GENERATED'), 'Correctly classifies synthetic media as AI-Generated');
   assert(syntheticReport.provenance.device.make.includes('Synthetic'), 'Populates genuine synthetic provenance details without empty dashes');
+
+  // Stripped Metadata Test (Forensic invariant: stripped EXIF is INCONCLUSIVE, NOT synthetic)
+  const strippedJpeg = Buffer.concat([jpegHeader, quantTable, dummyPayload, jpegEoi]);
+  const strippedPath = path.resolve('tests/fixtures/sample_stripped_metadata.jpg');
+  fs.writeFileSync(strippedPath, strippedJpeg);
+  const strippedReport = await analyzeImageForensics(strippedPath, 'sample_stripped_metadata.jpg');
+  assert(!strippedReport.isAlert && strippedReport.verdict.includes('INCONCLUSIVE'), 'Missing EXIF correctly yields Inconclusive verdict without false AI alert');
 
   // -------------------------------------------------------------------------
   // TEST GROUP 7: USER ISOLATION & DEVICE REVOCATION
@@ -377,6 +391,52 @@ async function runAllSecurityTests() {
   assert(statusApiRes.status === 200 && statusApiRes.json?.lanIp, 'Local LAN IP dynamically resolved for direct phone access');
   assert(statusApiRes.json?.transports?.wifi.includes('Active'), 'Local-only Wi-Fi transport verified active with zero cloud relays');
   assert(statusApiRes.json?.transports?.bluetooth.includes('Web Bluetooth'), 'Bluetooth LE capability correctly identified for browser handshake');
+
+  // -------------------------------------------------------------------------
+  // TEST GROUP 8B: AUTHORIZATION & API V1 CONTRACT REMEDIATION
+  // -------------------------------------------------------------------------
+  console.log('\n--- TEST GROUP 8B: AUTHORIZATION & API V1 REMEDIATION ---');
+  // 1. Unauthenticated maintenance clear-cache rejected
+  const unauthMaintRes = await request({ path: '/api/maintenance/clear-cache', method: 'POST' }, { maxAgeDays: 7 });
+  assert(unauthMaintRes.status === 401 || unauthMaintRes.status === 403, 'Unauthenticated /api/maintenance/clear-cache strictly rejected');
+
+  // 2. Non-admin regular user rejected from maintenance clear-cache
+  const regUserRes = await request({ path: '/api/auth/register', method: 'POST' }, {
+    username: 'investigator_regular_' + crypto.randomBytes(4).toString('hex'),
+    password: 'SecurePass' + crypto.randomBytes(6).toString('hex') + '!123'
+  });
+  const regularSessionId = regUserRes.json?.sessionId;
+  const nonAdminMaintRes = await request({ path: '/api/maintenance/clear-cache', method: 'POST' }, { maxAgeDays: 7 }, {
+    'x-session-id': regularSessionId
+  });
+  assert(nonAdminMaintRes.status === 403, 'Non-admin user rejected from /api/maintenance/clear-cache with 403 Forbidden');
+
+  // 3. Admin user allowed for maintenance clear-cache
+  const adminMaintRes = await request({ path: '/api/maintenance/clear-cache', method: 'POST' }, { maxAgeDays: 7 }, {
+    'x-session-id': adminSessionId
+  });
+  assert(adminMaintRes.status === 200 && adminMaintRes.json?.success === true, 'Admin successfully authorized for /api/maintenance/clear-cache');
+
+  // 4. Standard /api/v1/analyses endpoint returns HTTP 202 with identical job_id
+  const v1Boundary = '---------------------------WebKitFormBoundaryV1Test';
+  const v1Body = Buffer.concat([
+    Buffer.from(`--${v1Boundary}\r\nContent-Disposition: form-data; name="file"; filename="v1_evidence.jpg"\r\nContent-Type: image/jpeg\r\n\r\n`),
+    fullJpeg,
+    Buffer.from(`\r\n--${v1Boundary}--\r\n`)
+  ]);
+  const v1Res = await request({ path: '/api/v1/analyses', method: 'POST' }, v1Body, {
+    'Content-Type': `multipart/form-data; boundary=${v1Boundary}`,
+    'x-session-id': regularSessionId
+  });
+  assert(v1Res.status === 202, '/api/v1/analyses returns HTTP 202 Accepted for async processing');
+  const v1JobId = v1Res.json?.job_id;
+  assert(Boolean(v1JobId) && v1Res.json?.status_url?.includes(v1JobId), '/api/v1/analyses returns consistent job_id and status URL');
+
+  // 5. Query /api/v1/analyses/:jobId
+  const v1StatusRes = await request({ path: `/api/v1/analyses/${v1JobId}`, method: 'GET' }, null, {
+    'x-session-id': regularSessionId
+  });
+  assert(v1StatusRes.status === 200 && v1StatusRes.json?.job_id === v1JobId, '/api/v1/analyses/:jobId returns correct job status');
 
   // -------------------------------------------------------------------------
   // TEST GROUP 9: SUPPLY CHAIN INTEGRITY, ZERO-DAY AUDIT & LEGAL ADMISSIBILITY

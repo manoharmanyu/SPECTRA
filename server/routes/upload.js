@@ -25,8 +25,8 @@ export function requireDeviceOrSession(req, res, next) {
   if (deviceToken) {
     const tokenHash = crypto.createHash('sha256').update(deviceToken).digest('hex');
     const device = db.findDeviceByTokenHash(tokenHash) || db.data.devices.find(d => d.id === deviceToken || d.tokenHash === deviceToken);
-    if (!device) {
-      return res.status(401).json({ error: 'Device is not authorized or has been disconnected.' });
+    if (!device || device.trustStatus !== 'active') {
+      return res.status(401).json({ error: 'Device is not authorized, disconnected, or revoked.' });
     }
     const user = db.findUserById(device.userId);
     if (!user) {
@@ -535,7 +535,8 @@ uploadRouter.post('/v1/media/analyze', requireDeviceOrSession, handleUploadField
       headers['Authorization'] = req.headers.authorization;
     }
 
-    const fastApiResponse = await fetch('http://localhost:8000/api/v1/media/analyze', {
+    const fastApiBase = process.env.FASTAPI_BACKEND_URL || process.env.SPECTRA_API_BASE_URL || 'http://127.0.0.1:8000';
+    const fastApiResponse = await fetch(`${fastApiBase}/api/v1/media/analyze`, {
       method: 'POST',
       headers: headers,
       body: formData
@@ -579,8 +580,8 @@ uploadRouter.post('/v1/media/analyze', requireDeviceOrSession, handleUploadField
 
     return res.json({
       project: 'SPECTRA',
-      analysis_id: 'ana_' + crypto.randomBytes(8).toString('hex'),
-      job_id: 'job_' + crypto.randomBytes(8).toString('hex'),
+      analysis_id: 'ana_' + jobId.replace(/^job_/, ''),
+      job_id: jobId,
       media_type: report.mediaType || 'image',
       sha256: sha256,
       file_size_bytes: sizeBytes,
@@ -630,7 +631,8 @@ uploadRouter.post('/v1/media/analyze', requireDeviceOrSession, handleUploadField
 // GET /api/v1/media/health
 uploadRouter.get('/v1/media/health', async (req, res) => {
   try {
-    const fastApiResponse = await fetch('http://localhost:8000/api/v1/media/health');
+    const fastApiBase = process.env.FASTAPI_BACKEND_URL || process.env.SPECTRA_API_BASE_URL || 'http://127.0.0.1:8000';
+    const fastApiResponse = await fetch(`${fastApiBase}/api/v1/media/health`);
     if (fastApiResponse.ok) {
       return res.json(await fastApiResponse.json());
     }
@@ -647,5 +649,159 @@ uploadRouter.get('/v1/media/health', async (req, res) => {
     ],
     supported_media_types: ['image', 'audio', 'video'],
     timestamp: new Date().toISOString()
+  });
+});
+
+// Standardized Contract: POST /api/v1/analyses (HTTP 202 Accepted)
+uploadRouter.post('/v1/analyses', handleUploadFields, async (req, res) => {
+  const uploadedFile = req.file || (req.files && req.files.length > 0 ? req.files[0] : null);
+  if (!uploadedFile) {
+    return res.status(400).json({ error: 'No media file provided for analysis.' });
+  }
+
+  const filePath = uploadedFile.path;
+  const originalFilename = path.basename(uploadedFile.originalname).replace(/[^a-zA-Z0-9._-]/g, '_');
+  const ext = path.extname(originalFilename).toLowerCase();
+
+  let mediaType = 'image';
+  if (['.mp4', '.mov', '.avi', '.webm', '.mkv'].includes(ext) || uploadedFile.mimetype.startsWith('video/')) {
+    mediaType = 'video';
+  } else if (['.mp3', '.wav', '.m4a', '.aac', '.flac', '.ogg'].includes(ext) || uploadedFile.mimetype.startsWith('audio/')) {
+    mediaType = 'audio';
+  }
+
+  // Resolve user identity or guest
+  const userId = req.user?.id || req.body?.user_id || 'guest_' + crypto.randomBytes(6).toString('hex');
+  const jobId = 'job_' + crypto.randomBytes(12).toString('hex');
+
+  const job = db.createJob({
+    id: jobId,
+    userId: userId,
+    originalFilename: originalFilename,
+    storedFilename: uploadedFile.filename,
+    storedPath: filePath,
+    mimeType: uploadedFile.mimetype,
+    sizeBytes: uploadedFile.size,
+    mediaCategory: mediaType.toUpperCase(),
+    status: 'queued',
+    progressPct: 0
+  });
+
+  // Asynchronous forensic execution
+  (async () => {
+    try {
+      db.updateJob(job.id, { status: 'processing', progressPct: 35 });
+      const report = await analyzeMediaForensics(filePath, originalFilename, uploadedFile.mimetype);
+      const sha256 = crypto.createHash('sha256').update(fs.readFileSync(filePath)).digest('hex');
+
+      const classification = report.verdict.includes('AI')
+        ? 'likely_ai_generated'
+        : report.verdict.includes('AUTHENTIC')
+        ? 'likely_not_ai_detected'
+        : report.verdict.includes('MANIPULATED')
+        ? 'likely_ai_manipulated'
+        : 'inconclusive';
+
+      db.updateJob(job.id, {
+        status: 'completed',
+        progressPct: 100,
+        sha256: sha256,
+        forensicReport: report,
+        assessment_label: classification,
+        assessment_score: report.riskScore ? report.riskScore / 100 : null,
+        completedAt: new Date().toISOString()
+      });
+    } catch (err) {
+      db.updateJob(job.id, { status: 'failed', error: err.message });
+    }
+  })();
+
+  res.status(202).json({
+    job_id: job.id,
+    status: 'queued',
+    media_type: mediaType,
+    status_url: `/api/v1/analyses/${job.id}`,
+    report_url: `/api/v1/analyses/${job.id}/report`
+  });
+});
+
+// Standardized Contract: GET /api/v1/analyses/:jobId
+uploadRouter.get('/v1/analyses/:jobId', (req, res) => {
+  const job = db.findJob(req.params.jobId);
+  if (!job) {
+    return res.status(404).json({ error: `Analysis job '${req.params.jobId}' not found.` });
+  }
+
+  let summary = null;
+  if (job.assessment_label || job.forensicReport) {
+    summary = {
+      label: job.assessment_label || (job.forensicReport?.verdict.includes('AI') ? 'likely_ai_generated' : 'inconclusive'),
+      score: job.assessment_score || (job.forensicReport?.riskScore ? job.forensicReport.riskScore / 100 : null),
+      score_type: 'model_score',
+      explanation: job.forensicReport?.summary || job.forensicReport?.detectionReasoning || null
+    };
+  }
+
+  res.json({
+    job_id: job.id,
+    status: job.status,
+    media_type: (job.mediaCategory || 'IMAGE').toLowerCase(),
+    original_filename: job.originalFilename,
+    size_bytes: job.sizeBytes,
+    mime_type: job.mimeType,
+    sha256: job.sha256 || null,
+    created_at: job.createdAt,
+    completed_at: job.completedAt || null,
+    assessment_summary: summary,
+    error_message: job.error || null
+  });
+});
+
+// Standardized Contract: GET /api/v1/analyses/:jobId/report
+uploadRouter.get('/v1/analyses/:jobId/report', (req, res) => {
+  const job = db.findJob(req.params.jobId);
+  if (!job) {
+    return res.status(404).json({ error: `Analysis job '${req.params.jobId}' not found.` });
+  }
+
+  if (job.status === 'queued' || job.status === 'processing') {
+    return res.status(202).json({
+      job_id: job.id,
+      status: job.status,
+      message: 'Forensic analysis is currently in progress.',
+      status_url: `/api/v1/analyses/${job.id}`
+    });
+  }
+
+  if (job.status === 'failed') {
+    return res.json({
+      job_id: job.id,
+      status: 'failed',
+      error: job.error || 'Analysis failed during execution stage.',
+      file: {
+        sha256: job.sha256,
+        size_bytes: job.sizeBytes,
+        mime_type: job.mimeType,
+        original_filename: job.originalFilename
+      }
+    });
+  }
+
+  res.json({
+    job_id: job.id,
+    status: 'completed',
+    report: job.forensicReport,
+    assessment: {
+      label: job.assessment_label || 'inconclusive',
+      score: job.assessment_score || 0.5,
+      explanation: job.forensicReport?.summary || 'Forensic examination complete.'
+    },
+    provenance: job.forensicReport?.provenance || {},
+    file: {
+      sha256: job.sha256,
+      size_bytes: job.sizeBytes,
+      mime_type: job.mimeType,
+      original_filename: job.originalFilename
+    }
   });
 });

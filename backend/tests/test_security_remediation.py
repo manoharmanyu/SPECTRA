@@ -130,3 +130,77 @@ def test_evidence_download_authorization(client, db_session):
     resp = client.get(f"/api/v1/analyses/{job_id}/evidence/download", headers=auth_headers)
     assert resp.status_code == 200
     assert resp.content == b"JPEG_MOCK_EVIDENCE_BYTES_12345"
+
+
+def test_admin_dashboard_kpis_and_authorization(client, db_session):
+    """
+    Verify /api/v1/analyses/admin/dashboard enforces admin role and aggregates real KPIs.
+    """
+    # 1. Non-admin investigator -> 403 Forbidden
+    user_headers = {"X-User-Id": "investigator_john", "X-User-Role": "investigator"}
+    resp = client.get("/api/v1/analyses/admin/dashboard", headers=user_headers)
+    assert resp.status_code == 403
+
+    # 2. Admin -> 200 OK with KPIs
+    admin_headers = {"X-User-Id": "admin_sys", "X-User-Role": "admin"}
+    resp = client.get("/api/v1/analyses/admin/dashboard", headers=admin_headers)
+    assert resp.status_code == 200
+    data = resp.json()
+    assert "kpis" in data
+    assert "logs" in data
+    assert "totalInvocations" in data["kpis"]
+
+
+@pytest.mark.asyncio
+async def test_wav2vec2_audio_detector_execution():
+    """
+    Verify Wav2Vec2 detector properly handles unconfigured weights without fabricating scores,
+    and returns valid metadata and INCONCLUSIVE verdict.
+    """
+    import numpy as np
+    from app.media.models.base import ModelAvailability
+    from app.media.models.wav2vec import Wav2Vec2AudioDetector
+
+    detector = Wav2Vec2AudioDetector(weights_path="/tmp/nonexistent_wav2vec2_weights")
+    assert not detector.is_configured()
+    assert detector.model_name == "Wav2Vec2-AudioDeepfakeClassifier"
+    assert "ASVspoof" in detector.model_version
+    assert "Meta AI" in detector.model_source
+
+    sr = 16000
+    t = np.linspace(0, 1.0, sr, endpoint=False)
+    wave = (0.5 * np.sin(2 * np.pi * 440 * t)).astype(np.float32)
+    res = await detector.predict(wave, sample_rate=sr)
+
+    assert res.availability == ModelAvailability.NOT_CONFIGURED
+    assert res.raw_score is None
+    assert res.calibrated_probability is None
+    assert res.prediction == "INCONCLUSIVE"
+    assert "Pretrained Wav2Vec 2.0" in res.reason
+
+
+@pytest.mark.asyncio
+async def test_cnn_lstm_video_detector_execution():
+    """
+    Verify CNN-LSTM detector properly handles unconfigured weights without fabricating scores,
+    and returns valid metadata and INCONCLUSIVE verdict.
+    """
+    import numpy as np
+    from app.media.models.base import ModelAvailability
+    from app.media.models.cnn_lstm import CNNLSTMTemporalDetector
+
+    detector = CNNLSTMTemporalDetector(weights_path="/tmp/nonexistent_cnnlstm.pt")
+    assert not detector.is_configured()
+    assert detector.model_name == "CNN-LSTM-TemporalVideoDetector"
+    assert "ResNet50" in detector.model_version
+    assert "DFDC" in detector.model_source
+
+    frames = [np.full((224, 224, 3), fill_value=i * 20, dtype=np.uint8) for i in range(8)]
+    res = await detector.predict(frames)
+
+    assert res.availability == ModelAvailability.NOT_CONFIGURED
+    assert res.raw_score is None
+    assert res.calibrated_probability is None
+    assert res.prediction == "INCONCLUSIVE"
+    assert "Pretrained CNN-LSTM" in res.reason
+

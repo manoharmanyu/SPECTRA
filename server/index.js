@@ -4,7 +4,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { config, getLocalIpAddress } from './config.js';
 import { wsHub } from './ws.js';
-import { authRouter } from './routes/auth.js';
+import { authRouter, requireAdmin } from './routes/auth.js';
 import { pairingRouter } from './routes/pairing.js';
 import { uploadRouter } from './routes/upload.js';
 import { initWeeklyCacheScheduler, runWeeklyCacheCleanup, getCacheStatus } from './cleaner.js';
@@ -163,10 +163,10 @@ const clearCacheHandler = (req, res) => {
   });
 };
 
-app.get('/api/maintenance/cache-status', cacheStatusHandler);
-app.get('/maintenance/cache-status', cacheStatusHandler);
-app.post('/api/maintenance/clear-cache', clearCacheHandler);
-app.post('/maintenance/clear-cache', clearCacheHandler);
+app.get('/api/maintenance/cache-status', requireAdmin, cacheStatusHandler);
+app.get('/maintenance/cache-status', requireAdmin, cacheStatusHandler);
+app.post('/api/maintenance/clear-cache', requireAdmin, clearCacheHandler);
+app.post('/maintenance/clear-cache', requireAdmin, clearCacheHandler);
 
 // Start Server if not imported as module in test and not running in Vercel Serverless Function
 if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {

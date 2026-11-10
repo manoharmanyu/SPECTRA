@@ -4580,7 +4580,28 @@ function showVerdict(presetId) {
     localStorage.removeItem('spectra_active_session');
   } catch (e) {}
 
+  let cachedServerLogs = [];
+
+  async function fetchServerAuditLogs() {
+    try {
+      const res = await fetch('/api/admin/audit-logs');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.logs) {
+          cachedServerLogs = data.logs;
+          return data;
+        }
+      }
+    } catch (e) {
+      console.warn('Server audit log fetch notice:', e);
+    }
+    return null;
+  }
+
   function getAuditLogs() {
+    if (cachedServerLogs && cachedServerLogs.length > 0) {
+      return cachedServerLogs;
+    }
     try {
       const data = localStorage.getItem(AUDIT_LOGS_KEY);
       if (data) {
@@ -4657,7 +4678,7 @@ function showVerdict(presetId) {
     }, 3400);
   }
 
-  function renderDashboardView() {
+  async function renderDashboardView() {
     const loginSec = document.getElementById('adminLoginSection');
     const dashSec = document.getElementById('adminDashboardSection');
     const reportSec = document.getElementById('adminReportSection');
@@ -4675,16 +4696,23 @@ function showVerdict(presetId) {
     if (loginSec) loginSec.style.display = 'none';
     if (dashSec) dashSec.style.display = 'block';
 
-    const logs = getAuditLogs();
+    const serverData = await fetchServerAuditLogs();
+    const logs = (serverData && serverData.logs) || getAuditLogs();
     if (counterBadge) counterBadge.textContent = logs.length + ' Recorded Invocations';
 
     // Update KPI metrics
     let deepfakes = 0, audio = 0, authentic = 0;
-    logs.forEach(l => {
-      if (l.verdict.includes('DEEPFAKE') || l.verdict.includes('MANIPULATED')) deepfakes++;
-      else if (l.verdict.includes('AUDIO') || l.verdict.includes('SYNTHETIC')) audio++;
-      else authentic++;
-    });
+    if (serverData && serverData.kpis) {
+      deepfakes = serverData.kpis.deepfakesFlagged || 0;
+      audio = serverData.kpis.audioClonesFlagged || 0;
+      authentic = serverData.kpis.authenticVerified || 0;
+    } else {
+      logs.forEach(l => {
+        if (l.verdict.includes('DEEPFAKE') || l.verdict.includes('MANIPULATED')) deepfakes++;
+        else if (l.verdict.includes('AUDIO') || l.verdict.includes('SYNTHETIC')) audio++;
+        else authentic++;
+      });
+    }
 
     const kpiTotal = document.getElementById('kpiTotalScans');
     const kpiDf = document.getElementById('kpiDeepfakes');
@@ -5047,12 +5075,29 @@ function showVerdict(presetId) {
     showToast('Complete audit log exported to JSON.');
   };
 
-  window.clearAllAuditLogs = function() {
-    if (confirm('Clear all recorded platform investigation logs?')) {
+  window.clearAllAuditLogs = async function() {
+    if (!confirm('Clear all recorded platform investigation logs?')) return;
+    try {
+      const res = await fetch('/api/admin/clear-logs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include'
+      });
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.removeItem(AUDIT_LOGS_KEY);
+        await fetchServerAuditLogs();
+        renderDashboardView();
+        updateAdminTopBar();
+        showToast(data.message || 'All investigation audit logs have been cleared.');
+      } else {
+        showToast(data.error || 'Failed to clear server logs', true);
+      }
+    } catch (e) {
       localStorage.removeItem(AUDIT_LOGS_KEY);
       renderDashboardView();
       updateAdminTopBar();
-      showToast('All investigation audit logs have been cleared.');
+      showToast('Cleared local logs (server unreachable: ' + e.message + ')', true);
     }
   };
 

@@ -76,7 +76,18 @@ export function requireAuth(req, res, next) {
   next();
 }
 
+// Strict Administrator Role Enforcement Middleware
+export function requireAdmin(req, res, next) {
+  requireAuth(req, res, () => {
+    if (!req.user || req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Administrative privilege required. Access denied.' });
+    }
+    next();
+  });
+}
+
 // Optional or Automatic Session Provisioning for Interactive Features (Pairing, 2FA, Forensics)
+// Guarantees unique isolated context for every visitor without a shared global investigator account
 export function optionalOrAutoAuth(req, res, next) {
   const token =
     req.cookies?.spectra_session ||
@@ -97,29 +108,22 @@ export function optionalOrAutoAuth(req, res, next) {
     }
   }
 
-  // Auto-provision investigator session for seamless mobile pairing and forensic evaluation
-  let investigator = db.findUserByUsername('investigator');
-  if (!investigator) {
-    try {
-      investigator = db.createUser('investigator', 'Investigator_SecureAccess_2026!', 'investigator');
-    } catch (e) {
-      investigator = db.findUserByUsername('investigator');
-    }
-  }
-
-  const newSession = db.createSession(investigator.id, true, req.ip, req.headers['user-agent']);
+  // Provision unique, isolated guest user context per visitor
+  const guestUser = db.createGuestUser();
+  const newSession = db.createSession(guestUser.id, true, req.ip, req.headers['user-agent']);
   res.cookie('spectra_session', newSession.id, {
     httpOnly: true,
     sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
     maxAge: 24 * 3600 * 1000
   });
 
-  req.user = investigator;
+  req.user = guestUser;
   req.session = newSession;
   next();
 }
 
-// POST /api/auth/quick-session (Instant Investigator Session)
+// POST /api/auth/quick-session (Ensures an isolated active session for current visitor)
 authRouter.post('/quick-session', optionalOrAutoAuth, (req, res) => {
   return res.json({
     success: true,
@@ -128,9 +132,82 @@ authRouter.post('/quick-session', optionalOrAutoAuth, (req, res) => {
     user: {
       id: req.user.id,
       username: req.user.username,
+      role: req.user.role || 'guest',
       totpEnabled: Boolean(req.user.totpEnabled)
     }
   });
+});
+
+// GET /api/admin/audit-logs (Centralized Server-Side Audit Records for Administrator Command Center)
+authRouter.get('/admin/audit-logs', requireAdmin, (req, res) => {
+  const allJobs = db.data.jobs || [];
+
+  let imageCount = 0;
+  let audioCount = 0;
+  let videoCount = 0;
+  let deepfakesCount = 0;
+  let audioClonesCount = 0;
+  let authenticCount = 0;
+  let failedCount = 0;
+
+  const logs = allJobs.map(j => {
+    const report = j.forensicReport || {};
+    const mediaType = (j.mediaCategory || 'IMAGE').toUpperCase();
+    if (mediaType === 'IMAGE') imageCount++;
+    else if (mediaType === 'AUDIO') audioCount++;
+    else if (mediaType === 'VIDEO') videoCount++;
+
+    const verdict = report.verdict || (j.status === 'failed' ? 'FAILED ANALYSIS' : 'PENDING');
+    const isAlert = Boolean(report.isAlert || verdict.includes('MANIPULATED') || verdict.includes('SYNTHETIC'));
+
+    if (j.status === 'failed') failedCount++;
+    else if (isAlert && (mediaType === 'AUDIO' || verdict.includes('VOICE') || verdict.includes('AUDIO'))) audioClonesCount++;
+    else if (isAlert) deepfakesCount++;
+    else authenticCount++;
+
+    return {
+      id: j.id,
+      timestamp: j.createdAt,
+      fileName: j.originalFilename || 'Media_Artifact',
+      fileType: mediaType === 'AUDIO' ? 'Audio' : (mediaType === 'IMAGE' ? 'Image' : 'Video'),
+      fileSize: j.sizeBytes ? `${Math.round(j.sizeBytes / 1024)} KB` : 'N/A',
+      sizeBytes: j.sizeBytes,
+      sha256: j.sha256 || 'Pending',
+      status: j.status,
+      verdict: verdict,
+      risk: isAlert ? (report.risk || 'High Risk Synthetic') : (report.risk || 'Low Risk Verified'),
+      indicator: report.primaryIndicator || report.indicator || 'Optical flow & biological sensor evaluation',
+      hash: j.sha256 ? j.sha256.substring(0, 16) + '...' : 'Calculating...',
+      detectorName: report.detectorName || 'SPECTRA-MultiModal-Engine',
+      modelVersion: report.modelVersion || 'v2.2-Production',
+      errorMessage: j.error,
+      report: report
+    };
+  });
+
+  return res.json({
+    success: true,
+    total: allJobs.length,
+    kpis: {
+      totalInvocations: allJobs.length,
+      imageAnalyses: imageCount,
+      audioAnalyses: audioCount,
+      videoAnalyses: videoCount,
+      deepfakesFlagged: deepfakesCount,
+      audioClonesFlagged: audioClonesCount,
+      authenticVerified: authenticCount,
+      failedJobs: failedCount
+    },
+    logs: logs
+  });
+});
+
+// POST /api/admin/clear-logs (Purge forensic audit logs - Administrator restricted)
+authRouter.post('/admin/clear-logs', requireAdmin, (req, res) => {
+  const count = db.data.jobs.length;
+  db.data.jobs = [];
+  db.save();
+  return res.json({ success: true, message: `Cleared ${count} audit records.` });
 });
 
 // POST /api/auth/register

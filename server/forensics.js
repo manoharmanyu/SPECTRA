@@ -727,27 +727,10 @@ export async function analyzeMediaForensics(filePath, originalFilename, clientMi
     // Graceful fallback
   }
 
-  // Fallback enriched intelligence if offline/empty search
-  if (agentReachIntel.resultsCount === 0 && (aiMarkerDetected || searchQuery.toLowerCase().includes('deepfake') || searchQuery.toLowerCase().includes('rashmika') || searchQuery.toLowerCase().includes('biden') || searchQuery.toLowerCase().includes('zelenskyy') || searchQuery.toLowerCase().includes('arup') || searchQuery.toLowerCase().includes('slovakia') || searchQuery.toLowerCase().includes('pope'))) {
-    agentReachIntel.resultsCount = 3;
-    agentReachIntel.matches = [
-      {
-        title: `Public Evidence Dissemination Tracker // ${searchQuery}`,
-        url: 'https://archive.org/details/digital-forensics-evidence-vault',
-        author: 'Global Synthetic Media Monitor',
-        snippet: `Public repositories index active forensic investigations matching "${searchQuery}" with multi-platform dissemination signals.`,
-        publishedAt: 'Recent Indexed Feed',
-        reachScore: '92.4% Viral Propagation'
-      },
-      {
-        title: 'Open Source Intelligence (OSINT) Reference Archive',
-        url: 'https://en.wikipedia.org/wiki/Deepfake',
-        author: 'Forensic Intelligence Group',
-        snippet: 'Correlated neural artifact traces and compression markers indexed across public discussion boards and social media mirrors.',
-        publishedAt: 'Active Index',
-        reachScore: '86.1% Community Cross-Reference'
-      }
-    ];
+  // Live OSINT Dissemination Search
+  // If search returns no live matches, record genuine search status without fabricating synthetic entries
+  if (agentReachIntel.resultsCount === 0) {
+    agentReachIntel.matches = [];
   }
 
   // 11. Verdict & Risk Calculations (Strict AI-Only Identification & Normal Human Risk)
@@ -767,8 +750,14 @@ export async function analyzeMediaForensics(filePath, originalFilename, clientMi
 
   if (aiMarkerDetected) {
     probability = '98.6%';
-    verdict = `MANIPULATED (${mediaCategory} SYNTHETIC)`;
-    indicator = `Neural synthesis footprint: ${aiSource}`;
+    const isManipulation = /\b(?:deepfacelab|facefusion|roop|insightface|liveportrait|rvc|retrieval)\b/i.test(aiSource || '');
+    if (isManipulation) {
+      verdict = `LIKELY AI-MANIPULATED (${mediaCategory} SYNTHETIC)`;
+      indicator = `Synthetic alteration/manipulation footprint: ${aiSource}`;
+    } else {
+      verdict = `LIKELY AI-GENERATED (${mediaCategory} SYNTHETIC)`;
+      indicator = `Generative AI model footprint detected: ${aiSource}`;
+    }
     isAlert = true;
   } else if (mediaCategory === 'VIDEO') {
     if (videoSpecs?.audioVideoSyncOffset?.includes('Desynchronization')) {
@@ -804,13 +793,12 @@ export async function analyzeMediaForensics(filePath, originalFilename, clientMi
     indicator = `Verified physical optical camera hardware sensor: ${cameraMake || 'Optical'} ${cameraModel || 'Sensor'} ${mfgLabel} with calibrated CMOS noise and real lens metadata`.trim();
     isAlert = false;
   } else {
-    // Non-camera / synthetic image (e.g. AI generated image uploaded through phone or web)
-    probability = '97.4%';
-    verdict = 'MANIPULATED (IMAGE SYNTHETIC / AI-GENERATED)';
-    aiSource = aiSource || 'Latent Diffusion Model / Generative Neural Synthesizer (e.g. Midjourney / DALL-E / SD / Flux)';
-    indicator = 'Synthetic generative image. Drew Noakes Metadata-Extractor verified complete absence of physical camera sensor provenance (No Exif IFD0, No Exif SubIFD, No Camera MakerNotes across 18 manufacturers) with synthetic raster quantization.';
-    isAlert = true;
-    aiMarkerDetected = true;
+    // Media lacking camera EXIF provenance without explicit synthetic AI markers
+    // Forensic invariant: Missing EXIF is not proof of AI generation.
+    probability = '48.0%';
+    verdict = 'INCONCLUSIVE (STRIPPED METADATA / UNSUPPORTED PROVENANCE)';
+    indicator = 'Absence of camera hardware EXIF tags or MakerNotes. Media may have been re-encoded, stripped by messaging platforms, or created without hardware metadata. Inconclusive origin.';
+    isAlert = false;
   }
 
   // 12. Structured Evidence Signals

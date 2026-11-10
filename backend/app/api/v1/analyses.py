@@ -114,6 +114,21 @@ async def create_analysis(
         except Exception:
             pass
 
+    # Resolve capture session and verify device trust
+    valid_capture_session_id = None
+    if capture_session_id:
+        from app.models.session import DeviceSession
+        dev_session = db.query(DeviceSession).filter(
+            DeviceSession.id == capture_session_id,
+            DeviceSession.is_active.is_(True)
+        ).first()
+        if not dev_session:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail=f"Device capture session '{capture_session_id}' is invalid, expired, or disconnected."
+            )
+        valid_capture_session_id = dev_session.id
+
     # Resolve owner
     owner_id = user_id or (user_context.get("id") if user_context.get("id") != "anonymous_guest" else None)
 
@@ -121,7 +136,7 @@ async def create_analysis(
     job = AnalysisJob(
         id=job_id,
         user_id=owner_id,
-        capture_session_id=capture_session_id if capture_session_id else None,
+        capture_session_id=valid_capture_session_id,
         source_origin=source_origin or "web_upload",
         source_device_id=source_device_id,
         client_captured_at=client_dt,
@@ -372,3 +387,62 @@ async def retry_analysis(
         status_url=f"/api/v1/analyses/{job.id}",
         report_url=f"/api/v1/analyses/{job.id}/report"
     )
+
+
+@router.get("/admin/dashboard")
+def get_admin_dashboard(
+    user_context: Dict[str, Any] = Depends(get_current_user_context),
+    db: Session = Depends(get_db)
+):
+    """
+    Centralized Administrator Dashboard records persisted in PostgreSQL / DB.
+    Strictly restricted to users with admin role or internal service authorization.
+    """
+    if not (user_context.get("is_admin") or user_context.get("is_internal")):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Administrative authorization required."
+        )
+
+    jobs = db.query(AnalysisJob).order_by(AnalysisJob.created_at.desc()).all()
+
+    total = len(jobs)
+    image_count = sum(1 for j in jobs if j.media_type.lower() == "image")
+    audio_count = sum(1 for j in jobs if j.media_type.lower() == "audio")
+    video_count = sum(1 for j in jobs if j.media_type.lower() == "video")
+    failed_count = sum(1 for j in jobs if j.status == "failed")
+    deepfakes_count = sum(1 for j in jobs if j.assessment_label in ("likely_ai_generated", "likely_ai_manipulated"))
+    authentic_count = sum(1 for j in jobs if j.assessment_label == "likely_not_ai_detected")
+
+    job_records = [
+        {
+            "id": j.id,
+            "timestamp": j.created_at.isoformat() if j.created_at else None,
+            "fileName": j.original_filename,
+            "fileType": j.media_type.capitalize(),
+            "sizeBytes": j.size_bytes,
+            "sha256": j.sha256_hash,
+            "status": j.status,
+            "verdict": j.assessment_label or "PENDING",
+            "score": j.assessment_score,
+            "detectorName": "SPECTRA-FastAPI-Forensic-Engine",
+            "modelVersion": "v2.2-Production",
+            "errorMessage": j.error_message,
+            "report": j.final_report
+        }
+        for j in jobs[:100]
+    ]
+
+    return {
+        "success": True,
+        "kpis": {
+            "totalInvocations": total,
+            "imageAnalyses": image_count,
+            "audioAnalyses": audio_count,
+            "videoAnalyses": video_count,
+            "deepfakesFlagged": deepfakes_count,
+            "authenticVerified": authentic_count,
+            "failedJobs": failed_count
+        },
+        "logs": job_records
+    }
